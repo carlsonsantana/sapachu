@@ -3,25 +3,197 @@
 				xmlns:ui="http://java.sun.com/jsf/facelets"
 				xmlns:p="http://primefaces.org/ui"
 				xmlns:f="http://xmlns.jcp.org/jsf/core">
-	<p:tab id="dadosulcera" title="Dados úlcera">
-		<p:panel header="Dados úlcera">
-			<div class="form-group">
-				<h:outputLabel value="Pressão sanguinea" />
-				<p:spinner />
+	<p:tab id="dadosulcera" title="Acompanhamento Paciente">
+		<p:panel header="Acompanhamento Paciente" styleClass="panel panel-primary">
+			<!-- Visual -->
+			<div class="container">
+				<div class="row">
+					<div class="form-group col-lg-3">
+						<h:outputLabel for="pressao_arterial" value="Pressão Arterial" />
+						<h:inputText id="pressao_arterial" styleClass="form-control" />
+					</div>
+					<div class="form-group col-lg-3">
+						<h:outputLabel for="imc" value="Índice de massa corporal" />
+						<h:inputText id="imc" styleClass="form-control" />
+					</div>
+					<div class="form-group col-lg-3">
+						<h:outputLabel for="cintura" value="Cintura" />
+						<h:inputText id="cintura" styleClass="form-control" />
+					</div>
+					<div class="form-group col-lg-3">
+						<h:outputLabel for="quadril" value="Quadril" />
+						<h:inputText id="quadril" styleClass="form-control" />
+					</div>
+				</div>
 			</div>
-			<br />
-			<div class="form-group">
-				<h:outputLabel value="Seleção" />
-				<h:selectOneMenu>
-					<f:selectItem itemLabel="Serosa" itemValue="1" />
-					<f:selectItem itemLabel="Serosa" itemValue="1" />
-					<f:selectItem itemLabel="Serosa" itemValue="1" />
-				</h:selectOneMenu>
+			<br /><br />
+			<div class="container">
+				<div class="row">
+					<div class="form-group col-lg-3">
+						<h:outputLabel for="glicemia" value="Glicemia" />
+						<h:inputText id="glicemia" styleClass="form-control" />
+					</div>
+					<div class="form-group col-lg-3">
+						<h:outputLabel for="creatina" value="Creatina" />
+						<h:inputText id="creatina" styleClass="form-control" />
+					</div>
+					<div class="form-group col-lg-3">
+						<h:outputLabel for="hdl" value="HDL" />
+						<h:inputText id="hdl" styleClass="form-control" />
+					</div>
+					<div class="form-group col-lg-3">
+						<h:outputLabel for="vhs" value="VHS" />
+						<h:inputText id="vhs" styleClass="form-control" />
+					</div>
+				</div>
 			</div>
-			<div class="form-group">
-				<label>Nome</label>
-				<h:inputText value="#{consultaController.paciente.nome}" />
+			<br /><br />
+			<div class="container">
+				<div class="row">
+					<div class="form-group col-lg-3">
+						<h:outputLabel for="numero_ulceras" value="Número de Úlceras" />
+						<h:inputText id="numero_ulceras" styleClass="form-control" />
+					</div>
+					<div class="form-group col-lg-3">
+						<h:outputLabel for="macos_cigarro_diario" value="Maços de Cigarro Diários" />
+						<h:inputText id="macos_cigarro_diario" styleClass="form-control" />
+					</div>
+					<div class="form-group col-lg-3">
+						<h:outputLabel for="alcoolista" value="Alcoolista" />
+						<h:selectOneMenu id="alcoolista" styleClass="form-control">
+							<f:selectItem itemLabel="Sim" />
+							<f:selectItem itemLabel="Não" />
+						</h:selectOneMenu>
+					</div>
+					<div class="form-group col-lg-3">
+						<h:outputLabel for="outras_drogas" value="Outras drogas" />
+						<h:inputText id="outras_drogas" styleClass="form-control" />
+					</div>
+				</div>
 			</div>
+			<br /><br />
+			<div class="container">
+				<div class="row">
+					<div class="form-group col-lg-3">
+						<h:outputLabel for="desdibramento_cirurgico" value="Desdibramento Cirúrgico" />
+						<h:selectOneMenu id="desdibramento_cirurgico" styleClass="form-control">
+							<f:selectItem itemLabel="Sim" />
+							<f:selectItem itemLabel="Não" />
+						</h:selectOneMenu>
+					</div>
+					<div class="form-group col-lg-3">
+						<h:outputLabel for="coopera" value="Coopera" />
+						<h:selectOneMenu id="coopera" styleClass="form-control">
+							<f:selectItem itemLabel="Sim" />
+							<f:selectItem itemLabel="Não" />
+						</h:selectOneMenu>
+					</div>
+					<div class="form-group col-lg-3">
+						<h:outputLabel for="diabetes" value="Diabetes" />
+						<h:selectOneMenu id="diabetes" styleClass="form-control">
+							<f:selectItem itemLabel="Sim" />
+							<f:selectItem itemLabel="Não" />
+						</h:selectOneMenu>
+					</div>
+					<div class="form-group col-lg-3">
+						<h:outputLabel for="cardiopatia_isquemica" value="Cardiopatia Isquemica" />
+						<h:selectOneMenu id="cardiopatia_isquemica" styleClass="form-control">
+							<f:selectItem itemLabel="Sim" />
+							<f:selectItem itemLabel="Não" />
+						</h:selectOneMenu>
+					</div>
+				</div>
+			</div>
+			<br /><br />
+			<div class="container">
+				<div class="row">
+					<div class="form-group col-lg-3">
+						<h:outputLabel for="doenca_renal" value="Doença Renal" />
+						<h:selectOneMenu id="doenca_renal" styleClass="form-control">
+							<f:selectItem itemLabel="Sim" />
+							<f:selectItem itemLabel="Não" />
+						</h:selectOneMenu>
+					</div>
+					<div class="form-group col-lg-3">
+						<h:outputLabel for="avc" value="Acid. Vascular Cerebral" />
+						<h:selectOneMenu id="avc" styleClass="form-control">
+							<f:selectItem itemLabel="Sim" />
+							<f:selectItem itemLabel="Não" />
+						</h:selectOneMenu>
+					</div>
+					<div class="form-group col-lg-3">
+						<h:outputLabel for="artrite" value="Artrite" />
+						<h:selectOneMenu id="artrite" styleClass="form-control">
+							<f:selectItem itemLabel="Sim" />
+							<f:selectItem itemLabel="Não" />
+						</h:selectOneMenu>
+					</div>
+					<div class="form-group col-lg-3">
+						<h:outputLabel for="alteracoes_visao" value="Alterações Visão" />
+						<h:selectOneMenu id="alteracoes_visao" styleClass="form-control">
+							<f:selectItem itemLabel="Sim" />
+							<f:selectItem itemLabel="Não" />
+						</h:selectOneMenu>
+					</div>
+				</div>
+			</div>
+			<br /><br />
+			<div class="container">
+				<div class="row">
+					<div class="form-group col-lg-3">
+						<h:outputLabel for="trombose_vascular_profunda" value="Trom. Vasc. Profunda" />
+						<h:selectOneMenu id="trombose_vascular_profunda" styleClass="form-control">
+							<f:selectItem itemLabel="Sim" />
+							<f:selectItem itemLabel="Não" />
+						</h:selectOneMenu>
+					</div>
+					<div class="form-group col-lg-3">
+						<h:outputLabel for="fratura" value="Fratura" />
+						<h:selectOneMenu id="fratura" styleClass="form-control">
+							<f:selectItem itemLabel="Sim" />
+							<f:selectItem itemLabel="Não" />
+						</h:selectOneMenu>
+					</div>
+					<div class="form-group col-lg-3">
+						<h:outputLabel for="doenca_arterial_periferica" value="Doença Arterial Periférica" />
+						<h:selectOneMenu id="doenca_arterial_periferica" styleClass="form-control">
+							<f:selectItem itemLabel="Sim" />
+							<f:selectItem itemLabel="Não" />
+						</h:selectOneMenu>
+					</div>
+					<div class="form-group col-lg-3">
+						<h:outputLabel for="dermatite_ocre" value="Dermatite Ocre" />
+						<h:selectOneMenu id="dermatite_ocre" styleClass="form-control">
+							<f:selectItem itemLabel="Sim" />
+							<f:selectItem itemLabel="Não" />
+						</h:selectOneMenu>
+					</div>
+				</div>
+			</div>
+			<br /><br />
+			<div class="container">
+				<div class="row">
+					<div class="form-group col-lg-3">
+						<h:outputLabel for="asma" value="Asma" />
+						<h:selectOneMenu id="asma" styleClass="form-control">
+							<f:selectItem itemLabel="Sim" />
+							<f:selectItem itemLabel="Não" />
+						</h:selectOneMenu>
+					</div>
+					<div class="form-group col-lg-3">
+						<h:outputLabel for="anemia_falciforme" value="Anemia Falciforme" />
+						<h:selectOneMenu id="anemia_falciforme" styleClass="form-control">
+							<f:selectItem itemLabel="Sim" />
+							<f:selectItem itemLabel="Não" />
+						</h:selectOneMenu>
+					</div>
+					<div class="form-group col-lg-3">
+						<h:outputLabel for="indice_tornozelo_braco" value="Índice Tornozelo Braço" />
+						<h:outputText id="indice_tornozelo_braco" styleClass="form-control" />
+					</div>
+				</div>
+			</div>
+			<!-- Fim do Visual -->
 		</p:panel>
 	</p:tab>
 </ui:composition>

@@ -3,3 +3,6 @@
 .content {
 	margin-top: 60px;
 }
+.ui-growl {
+	z-index: 10000 !important;
+}

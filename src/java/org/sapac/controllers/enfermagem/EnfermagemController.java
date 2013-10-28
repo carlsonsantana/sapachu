@@ -22,19 +22,19 @@ public class EnfermagemController extends GenericController {
 	}
 	
 	public String telaDianosticarEnfermagem() {
-		return "/private/enfermagem/diagnosticar.xhtml";
+		return "/private/enfermagem/diagnosticar";
 	}
 	
 	public String telaIntervencaoEnfermagem() {
-		return "/private/enfermagem/intervencao.xhtml";
+		return "/private/enfermagem/intervencao";
 	}
 	
 	public String visualizarDiagnostico(Paciente paciente) {
-		return "/private/enfermagem/visualizar_diagnostico.xhtml";
+		return "/private/enfermagem/visualizar_diagnostico";
 	}
 	
 	public String visualizarIntervencao() {
-		return "/private/enfermagem/visualizar_intervencao.xhtml";
+		return "/private/enfermagem/visualizar_intervencao";
 	}
 
 	/**

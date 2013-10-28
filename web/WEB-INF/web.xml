@@ -45,13 +45,17 @@
 	<filter>
 		<filter-name>LoginFilter</filter-name>
 		<filter-class>org.sapac.filters.LoginFilter</filter-class>
-		<init-param>
-			<param-name>loginActionURI</param-name>
-			<param-value>/SAPAC/faces/public/login.xhtml</param-value>
-		</init-param>
 	</filter>
 	<filter-mapping>
 		<filter-name>LoginFilter</filter-name>
-		<url-pattern>/private/*</url-pattern>
+		<url-pattern>/faces/private/*</url-pattern>
+	</filter-mapping>
+	<filter>
+		<filter-name>primeUploadFilter</filter-name>
+		<filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>primeUploadFilter</filter-name>
+		<servlet-name>Faces Servlet</servlet-name>
 	</filter-mapping>
 </web-app>

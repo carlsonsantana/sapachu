@@ -14,7 +14,6 @@ import org.sapac.controllers.GenericController;
 import org.sapac.entities.Enfermeiro;
 import org.sapac.entities.Funcionario;
 import org.sapac.entities.Medico;
-import org.sapac.entities.Usuario;
 
 /**
  *
@@ -23,6 +22,9 @@ import org.sapac.entities.Usuario;
 @ManagedBean
 @SessionScoped
 public class UsuarioController extends GenericController {
+	
+	//@Inject
+	//private Conversation conversation;
 
 	/**
 	 * @return the funcionario
@@ -56,16 +58,8 @@ public class UsuarioController extends GenericController {
 		FUNCIONARIO,
 		USUARIO;
 	}
-	
 	private Operacao operacao;
-	
-	/**
-	 * Usuário logado na sessão.
-	 */
-	private Usuario usuario;
-	
 	private Funcionario funcionario;
-	
 	private transient DataModel<Funcionario> listaFuncionaros;
 
 	/**
@@ -73,7 +67,6 @@ public class UsuarioController extends GenericController {
 	 */
 	public UsuarioController() {
 		super();
-		usuario = new Usuario();
 		List<Funcionario> funcionarios = new ArrayList<Funcionario>();
 		Funcionario f = new Medico();
 		f.setNome("Lia Chagas");
@@ -88,81 +81,39 @@ public class UsuarioController extends GenericController {
 		funcionario = new Medico();
 	}
 
-	/**
-	 * @return the usuario
-	 */
-	public Usuario getUsuario() {
-		return usuario;
-	}
-
-	/**
-	 * @param usuario the usuario to set
-	 */
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
-	}
-
-	/**
-	 * Abre uma sessão para o usuário.
-	 * @return A página inicial.
-	 */
-	public String logar() {
-		return "/private/apresentacao.xhtml";
-	}
-
-	/**
-	 * Fecha a sessão para o usuário.
-	 * @return A tela de login.
-	 */
-	public String logoff() {
-		getRequest().getSession().invalidate();
-		return "/public/login.xhtml";
-	}
-	
-	/**
-	 * 
-	 */
-	public String mudarSenha() {
-		return "/private/perfil/mudar_senha.xhtml";
-	}
-	
-	/**
-	 * 
-	 */
-	public boolean isLogado() {
-		if (((usuario.getNomeUsuario() != null) && (!usuario.getNomeUsuario().isEmpty()))
-				&& ((usuario.getSenha() != null) && (!usuario.getSenha().isEmpty()))) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
 	public String telaPesquisaFuncionario() {
 		operacao = Operacao.FUNCIONARIO;
-		return "/private/usuario/pesquisar.xhtml";
+		return "/private/usuario/pesquisar";
 	}
-	
+
 	public String telaPesquisaUsuario() {
 		operacao = Operacao.USUARIO;
-		return "/private/usuario/pesquisar.xhtml";
+		return "/private/usuario/pesquisar";
 	}
-	
+
 	public boolean isPesquisarFuncionario() {
 		return operacao.equals(Operacao.FUNCIONARIO);
 	}
-	
+
 	public boolean isPesquisarUsuario() {
 		return operacao.equals(Operacao.USUARIO);
 	}
-	
+
 	public String cadastrarFuncionario(Funcionario funcionario) {
 		this.funcionario = funcionario;
-		return "/private/usuario/cadastrar.xhtml";
+		return "/private/usuario/cadastrar";
+	}
+
+	public String editarUsuario(Funcionario funcionario) {
+		//conversation.begin();
+		//System.out.println("Conversation Begin");
+		this.funcionario = funcionario;
+		return "/private/usuario/editar";
 	}
 	
-	public String editarUsuario(Funcionario funcionario) {
-		this.funcionario = funcionario;
-		return "/private/usuario/editar.xhtml";
+	public String lan(Funcionario funcionario) {
+		//conversation.end();
+		//System.out.println("Conversation End");
+		return "/private/apresentacao";
 	}
 }

@@ -89,7 +89,7 @@ public class RelatorioController extends GenericController {
 		graficoAreaTotalUlceras.addSeries(series);
 		getGraficos().add(graficoNumeroTotalUlceras);
 		
-		return "/private/relatorio/relatorio_desempenho.xhtml";
+		return "/private/relatorio/relatorio_desempenho";
 	}
 
 	/**

@@ -4,35 +4,46 @@
 				xmlns:p="http://primefaces.org/ui"
 				template="/templates/defaulttemplate.xhtml"
 				xmlns:f="http://xmlns.jcp.org/jsf/core">
-	<ui:define name="title">Marcar Consulta do Paciente</ui:define>
+	<ui:define name="title">Marcar Consulta do Paciente
+		(<h:outputText value="#{consultaController.paciente.nome}" />)</ui:define>
 	<ui:define name="content">
 		<h:form id="form">
 			<script type="text/javascript">
 				var consultaMarcada = false;
 			</script>
 			Nome: <h:outputText value="#{consultaController.paciente.nome}" /><br />
-			Prontuário: <h:outputText value="#{consultaController.paciente.prontuario}" /><br />
-			<!--Data: <p:calendar value="#{consultaController.date}"
-							  pattern="dd/MM/yyyy" showOn="button" required="true" locale="pt"
-							  placeholder="00/00/0000" /><br />-->
-			<p:schedule id="schedule" widgetVar="myschedule" locale="pt" value="#{consultaController.calendario}">
+			Prontuário: <h:outputText value="#{consultaController.paciente.prontuario}" /><br /><br />
+			<p:schedule id="schedule" widgetVar="myschedule" locale="pt"
+						value="#{consultaController.calendario}"
+						draggable="false" resizable="false">
 				<p:ajax event="dateSelect" listener="#{consultaController.onDateSelect}" update="eventDetails" oncomplete="if (!consultaMarcada) {PF('eventDialog').show();}" />
-				<!--<p:ajax event="eventSelect" listener="#{scheduleController.onEventSelect}" update="eventDetails" oncomplete="PF('eventDialog').show()" />
-				<p:ajax event="eventMove" listener="#{scheduleController.onEventMove}" update="mensagens" />
+				<p:ajax event="eventSelect" listener="#{scheduleController.onDateSelect}" update="eventDetails" oncomplete="PF('eventDialog').show()" />
+				<!--<p:ajax event="eventMove" listener="#{scheduleController.onEventMove}" update="mensagens" />
 				<p:ajax event="eventResize" listener="#{scheduleController.onEventResize}" update="mensagens" />-->
 			</p:schedule>
-			<p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="clip" id="dialogo">
+			<p:dialog widgetVar="eventDialog" header="Event Details"
+					showEffect="clip" hideEffect="clip" id="dialogo">
 				<h:panelGrid id="eventDetails" columns="1">
 					<h:panelGroup>
 						Paciente:
-						<h:outputText id="nome" value="#{consultaController.paciente.nome}" />
+						<h:outputText id="nome"
+								value="#{consultaController.paciente.nome}" />
 					</h:panelGroup>
 					<p:commandButton id="addButton" value="Save"
-									action="#{consultaController.addEvent}"
-									oncomplete="PF('myschedule').update();PF('eventDialog').hide();consultaMarcada = true;"/>
+							action="#{consultaController.addEvent}"
+							oncomplete="PF('myschedule').update();PF('eventDialog').hide();consultaMarcada = true;"/>
 				</h:panelGrid>
 			</p:dialog>
-			<h:commandButton value="Marcar" styleClass="btn btn-primary" />
+			<br /><br />
+			<h:commandButton value="Voltar" styleClass="btn btn-default"
+					action="#{consultaController.telaMarcarConsulta()}" />
+			<h:outputText value=" " />
+			<h:commandButton value="Cancelar" styleClass="btn btn-danger"
+					  action="/private/apresentacao?faces-redirect=true"
+					  onclick="return cancelar();" />
+			<h:outputText value=" " />
+			<h:commandButton value="Marcar" styleClass="btn btn-primary"
+					action="#{consultaController.marcarConsulta(consultaController.paciente)}"/>
 		</h:form>
 	</ui:define>
 </ui:composition>

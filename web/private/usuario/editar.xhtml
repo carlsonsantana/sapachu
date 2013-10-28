@@ -10,7 +10,7 @@
 			Nome: <h:outputText value="#{usuarioController.funcionario.nome}" /><br />
 			Tipo: <h:outputText value="Médico" rendered="#{usuarioController.funcionario.medico}" /><br />
 			<h:outputText value="Enfermeiro" rendered="#{usuarioController.funcionario.enfermeiro}" />
-			<h:commandButton value="Cadastrar" styleClass="btn btn-primary" />
+			<h:commandButton value="Cadastrar" styleClass="btn btn-primary" action="#{usuarioController.lan(usuarioController.funcionario)}" />
 		</h:form>
 	</ui:define>
 </ui:composition>

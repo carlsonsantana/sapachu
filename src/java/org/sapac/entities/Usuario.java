@@ -30,6 +30,8 @@ public class Usuario implements Serializable {
 	 * A senha do usuário.
 	 */
 	private String senha;
+	
+	private boolean administrador;
 
 	/**
 	 * @return the id
@@ -71,5 +73,27 @@ public class Usuario implements Serializable {
 	 */
 	public void setSenha(String senha) {
 		this.senha = senha;
+	}
+	
+	public boolean isMedico() {
+		return true;
+	}
+	
+	public boolean isEnfermeiro() {
+		return true;
+	}
+
+	/**
+	 * @return the administrador
+	 */
+	public boolean isAdministrador() {
+		return administrador;
+	}
+
+	/**
+	 * @param administrador the administrador to set
+	 */
+	public void setAdministrador(boolean administrador) {
+		this.administrador = administrador;
 	}
 }

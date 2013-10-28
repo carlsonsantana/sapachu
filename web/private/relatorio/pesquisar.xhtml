@@ -4,19 +4,21 @@
 				xmlns:p="http://primefaces.org/ui"
 				template="/templates/defaulttemplate.xhtml"
 				xmlns:f="http://xmlns.jcp.org/jsf/core">
-	<ui:define name="title">Pesquisar Funcionário</ui:define>
+	<ui:define name="title">Relatório de Desempenho - Pesquisar Funcionário</ui:define>
 	<ui:define name="content">
 		<h:form id="form">
 			<div class="form-group">
 				<label for="form_nome_paciente">Funcionário</label>
-				<p:inputText id="nome_paciente" value="#{relatorioController.funcionarioPesquisa.nome}" styleClass="form-control" />
+				<p:inputText id="nome_paciente"
+						value="#{relatorioController.funcionarioPesquisa.nome}" styleClass="form-control" />
 			</div>
-			<input type="reset" value="Limpar Campos" class="btn btn-default" />
+			<h:commandButton type="reset" value="Limpar Campos"
+					class="btn btn-default" />
 			<h:outputText value=" " />
 			<h:commandButton value="Pequisar" styleClass="btn btn-primary" />
 			<br /><br /><br />
 			<p:dataTable id="datatable" value="#{relatorioController.listaFuncionaros}"
-						 var="funcionario" paginator="true" rows="10" lazy="true">
+					var="funcionario" paginator="true" rows="10" lazy="true">
 				<p:column>
 					<f:facet name="header"><h:outputText value="Nome" /></f:facet>
 					<h:outputText value="#{funcionario.nome}" />
@@ -28,7 +30,7 @@
 				</p:column>
 				<p:column>
 					<f:facet name="header"><h:outputText value="Operações" /></f:facet>
-					<h:commandLink value="Editar" action="#{relatorioController.gerarRelatorio(funcionario)}" />
+					<h:commandLink value="Gerar Relatório" action="#{relatorioController.gerarRelatorio(funcionario)}" />
 				</p:column>
 			</p:dataTable>
 		</h:form>

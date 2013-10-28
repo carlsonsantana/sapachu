@@ -5,7 +5,6 @@
 package org.sapac.filters;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -14,9 +13,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.sapac.controllers.usuario.UsuarioController;
+import org.sapac.controllers.usuario.PerfilController;
 
 /**
  *
@@ -33,7 +31,6 @@ public class LoginFilter extends HttpServlet implements Filter {
 	 */
 	private void doLogin(ServletRequest request, ServletResponse response)
 			throws ServletException, IOException {
-		System.out.println("--aslkals--");
 		request.getRequestDispatcher("/public/login.xhtml").forward(request, response);
 	}
 	
@@ -42,22 +39,21 @@ public class LoginFilter extends HttpServlet implements Filter {
 	}
 
 	@Override
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+	public void doFilter(ServletRequest request, ServletResponse response,
+			FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpSession session = req.getSession();
 
 		if (session.isNew()) {
 			doLogin(request, response);
-			return;
-		}
-		UsuarioController usuarioController = (UsuarioController) req.getSession().
-				getAttribute("usuarioController");
-		if (usuarioController == null) {
-			doLogin(request, response);
-			return;
-		} else if (!usuarioController.isLogado()) {
-			doLogin(request, response);
-			return;
+		} else {
+			PerfilController perfilController = (PerfilController)
+					req.getSession().getAttribute("perfilController");
+			if (perfilController == null) {
+				doLogin(request, response);
+			} else if (!perfilController.isLogado()) {
+				doLogin(request, response);
+			}
 		}
 
 		chain.doFilter(request, response);

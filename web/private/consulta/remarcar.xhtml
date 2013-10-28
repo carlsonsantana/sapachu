@@ -7,9 +7,12 @@
 	<ui:define name="title">Pesquisar Paciente</ui:define>
 	<ui:define name="content">
 		<h:form id="form">
+			<div class="form-group"
 			<div class="form-group">
 				<label for="form_nome_paciente">Paciente</label>
 				<p:inputText id="nome_paciente" value="#{pacienteController.pacientePesquisa.nome}" styleClass="form-control" />
+			</div>
+			<div class="form-group">
 				<label for="form_prontuario">Prontuário</label>
 				<p:inputText id="prontuario" value="#{pacienteController.pacientePesquisa.prontuario}" styleClass="form-control" />
 			</div>
@@ -31,8 +34,7 @@
 				</p:column>
 				<p:column>
 					<f:facet name="header"><h:outputText value="Operações" /></f:facet>
-					<h:commandLink value="Visualizar" action="#{pacienteController.visualizarPaciente(paciente)}" rendered="#{pacienteController.pesquisar}" />
-					<h:commandLink value="Visualizar" action="#{pacienteController.adicionarPaciente(paciente)}" rendered="#{pacienteController.adicionar}" />
+					<h:commandLink value="Marcar" action="#{consultaController.selecionarPacienteMarcarConsulta(paciente)}" />
 				</p:column>
 			</p:dataTable>
 		</h:form>

@@ -100,7 +100,7 @@ public class PacienteController extends GenericController {
 	 */
 	public String pesquisarPaciente() {
 		operacao = Operacao.PESQUISAR;
-		return "/private/paciente/pesquisar.xhtml";
+		return "/private/paciente/pesquisar";
 	}
 
 	/**
@@ -109,7 +109,7 @@ public class PacienteController extends GenericController {
 	 */
 	public String cadastrarPaciente() {
 		operacao = Operacao.ADICIONAR;
-		return "/private/paciente/pesquisar.xhtml";
+		return "/private/paciente/pesquisar";
 	}
 
 	/**
@@ -133,7 +133,7 @@ public class PacienteController extends GenericController {
 	 */
 	public String visualizarPaciente(Paciente paciente) {
 		setPaciente(paciente);
-		return "/private/paciente/visualizar.xhtml";
+		return "/private/paciente/visualizar";
 	}
 
 	public boolean isPesquisar() {
@@ -151,7 +151,7 @@ public class PacienteController extends GenericController {
 	 */
 	public String adicionarPaciente(Paciente paciente) {
 		setPaciente(paciente);
-		return "/private/paciente/cadastrar.xhtml";
+		return "/private/paciente/cadastrar";
 	}
 
 	/**
@@ -159,6 +159,6 @@ public class PacienteController extends GenericController {
 	 * @return 
 	 */
 	public String cadastrar() {
-		return "/private/paciente/visualizar.xhtml";
+		return "/private/paciente/visualizar";
 	}
 }

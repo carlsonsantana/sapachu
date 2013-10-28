@@ -10,14 +10,14 @@
 		<h:form>
 			Nome: <h:outputText value="#{relatorioController.funcionario.nome}" /><br />
 			Tipo: <h:outputText value="Médico" rendered="#{relatorioController.funcionario.medico}" /><br />
+			<br />
 			<h:outputText value="Enfermeiro" rendered="#{relatorioController.funcionario.enfermeiro}" />
+			<ui:repeat value="#{relatorioController.graficos}" var="grafico">
+				<p:lineChart value="#{grafico}" legendPosition="ne" />
+				<br />
+			</ui:repeat>
+			<br />
 			<h:commandButton value="Voltar" styleClass="btn btn-default" />
-			<c:forEach items="#{relatorioController.graficos}" var="grafico">
-				<!--<p:lineChart value="#{grafico}" legendPosition="ne" />-->
-				<br />
-				lambda + #{grafico}
-				<br />
-			</c:forEach>
 		</h:form>
 	</ui:define>
 </ui:composition>
