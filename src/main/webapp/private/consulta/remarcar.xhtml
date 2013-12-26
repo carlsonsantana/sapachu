@@ -1,0 +1,46 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:p="http://primefaces.org/ui"
+				template="/templates/defaulttemplate.xhtml"
+				xmlns:f="http://xmlns.jcp.org/jsf/core">
+	<ui:define name="title">Pesquisar Paciente</ui:define>
+	<ui:define name="content">
+		<h:form id="form">
+			<fieldset>
+				<legend>Remarcar Consulta</legend>
+			<p:schedule id="schedule" widgetVar="myschedule" locale="pt"
+						value="#{consultaController.calendario}"
+						draggable="true" resizable="false">
+				<p:ajax event="eventSelect" listener="#{consultaController.onEventSelect}"
+						update="eventDetails"
+						oncomplete="PF('eventDialog').show();" />
+				<p:ajax event="eventMove" listener="#{consultaController.onEventMove}"
+						oncomplete="setTimeout(function() {document.getElementById('form_refresh').click();}, 300);" />
+				<!-- oncomplete="setTimeout(function() {document.getElementById('form_refresh').click();}, 300);" -->
+				<!--<p:ajax event="eventResize" listener="#{scheduleController.onEventResize}" update="mensagens" />-->
+			</p:schedule>
+			<h:commandButton id="refresh" value="." styleClass="escondido" />
+			<p:dialog widgetVar="eventDialog" header="Cancelar Consulta?"
+					  showEffect="clip" hideEffect="clip" id="dialogo">
+				<h:panelGroup id="eventDetails">
+					<p:commandButton id="removeButton" value="Sim"
+							action="#{consultaController.cancelarConsulta}"
+							oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />
+					<h:outputText value=" " />
+					<p:commandButton id="addButton" value="Não" update="schedule"
+							action="#{consultaController.addEvent}"
+							oncomplete="PF('myschedule').update();PF('eventDialog').hide();"/>
+				</h:panelGroup>
+			</p:dialog>
+			<br /><br />
+			<h:commandButton value="Cancelar" styleClass="btn btn-danger"
+					  action="/private/apresentacao?faces-redirect=true"
+					  onclick="return cancelar();" />
+			<h:outputText value=" " />
+			<h:commandButton value="Confirmar" styleClass="btn btn-primary"
+					action="#{consultaController.remarcarDatas()}" />
+			</fieldset>
+		</h:form>
+	</ui:define>
+</ui:composition>

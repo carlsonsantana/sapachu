@@ -1,0 +1,49 @@
+@charset "UTF-8";
+
+.content {
+	margin-top: 60px;
+}
+.ui-growl {
+	z-index: 10000 !important;
+}
+.imagem_upload {
+	text-align: center;
+}
+.imagem_upload:after {
+	content: " ";
+	width: 0;
+	height: 0;
+	visibility: hidden;
+	opacity: 0;
+	clear: both;
+}
+.imagem_upload_controls {
+	display: inline-block;
+}
+#canvasDiv {
+	float: left;
+}
+.controle {
+	text-align: left;
+}
+.controle .btn {
+	width: 80%;
+}
+.removido {
+	background-color: red;
+}
+.escondido {
+	height: 0;
+	width: 0;
+	overflow: hidden;
+	opacity: 0;
+	visibility: hidden;
+}
+.remarcado {
+	background-color: green;
+}
+.label.label-info {
+	color: #000000;
+	text-align: left;
+	cursor: pointer;
+}

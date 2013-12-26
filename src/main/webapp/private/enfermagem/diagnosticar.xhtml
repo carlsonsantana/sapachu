@@ -1,0 +1,32 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:p="http://primefaces.org/ui"
+				template="/templates/defaulttemplate.xhtml"
+				xmlns:f="http://xmlns.jcp.org/jsf/core">
+	<ui:define name="title">Diagnosticar Paciente</ui:define>
+	<ui:define name="content">
+		<h:form id="form">
+			<fieldset>
+				<legend>Diagnóstico da Enfermagem</legend>
+			Nome: <h:outputText value="#{enfermagemController.paciente.nome}" /><br />
+			Prontuário: <h:outputText value="#{enfermagemController.paciente.prontuario}" /><br /><br />
+			<div class="form-group">
+				<h:outputLabel>Risco de glicemia instável relacionada</h:outputLabel>
+				<h:inputTextarea id="diagnostico1" styleClass="form-control"></h:inputTextarea>
+			</div>
+			<div class="form-group">
+				<h:outputLabel>Risco de nutrição desequilibrada</h:outputLabel>
+				<h:inputTextarea id="diagnostico2" styleClass="form-control"></h:inputTextarea>
+			</div>
+			<div class="form-group">
+				<h:outputLabel>Padrão de sono prejudicado</h:outputLabel>
+				<h:inputTextarea id="diagnostico3" styleClass="form-control"></h:inputTextarea>
+			</div>
+			<h:commandButton value="Cancelar" styleClass="btn btn-danger" />
+			<h:outputText value=" " />
+			<h:commandButton value="Avançar" styleClass="btn btn-primary" action="#{enfermagemController.telaIntervencaoEnfermagem()}" />
+			</fieldset>
+		</h:form>
+	</ui:define>
+</ui:composition>

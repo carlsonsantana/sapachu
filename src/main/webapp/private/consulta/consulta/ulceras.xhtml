@@ -1,0 +1,203 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:p="http://primefaces.org/ui"
+				xmlns:f="http://xmlns.jcp.org/jsf/core">
+	<p:tab id="ulceras" title="Úlceras">
+		<p:panel header="Úlceras" id="ulcera">
+			<div class="text-center">
+				<h:graphicImage url="/resources/default/img/pernas.jpg"
+								styleClass="img-responsive" id="pernas">
+					<f:passThroughAttribute name="usemap" value="#mapaImagem" />
+				</h:graphicImage>
+				<map name="mapaImagem" id="mapaImagemId"></map>
+				<script type="text/javascript">
+					try {
+						var coordenadas;
+						var mapaImagem = jQuery("#form_pernas").imgAreaSelect({
+							handles: true,
+							instance: true,
+							onSelectEnd: function(img, selection) {
+								/**
+								 * selection.x1 e x2
+								 * selection.y1 e y2
+								 * selection.width e selection.height
+								 */
+								coordenadas = selection;
+
+								//document.getElementById("form_area").value = selection.x1 +
+								//	"," + selection.y1;
+							}
+						});
+					} catch (e) {
+					}
+					//mapaImagem.setOptions({remove: true});
+					gerarAreas(false);
+				</script>
+				<br /><br />
+				<input type="button" value="Adicionar" class="btn btn-info"
+					   onclick="adicionarArea('mapaImagemId', coordenadas.x1, coordenadas.y1, coordenadas.x2, coordenadas.y2);" />
+				<br /><br />
+				<div style="display: none;" id="ulcera">
+					<hr />
+					<h:panelGroup id="imagemupload" styleClass="imagem_upload">
+						<p:fileUpload allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+									  update="imagemupload" mode="advanced"
+									  fileUploadListener="#{consultaController.handleFileUpload}"
+									  id="fileupload" rendered="#{empty consultaController.imagem}"
+									  uploadLabel="Carregar Arquivo" label="Escolher Arquivo..."
+									  cancelLabel="Cancelar" />
+						<br /><br />
+						<p:growl id="mensagensUpload" showDetail="true" />
+						<div class="row">
+							<div id="canvasDiv" class="col-lg-7 col-lg-offset-1">
+								<!-- It's bad practice (to me) to put your CSS here.  I'd recommend the use of a CSS file! -->
+								<canvas id="canvasSignature" width="500px"
+										height="500px"
+										style="border:2px solid #000000;background: url('#{consultaController.imagem}') no-repeat; background-size: 100% 100%;"></canvas>
+							</div>
+							<div class="controle col-lg-3">
+								<input type="button" value="Cancelar" id="canc" onclick="close()" class="btn btn-default" />
+								<br />
+								<input type="button" id="remove" value="Limpar" class="btn btn-default" />
+								<br />
+								<input type="button" value="Completar" id="complete" class="btn btn-default" />
+								<br />
+								<div class="input-group">
+									<input type="text" id="valor_area" value="" class="form-control" />
+									<span class="input-group-addon">cm²</span>
+								</div>
+								<p id="numero"></p>
+							</div>
+						</div>
+						<script type="text/javascript">
+							initialize();
+						</script>
+					</h:panelGroup>
+					<br /><br />
+					<!-- Visual -->
+					<div class="container">
+						<div class="row">
+							<div class="form-group col-lg-3">
+								<h:outputLabel for="prurido" value="Prurido" />
+								<h:selectOneMenu id="prurido" styleClass="form-control">
+									<f:selectItem itemLabel="Sim" />
+									<f:selectItem itemLabel="Não" />
+								</h:selectOneMenu>
+							</div>
+							<div class="form-group col-lg-3">
+								<h:outputLabel for="ecsema" value="Ecsema" />
+								<h:selectOneMenu id="ecsema" styleClass="form-control">
+									<f:selectItem itemLabel="Sim" />
+									<f:selectItem itemLabel="Não" />
+								</h:selectOneMenu>
+							</div>
+							<div class="form-group col-lg-3">
+								<h:outputLabel for="odor" value="Odor" />
+								<h:selectOneMenu id="odor" styleClass="form-control">
+									<f:selectItem itemLabel="Sim" />
+									<f:selectItem itemLabel="Não" />
+								</h:selectOneMenu>
+							</div>
+							<div class="form-group col-lg-3">
+								<h:outputLabel for="profundidade" value="Profundidade" />
+								<h:selectOneMenu id="profundidade" styleClass="form-control">
+									<f:selectItem itemLabel="Rasa" />
+									<f:selectItem itemLabel="Profundidade" />
+								</h:selectOneMenu>
+							</div>
+						</div>
+					</div>
+					<br /><br />
+					<div class="container">
+						<div class="row">
+							<div class="form-group col-lg-3">
+								<h:outputLabel for="fibrina" value="Fibrina" />
+								<h:selectOneMenu id="fibrina" styleClass="form-control">
+									<f:selectItem itemLabel="Sim" />
+									<f:selectItem itemLabel="Não" />
+								</h:selectOneMenu>
+							</div>
+							<div class="form-group col-lg-3">
+								<h:outputLabel for="granula" value="Granula" />
+								<h:selectOneMenu id="granula" styleClass="form-control">
+									<f:selectItem itemLabel="Sim" />
+									<f:selectItem itemLabel="Não" />
+								</h:selectOneMenu>
+							</div>
+							<div class="form-group col-lg-3">
+								<h:outputLabel for="edema" value="Edema" />
+								<h:selectOneMenu id="edema" styleClass="form-control">
+									<f:selectItem itemLabel="Sem" />
+									<f:selectItem itemLabel="Leve" />
+									<f:selectItem itemLabel="Razoável Leve" />
+									<f:selectItem itemLabel="Razoável Grave" />
+									<f:selectItem itemLabel="Grave" />
+								</h:selectOneMenu>
+							</div>
+							<div class="form-group col-lg-3">
+								<h:outputLabel for="nivelDor" value="Nível de Dor" />
+								<h:selectOneMenu id="nivelDor" styleClass="form-control">
+									<f:selectItem itemLabel="0" />
+									<f:selectItem itemLabel="1" />
+									<f:selectItem itemLabel="2" />
+									<f:selectItem itemLabel="3" />
+									<f:selectItem itemLabel="4" />
+									<f:selectItem itemLabel="5" />
+									<f:selectItem itemLabel="6" />
+									<f:selectItem itemLabel="7" />
+									<f:selectItem itemLabel="8" />
+									<f:selectItem itemLabel="9" />
+									<f:selectItem itemLabel="10" />
+								</h:selectOneMenu>
+							</div>
+						</div>
+					</div>
+					<br /><br />
+					<div class="container">
+						<div class="row">
+							<div class="form-group col-lg-3">
+								<h:outputLabel for="secrecao" value="Secreção" />
+								<h:selectOneMenu id="secrecao" styleClass="form-control">
+									<f:selectItem itemLabel="Sem" />
+									<f:selectItem itemLabel="Serosa" />
+									<f:selectItem itemLabel="Mucu-purulenta" />
+									<f:selectItem itemLabel="Purulenta" />
+									<f:selectItem itemLabel="Sero-sanguinolenta" />
+									<f:selectItem itemLabel="Mucóide" />
+									<f:selectItem itemLabel="Sanguinolenta" />
+								</h:selectOneMenu>
+							</div>
+							<div class="form-group col-lg-3">
+								<h:outputLabel for="lado" value="Lado" />
+								<h:selectOneMenu id="lado" styleClass="form-control">
+									<f:selectItem itemLabel="Esquerdo" />
+									<f:selectItem itemLabel="Direito" />
+								</h:selectOneMenu>
+							</div>
+							<div class="form-group col-lg-3">
+								<h:outputLabel for="ciclo_litico" value="Ciclo Lítico" />
+								<h:selectOneMenu id="ciclo_litico" styleClass="form-control">
+									<f:selectItem itemLabel="Sim" />
+									<f:selectItem itemLabel="Não" />
+								</h:selectOneMenu>
+							</div>
+							<div class="form-group col-lg-3">
+								<h:outputLabel for="estado" value="Estado" />
+								<h:selectOneMenu id="estado" styleClass="form-control">
+									<f:selectItem itemLabel="Cicatrizada" />
+									<f:selectItem itemLabel="Limpa" />
+									<f:selectItem itemLabel="Limpa Contaminada" />
+									<f:selectItem itemLabel="Contaminada" />
+									<f:selectItem itemLabel="Infectada" />
+									<f:selectItem itemLabel="Necrosada" />
+								</h:selectOneMenu>
+							</div>
+						</div>
+					</div>
+					<br /><br />
+				</div>
+			</div>
+		</p:panel>
+	</p:tab>
+</ui:composition>

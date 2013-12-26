@@ -1,0 +1,26 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:p="http://primefaces.org/ui"
+				template="/templates/defaulttemplate.xhtml"
+				xmlns:f="http://xmlns.jcp.org/jsf/core">
+	<ui:define name="title">Pesquisar Paciente</ui:define>
+	<ui:define name="content">
+		<h:form id="form">
+			<fieldset>
+				<legend>Intervenção da Enfermagem</legend>
+			Nome: <h:outputText value="#{enfermagemController.paciente.nome}" /><br />
+			Prontuário: <h:outputText value="#{enfermagemController.paciente.prontuario}" /><br /><br />
+			<div class="form-group">
+				<h:outputLabel>Intervenção</h:outputLabel>
+				<h:inputTextarea id="diagnostico1" styleClass="form-control"></h:inputTextarea>
+			</div>
+			<h:commandButton value="Cancelar" styleClass="btn btn-danger" />
+			<h:outputText value=" " />
+			<h:commandButton value="Voltar" styleClass="btn btn-default" />
+			<h:outputText value=" " />
+			<h:commandButton value="Confirmar" styleClass="btn btn-primary" />
+			</fieldset>
+		</h:form>
+	</ui:define>
+</ui:composition>

@@ -1,0 +1,42 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:p="http://primefaces.org/ui"
+				template="/templates/defaulttemplate.xhtml"
+				xmlns:f="http://xmlns.jcp.org/jsf/core">
+	<ui:define name="title">Pesquisar Membro</ui:define>
+	<ui:define name="content">
+		<h:form id="form">
+			<fieldset>
+				<legend>Pesquisar Membro</legend>
+			<div class="form-group">
+				<label for="form_nome_paciente">Membro</label>
+				<p:inputText id="nome_paciente"
+						value="#{relatorioController.funcionarioPesquisa.nome}" styleClass="form-control" />
+			</div>
+			<h:commandButton type="reset" value="Limpar Campos"
+					class="btn btn-default" />
+			<h:outputText value=" " />
+			<h:commandButton value="Pequisar" styleClass="btn btn-primary" />
+			<br /><br /><br />
+			<p:dataTable id="datatable" value="#{relatorioController.listaFuncionaros}"
+					var="funcionario" paginator="true" rows="10" lazy="true"
+					paginatorPosition="bottom" paginatorAlwaysVisible="false">
+				<p:column>
+					<f:facet name="header"><h:outputText value="Nome" /></f:facet>
+					<h:outputText value="#{funcionario.nome}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header"><h:outputText value="Tipo" /></f:facet>
+					<h:outputText value="Médico" rendered="#{funcionario.medico}" />
+					<h:outputText value="Enfermeiro" rendered="#{funcionario.enfermeiro}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header"><h:outputText value="Ações" /></f:facet>
+					<h:commandLink value="Gerar Relatório" action="#{relatorioController.gerarRelatorio(funcionario)}" />
+				</p:column>
+			</p:dataTable>
+			</fieldset>
+		</h:form>
+	</ui:define>
+</ui:composition>

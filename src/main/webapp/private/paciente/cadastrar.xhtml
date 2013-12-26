@@ -1,0 +1,47 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:p="http://primefaces.org/ui"
+				template="/templates/defaulttemplate.xhtml">
+	<ui:define name="title">Visualizar Paciente</ui:define>
+	<ui:define name="content">
+		<h:form>
+			<fieldset>
+				<legend>Cadastrar Paciente</legend>
+			<table class="table table-responsive">
+				<tr>
+					<th>Nome</th>
+					<td><h:outputText value="#{pacienteController.paciente.nome}" /></td>
+					<th>Prontuário</th>
+					<td><h:outputText value="#{pacienteController.paciente.prontuario}" /></td>
+				</tr>
+				<tr>
+					<th>Gênero</th>
+					<td>Masculino</td>
+					<th>Telefone</th>
+					<td>(79) 9943-6515</td>
+				</tr>
+				<tr>
+					<th>Endereço</th>
+					<td>Rua Cepó</td>
+					<th>Cidade</th>
+					<td>Geremuabo</td>
+				</tr>
+				<tr>
+					<th>Estado Civil</th>
+					<td>União Estável</td>
+					<th>Grau de Instrução</th>
+					<td>Analfabeto</td>
+				</tr>
+				<tr>
+					<th>Profissão</th>
+					<td>Aposentado</td>
+					<th></th>
+					<td></td>
+				</tr>
+			</table>
+			<h:commandButton value="Cadastrar Paciente" action="#{pacienteController.cadastrar()}" styleClass="btn btn-primary" />
+			</fieldset>
+		</h:form>
+	</ui:define>
+</ui:composition>
