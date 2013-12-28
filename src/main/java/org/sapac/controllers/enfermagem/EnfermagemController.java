@@ -17,8 +17,8 @@ import org.sapac.entities.Paciente;
  *
  * @author carlson
  */
-@ManagedBean
-@SessionScoped
+@Named
+@javax.enterprise.context.SessionScoped
 public class EnfermagemController extends GenericController {
 	
 	private Paciente paciente;

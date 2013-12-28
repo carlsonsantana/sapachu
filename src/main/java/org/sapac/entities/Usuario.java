@@ -4,6 +4,7 @@
  */
 package org.sapac.entities;
 
+import java.beans.Transient;
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -21,6 +22,8 @@ public class Usuario implements Serializable {
 	@Id
 	private int id;
 
+	//private MembroEquipe membroEquipe;
+	
 	/**
 	 * O login do usuário.
 	 */
@@ -31,7 +34,9 @@ public class Usuario implements Serializable {
 	 */
 	private String senha;
 	
-	private boolean administrador;
+	private boolean coordenador;
+	
+	private boolean ativo;
 
 	/**
 	 * @return the id
@@ -84,16 +89,30 @@ public class Usuario implements Serializable {
 	}
 
 	/**
-	 * @return the administrador
+	 * @return the coordenador
 	 */
-	public boolean isAdministrador() {
-		return administrador;
+	public boolean isCoordenador() {
+		return coordenador;
 	}
 
 	/**
-	 * @param administrador the administrador to set
+	 * @param coordenador the coordenador to set
 	 */
-	public void setAdministrador(boolean administrador) {
-		this.administrador = administrador;
+	public void setCoordenador(boolean coordenador) {
+		this.coordenador = coordenador;
+	}
+
+	/**
+	 * @return the ativo
+	 */
+	public boolean isAtivo() {
+		return ativo;
+	}
+
+	/**
+	 * @param ativo the ativo to set
+	 */
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
 	}
 }

@@ -13,12 +13,12 @@
 			<div class="form-group col-lg-6">
 				<h:outputLabel for="nome_paciente" value="Paciente" />
 				<h:inputText id="nome_paciente" styleClass="form-control"
-						value="#{pacienteController.pacientePesquisa.nome}" />
+							 value="#{agendaController.pacientePesquisa.nome}" />
 			</div>
 			<div class="form-group col-lg-6">
 				<h:outputLabel for="form_prontuario" value="Prontuário" />
 				<p:inputText id="prontuario" styleClass="form-control"
-						value="#{pacienteController.pacientePesquisa.prontuario}" />
+							 value="#{agendaController.pacientePesquisa.prontuario}" />
 			</div>
 			</div>
 			<div class="form-group">
@@ -28,7 +28,7 @@
 				<h:commandButton value="Pequisar" styleClass="btn btn-primary" />
 			</div>
 			<br /><br />
-			<p:dataTable id="datatable" value="#{pacienteController.listaPacientes}"
+			<p:dataTable id="datatable" value="#{agendaController.listaPacientes}"
 						 var="paciente" paginator="true" rows="10" lazy="true"
 						 paginatorPosition="bottom" paginatorAlwaysVisible="false">
 				<p:column>
@@ -41,7 +41,7 @@
 				</p:column>
 				<p:column>
 					<f:facet name="header"><h:outputText value="Ações" /></f:facet>
-					<h:commandLink value="Marcar" action="#{consultaController.selecionarPacienteMarcarConsulta(paciente)}" />
+					<h:commandLink value="Marcar" action="#{agendaController.selecionarPacienteMarcarConsulta(paciente)}" />
 				</p:column>
 			</p:dataTable>
 			</fieldset>

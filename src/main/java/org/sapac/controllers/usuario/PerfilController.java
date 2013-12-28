@@ -13,13 +13,14 @@ import javax.inject.Named;
 import org.sapac.controllers.GenericController;
 import org.sapac.controllers.PaginasNavegacao;
 import org.sapac.entities.Usuario;
+import org.sapac.utils.ConecaoHibernate;
 
 /**
  *
  * @author carlson
  */
-@ManagedBean
-@SessionScoped
+@Named
+@javax.enterprise.context.SessionScoped
 public class PerfilController extends GenericController {
 	
 	private String senhaAtual;
@@ -88,6 +89,7 @@ public class PerfilController extends GenericController {
 	 */
 	public String logar() {
 		FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+		ConecaoHibernate.getSession();
 		return PaginasNavegacao.PAGINA_INICIAL;
 	}
 

@@ -24,8 +24,8 @@ import org.sapac.entities.Paciente;
  *
  * @author carlson
  */
-@ManagedBean
-@SessionScoped
+@Named
+@javax.enterprise.context.SessionScoped
 public class PacienteController extends GenericController {
 	private static final long serialVersionUID = 1L;
 	/**

@@ -5,47 +5,48 @@
 				template="/templates/defaulttemplate.xhtml"
 				xmlns:f="http://xmlns.jcp.org/jsf/core">
 	<ui:define name="title">Marcar Consulta do Paciente
-		(<h:outputText value="#{consultaController.paciente.nome}" />)</ui:define>
+		(<h:outputText value="#{agendaController.paciente.nome}" />)</ui:define>
 	<ui:define name="content">
 		<h:form id="form">
 			<fieldset>
 				<legend>Marcar Consulta</legend>
-			<script type="text/javascript">
-				var consultaMarcada = false;
-			</script>
-			Nome: <h:outputText value="#{consultaController.paciente.nome}" /><br />
-			Prontuário: <h:outputText value="#{consultaController.paciente.prontuario}" /><br /><br />
-			<p:schedule id="schedule" widgetVar="myschedule" locale="pt"
-						value="#{consultaController.calendario}"
-						draggable="false" resizable="false">
-				<p:ajax event="dateSelect" listener="#{consultaController.onDateSelect}" update="eventDetails" oncomplete="if (!consultaMarcada) {PF('eventDialog').show();}" />
-				<p:ajax event="eventSelect" update="eventDetails" oncomplete="PF('eventDialog').show()" />
-				<!--<p:ajax event="eventMove" listener="#{scheduleController.onEventMove}" update="mensagens" />
-				<p:ajax event="eventResize" listener="#{scheduleController.onEventResize}" update="mensagens" />-->
-			</p:schedule>
-			<p:dialog widgetVar="eventDialog" header="Marcar Consulta"
-					showEffect="clip" hideEffect="clip" id="dialogo">
-				<h:panelGrid id="eventDetails" columns="1">
-					<h:panelGroup>
-						Paciente:
-						<h:outputText id="nome"
-								value="#{consultaController.paciente.nome}" />
-					</h:panelGroup>
-					<p:commandButton id="addButton" value="Marcar"
-							action="#{consultaController.addEvent}"
-							oncomplete="PF('myschedule').update();PF('eventDialog').hide();consultaMarcada = true;"/>
-				</h:panelGrid>
-			</p:dialog>
-			<br /><br />
-			<h:commandButton value="Voltar" styleClass="btn btn-default"
-					action="#{consultaController.telaMarcarConsulta()}" />
-			<h:outputText value=" " />
-			<h:commandButton value="Cancelar" styleClass="btn btn-danger"
-					  action="/private/apresentacao?faces-redirect=true"
-					  onclick="return cancelar();" />
-			<h:outputText value=" " />
-			<h:commandButton value="Marcar" styleClass="btn btn-primary"
-					action="#{consultaController.marcarConsulta(consultaController.paciente)}"/>
+				<script type="text/javascript">
+					var consultaMarcada = false;
+				</script>
+				Nome: <h:outputText value="#{agendaController.paciente.nome}" /><br />
+				Prontuário: <h:outputText value="#{agendaController.paciente.prontuario}" /><br /><br />
+				<p:schedule id="schedule" widgetVar="myschedule" locale="pt"
+							value="#{agendaController.calendario}"
+							draggable="false" resizable="false">
+					<p:ajax event="dateSelect" listener="#{agendaController.onDataConsultaSelecionada}" update="eventDetails" oncomplete="if (!consultaMarcada) {PF('eventDialog').show();}" />
+					<p:ajax event="eventSelect" update="eventDetails" oncomplete="PF('eventDialog').show()" />
+				</p:schedule>
+				<p:dialog widgetVar="eventDialog" header="Marcar Consulta?"
+						  showEffect="clip" hideEffect="clip" id="dialogo">
+					<h:panelGrid id="eventDetails" columns="1">
+						<h:panelGroup>
+							Paciente:
+							<h:outputText id="nome"
+										  value="#{agendaController.paciente.nome}" />
+						</h:panelGroup>
+						<h:panelGroup>
+							<p:commandButton id="addButton" value="Sim"
+											 action="#{agendaController.adicionarConsulta}"
+											 oncomplete="PF('myschedule').update();PF('eventDialog').hide();consultaMarcada = true;"/>
+							<p:commandButton id="nao" value="Não" oncomplete="PF('eventDialog').hide();" />
+						</h:panelGroup>
+					</h:panelGrid>
+				</p:dialog>
+				<br /><br />
+				<h:commandButton value="Voltar" styleClass="btn btn-default"
+								 action="#{agendaController.telaMarcarConsulta()}" />
+				<h:outputText value=" " />
+				<h:commandButton value="Cancelar" styleClass="btn btn-danger"
+								 action="/private/apresentacao?faces-redirect=true"
+								 onclick="return cancelar();" />
+				<h:outputText value=" " />
+				<h:commandButton value="Marcar" styleClass="btn btn-primary"
+								 action="#{agendaController.marcarConsulta(agendaController.paciente)}"/>
 			</fieldset>
 		</h:form>
 	</ui:define>

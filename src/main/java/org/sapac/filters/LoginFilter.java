@@ -31,7 +31,7 @@ public class LoginFilter extends HttpServlet implements Filter {
 	 */
 	private void doLogin(ServletRequest request, ServletResponse response)
 			throws ServletException, IOException {
-		request.getRequestDispatcher("/faces/public/login.xhtml").forward(request, response);
+		//request.getRequestDispatcher("/faces/public/login.xhtml").forward(request, response);
 	}
 	
 	@Override
@@ -41,7 +41,7 @@ public class LoginFilter extends HttpServlet implements Filter {
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
-		HttpServletRequest req = (HttpServletRequest) request;
+		/*HttpServletRequest req = (HttpServletRequest) request;
 		HttpSession session = req.getSession();
 
 		if (session.isNew()) {
@@ -57,5 +57,6 @@ public class LoginFilter extends HttpServlet implements Filter {
 		}
 
 		chain.doFilter(request, response);
+		*/
 	}
 }

@@ -10,27 +10,22 @@
 			<fieldset>
 				<legend>Remarcar Consulta</legend>
 			<p:schedule id="schedule" widgetVar="myschedule" locale="pt"
-						value="#{consultaController.calendario}"
+						value="#{agendaController.calendario}"
 						draggable="true" resizable="false">
-				<p:ajax event="eventSelect" listener="#{consultaController.onEventSelect}"
+				<p:ajax event="eventSelect" listener="#{agendaController.onConsultaSelecionada}"
 						update="eventDetails"
 						oncomplete="PF('eventDialog').show();" />
-				<p:ajax event="eventMove" listener="#{consultaController.onEventMove}"
+				<p:ajax event="eventMove" listener="#{agendaController.onDataConsultaRemarcada}"
 						oncomplete="setTimeout(function() {document.getElementById('form_refresh').click();}, 300);" />
-				<!-- oncomplete="setTimeout(function() {document.getElementById('form_refresh').click();}, 300);" -->
-				<!--<p:ajax event="eventResize" listener="#{scheduleController.onEventResize}" update="mensagens" />-->
 			</p:schedule>
 			<h:commandButton id="refresh" value="." styleClass="escondido" />
 			<p:dialog widgetVar="eventDialog" header="Cancelar Consulta?"
 					  showEffect="clip" hideEffect="clip" id="dialogo">
 				<h:panelGroup id="eventDetails">
 					<p:commandButton id="removeButton" value="Sim"
-							action="#{consultaController.cancelarConsulta}"
+									 action="#{agendaController.cancelarConsulta}"
 							oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />
-					<h:outputText value=" " />
-					<p:commandButton id="addButton" value="Não" update="schedule"
-							action="#{consultaController.addEvent}"
-							oncomplete="PF('myschedule').update();PF('eventDialog').hide();"/>
+					<p:commandButton id="nao" value="Não" oncomplete="PF('eventDialog').hide();" />
 				</h:panelGroup>
 			</p:dialog>
 			<br /><br />
@@ -39,7 +34,7 @@
 					  onclick="return cancelar();" />
 			<h:outputText value=" " />
 			<h:commandButton value="Confirmar" styleClass="btn btn-primary"
-					action="#{consultaController.remarcarDatas()}" />
+							 action="#{agendaController.remarcarDatas()}" />
 			</fieldset>
 		</h:form>
 	</ui:define>

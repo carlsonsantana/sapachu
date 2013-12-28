@@ -26,8 +26,8 @@ import org.sapac.entities.Medico;
  *
  * @author carlson
  */
-@ManagedBean
-@SessionScoped
+@Named
+@javax.enterprise.context.SessionScoped
 public class RelatorioController extends GenericController {
 
 	private MembroEquipe funcionario;

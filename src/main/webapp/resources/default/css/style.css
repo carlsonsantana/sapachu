@@ -30,7 +30,7 @@
 	width: 80%;
 }
 .removido {
-	background-color: red;
+	background-color: red !important;
 }
 .escondido {
 	height: 0;
@@ -40,7 +40,7 @@
 	visibility: hidden;
 }
 .remarcado {
-	background-color: green;
+	background-color: green !important;
 }
 .label.label-info {
 	color: #000000;

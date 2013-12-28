@@ -42,32 +42,23 @@ import org.sapac.entities.Paciente;
  *
  * @author carlson
  */
-@ManagedBean
-@SessionScoped
+@Named
+@javax.enterprise.context.SessionScoped
 public class ConsultaController extends GenericController {
 
 	private static final long serialVersionUID = 1L;
 	private Paciente paciente;
 	private Paciente pacientePesquisa;
 	private transient DataModel<Paciente> listaPacientes;
-	private transient ScheduleModel calendario;
-	private transient ScheduleEvent eventoCalendario;
 	private String area;
 	private List<String> areas;
 	private Date date;
-	private boolean consultaMarcada;
 	private String imagem;
 
 	@PostConstruct
 	public void init() {
 		paciente = new Paciente();
 		pacientePesquisa = new Paciente();
-		calendario = new DefaultScheduleModel();
-		ScheduleEvent evento = new DefaultScheduleEvent("Primeiro e",
-				new Date(), new Date());
-		((DefaultScheduleEvent) evento).setStyleClass("");
-		calendario.addEvent(evento);
-		consultaMarcada = false;
 
 		List<Paciente> pacientes = new ArrayList<Paciente>();
 		Paciente paciente1 = new Paciente();
@@ -141,27 +132,6 @@ public class ConsultaController extends GenericController {
 		this.listaPacientes = listaPacientes;
 	}
 
-	public String telaMarcarConsulta() {
-		return "/private/consulta/marcar";
-	}
-
-	public String telaRemarcarConsulta() {
-		return PaginasNavegacao.CONSULTA_REMARCAR;
-	}
-
-	public String selecionarPacienteMarcarConsulta(Paciente paciente) {
-		this.paciente = paciente;
-		consultaMarcada = false;
-		return PaginasNavegacao.CONSULTA_MARCAR;
-	}
-
-	public String marcarConsulta(Paciente paciente) {
-		adicionarMensagemAviso("Consulta Marcada", "A consulta do paciente \""
-				+ paciente.getNome() + "\", para o dia "
-				+ getDataFormatada(date) + ", foi marcada com sucesso" + ".");
-		return PaginasNavegacao.PAGINA_INICIAL;
-	}
-
 	/**
 	 * @return the date
 	 */
@@ -187,39 +157,6 @@ public class ConsultaController extends GenericController {
 
 	public String onFlowProcess(FlowEvent event) {
 		return event.getNewStep();
-	}
-
-	public void onDateSelect(SelectEvent selectEvent) {
-		if (!consultaMarcada) {
-			date = (Date) selectEvent.getObject();
-			Date dataInicio = new Date(date.getTime());
-			Date dataFim = new Date(date.getTime());
-			eventoCalendario = new DefaultScheduleEvent("Consultar Paciente: "
-					+ paciente.getNome(), dataInicio, dataFim);
-			((DefaultScheduleEvent) eventoCalendario).setStyleClass("");
-		}
-	}
-
-	public void addEvent() {
-		if ((!consultaMarcada) && (eventoCalendario != null)) {
-			getCalendario().addEvent(eventoCalendario);
-			calendario.updateEvent(eventoCalendario);
-			consultaMarcada = true;
-		}
-	}
-
-	/**
-	 * @return the calendario
-	 */
-	public ScheduleModel getCalendario() {
-		return calendario;
-	}
-
-	/**
-	 * @param calendario the calendario to set
-	 */
-	public void setCalendario(ScheduleModel calendario) {
-		this.calendario = calendario;
 	}
 
 	/**
@@ -307,40 +244,6 @@ public class ConsultaController extends GenericController {
 	public String confirmarConsulta() {
 		adicionarMensagemAviso("Consulta realizada", "Consulta salva com sucesso.");
 		return pesquisarPacienteConsulta();
-	}
-
-	public void onEventMove(ScheduleEntryMoveEvent event) {
-		DefaultScheduleEvent scheduleEvent = (DefaultScheduleEvent) event.getScheduleEvent();
-		scheduleEvent.setStyleClass("remarcado");
-		System.out.println(scheduleEvent.getStartDate());
-		System.out.println(scheduleEvent.getEndDate());
-	}
-	
-	public void onEventSelect(SelectEvent selectEvent) {
-		eventoCalendario = (ScheduleEvent) selectEvent.getObject();
-	}
-	
-	public void cancelarConsulta() {
-		((DefaultScheduleEvent) eventoCalendario).setStyleClass("removido");
-	}
-	
-	public String remarcarDatas() {
-		Collection<ScheduleEvent> eventos = calendario.getEvents();
-		Collection<ScheduleEvent> removidos = new ArrayList<ScheduleEvent>();
-		for (ScheduleEvent evento : eventos) {
-			if (evento.getStyleClass() != null) {
-				if (evento.getStyleClass().contains("removido")) {
-					removidos.add(evento);
-				}
-			}
-			((DefaultScheduleEvent) evento).setStyleClass("");
-		}
-		eventos.removeAll(removidos);
-		removidos.clear();
-		removidos = null;
-		
-		adicionarMensagemAviso("Consultas Remarcadas", "Consultas remarcadas com sucesso.");
-		return PaginasNavegacao.PAGINA_INICIAL;
 	}
 	
 	public String visualizarConsulta() {

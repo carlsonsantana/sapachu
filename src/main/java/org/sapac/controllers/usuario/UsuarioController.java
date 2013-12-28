@@ -23,8 +23,8 @@ import org.sapac.entities.Medico;
  *
  * @author carlson
  */
-@ManagedBean
-@SessionScoped
+@Named
+@javax.enterprise.context.SessionScoped
 public class UsuarioController extends GenericController {
 	
 	//@Inject
