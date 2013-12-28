@@ -6,20 +6,26 @@ package org.sapac.entities;
 
 import java.beans.Transient;
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  *
  * @author carlson
  */
 @Entity
+@Table(name = "usuario")
 public class Usuario implements Serializable {
 
 	/**
 	 * O id do usuário no banco de dados.
 	 */
 	@Id
+	@GeneratedValue
+	@Column(name = "id_usuario")
 	private int id;
 
 	//private MembroEquipe membroEquipe;
@@ -27,6 +33,7 @@ public class Usuario implements Serializable {
 	/**
 	 * O login do usuário.
 	 */
+	@Column(name = "nome_usuario")
 	private String nomeUsuario;
 
 	/**

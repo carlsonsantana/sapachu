@@ -5,14 +5,36 @@
 package org.sapac.entities;
 
 import java.io.Serializable;
+import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 /**
  *
  * @author carlson
  */
+@Entity
+@Table(name = "foto_ulcera")
 public class FotoUlcera implements Serializable {
+	
+	@Id
+	@GeneratedValue
+	@Column(name = "id_foto_ulcera")
 	private int id;
+	
+	@OneToOne
+	@JoinColumn(name = "id_situacao_ulcera_consulta")
 	private SituacaoUlceraConsulta situacaoUlceraConsulta;
+	
+	@Column(name = "endereco_imagem")
 	private String enderecoImagem;
 	private String pontos;
 

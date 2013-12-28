@@ -5,8 +5,12 @@
 package org.sapac.entities;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -15,12 +19,17 @@ import javax.persistence.Table;
  * @author carlson
  */
 @Entity
-@Table(name="enfermeiro")
+@Table(name = "enfermeiro")
 public class Enfermeiro implements Serializable, MembroEquipe {
 	@Id
+	@GeneratedValue
+	@Column(name = "id_enfermeiro")
 	private int id;
-	@OneToOne
+	
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_usuario")
 	private Usuario usuario;
+	
 	private String nome;
 	private String email;
 	private String rg;

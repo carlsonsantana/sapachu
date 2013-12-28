@@ -9,41 +9,41 @@
 		<h:form id="form">
 			<fieldset>
 				<legend>Marcar Consulta</legend>
-			<div class="row">
-			<div class="form-group col-lg-6">
-				<h:outputLabel for="nome_paciente" value="Paciente" />
-				<h:inputText id="nome_paciente" styleClass="form-control"
-							 value="#{agendaController.pacientePesquisa.nome}" />
-			</div>
-			<div class="form-group col-lg-6">
-				<h:outputLabel for="form_prontuario" value="Prontuário" />
-				<p:inputText id="prontuario" styleClass="form-control"
-							 value="#{agendaController.pacientePesquisa.prontuario}" />
-			</div>
-			</div>
-			<div class="form-group">
-				<h:commandButton type="reset" value="Limpar Campos"
-						styleClass="btn btn-default" />
-				<h:outputText value=" " />
-				<h:commandButton value="Pequisar" styleClass="btn btn-primary" />
-			</div>
-			<br /><br />
-			<p:dataTable id="datatable" value="#{agendaController.listaPacientes}"
-						 var="paciente" paginator="true" rows="10" lazy="true"
-						 paginatorPosition="bottom" paginatorAlwaysVisible="false">
-				<p:column>
-					<f:facet name="header"><h:outputText value="Nome" /></f:facet>
-					<h:outputText value="#{paciente.nome}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header"><h:outputText value="Prontuário" /></f:facet>
-					<h:outputText value="#{paciente.prontuario}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header"><h:outputText value="Ações" /></f:facet>
-					<h:commandLink value="Marcar" action="#{agendaController.selecionarPacienteMarcarConsulta(paciente)}" />
-				</p:column>
-			</p:dataTable>
+				<div class="row">
+					<div class="form-group col-lg-6">
+						<h:outputLabel for="nome_paciente" value="Paciente" />
+						<h:inputText id="nome_paciente" styleClass="form-control"
+									 value="#{agendaController.pacientePesquisa.nome}" />
+					</div>
+					<div class="form-group col-lg-6">
+						<h:outputLabel for="form_prontuario" value="Prontuário" />
+						<p:inputText id="prontuario" styleClass="form-control"
+									 value="#{agendaController.pacientePesquisa.prontuario}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<h:commandButton type="reset" value="Limpar Campos"
+							styleClass="btn btn-default" />
+					<h:outputText value=" " />
+					<h:commandButton value="Pequisar" styleClass="btn btn-primary" />
+				</div>
+				<br /><br />
+				<p:dataTable id="datatable" value="#{agendaController.listaPacientes}"
+							 var="paciente" paginator="true" rows="10" lazy="true"
+							 paginatorPosition="bottom" paginatorAlwaysVisible="false">
+					<p:column>
+						<f:facet name="header"><h:outputText value="Nome" /></f:facet>
+						<h:outputText value="#{paciente.nome}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header"><h:outputText value="Prontuário" /></f:facet>
+						<h:outputText value="#{paciente.prontuario}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header"><h:outputText value="Ações" /></f:facet>
+						<h:commandLink value="Marcar" action="#{agendaController.selecionarPacienteMarcarConsulta(paciente)}" />
+					</p:column>
+				</p:dataTable>
 			</fieldset>
 		</h:form>
 	</ui:define>

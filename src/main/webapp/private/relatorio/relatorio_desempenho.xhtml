@@ -16,12 +16,9 @@
 			<h:outputText value="Enfermeiro" rendered="#{relatorioController.funcionario.enfermeiro}" />
 			<div id="output" style="margin: 30px;"></div>
 			<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-			<script type="text/javascript" src="#{request.contextPath}/client_side/third_part/pivottable/js/pivot.js"></script>
-			<script type="text/javascript" src="#{request.contextPath}/client_side/third_part/pivottable/js/gchart_renderers.js"></script>
-			<script type="text/javascript">
-				var contexto = "#{request.contextPath}/client_side/third_part/pivottable/js/";
-			</script>
-			<script type="text/javascript" src="#{request.contextPath}/client_side/third_part/pivottable/js/example.js"></script>
+			<h:outputScript library="default" name="third_part/pivottable/js/pivot.js" />
+			<h:outputScript library="default" name="third_part/pivottable/js/gchart_renderers.js" />
+			<h:outputScript library="default" name="third_part/pivottable/js/example.js" />
 			<br />
 			<h:commandButton value="Voltar" styleClass="btn btn-default" action="#{relatorioController.pesquisarUsuarioRelatorio()}" />
 			</fieldset>

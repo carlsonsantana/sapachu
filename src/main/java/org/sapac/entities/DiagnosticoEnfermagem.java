@@ -5,25 +5,67 @@
 package org.sapac.entities;
 
 import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import org.hibernate.annotations.Type;
 
 /**
  *
  * @author carlson
  */
+@Entity
+@Table(name = "diagnostico_enfermagem")
 public class DiagnosticoEnfermagem implements Serializable {
+	@Id
+	@GeneratedValue
+	@Column(name = "id_diagnostico_enfermagem")
 	private int id;
+		
+	@OneToOne
+	@JoinColumn(name = "id_paciente")
 	private Paciente paciente;
+	
+	@Column(name = "risco_glicemia")
+	@Type(type = "org.hibernate.type.TextType")
 	private String riscoGlicemia;
+	@Column(name = "risco_nutricao_desequilibrada")
+	@Type(type = "org.hibernate.type.TextType")
 	private String riscoNutricaoDesequilibrada;
+	@Column(name = "tipo_risco_nutricao")
+	@Type(type = "org.hibernate.type.TextType")
 	private String tipoRiscoNutricao;
+	@Column(name = "sono_prejudicado")
+	@Type(type = "org.hibernate.type.TextType")
 	private String sonoPrejudicado;
+	@Column(name = "mobilidade_fisica_prejudicada")
+	@Type(type = "org.hibernate.type.TextType")
 	private String mobilidadeFisicaPrejudicada;
+	@Column(name = "perfusao_tissular_periferica_ineficaz")
+	@Type(type = "org.hibernate.type.TextType")
 	private String perfusaoTissularPerifericaIneficaz;
+	@Column(name = "interacao_social_prejudicada")
+	@Type(type = "org.hibernate.type.TextType")
 	private String interacaoSocialPrejudicada;
+	@Column(name = "falta_adesao")
+	@Type(type = "org.hibernate.type.TextType")
 	private String faltaAdesao;
+	@Column(name = "risco_infeccao")
+	@Type(type = "org.hibernate.type.TextType")
 	private String riscoInfeccao;
+	@Column(name = "integridade_pele_prejudicada")
+	@Type(type = "org.hibernate.type.TextType")
 	private String integridadePelePrejudicada;
+	@Column(name = "dor")
+	@Type(type = "org.hibernate.type.TextType")
 	private String tipoDor;
+	@Column(name = "outros_diagnosticos")
+	@Type(type = "org.hibernate.type.TextType")
 	private String outrosDiagnosticos;
 
 	/**

@@ -94,6 +94,6 @@ public abstract class GenericController implements Serializable {
 	}
 	
 	public String cancelar() {
-		return "/private/apresentacao";
+		return PaginasNavegacao.PAGINA_INICIAL;
 	}
 }

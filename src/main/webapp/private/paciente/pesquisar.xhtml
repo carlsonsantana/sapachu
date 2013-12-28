@@ -10,43 +10,43 @@
 			<fieldset>
 				<legend>Pesquisar Paciente</legend>
 				<div class="row">
-			<div class="form-group col-lg-6">
-				<label for="form_nome_paciente">Paciente</label>
-				<p:inputText id="nome_paciente" value="#{pacienteController.pacientePesquisa.nome}" styleClass="form-control" />
-			</div>
-			<div class="form-group col-lg-6">
-				<label for="form_prontuario">Prontuário</label>
-				<p:inputText id="prontuario" value="#{pacienteController.pacientePesquisa.prontuario}" styleClass="form-control" />
-			</div>
+					<div class="form-group col-lg-6">
+						<label for="form_nome_paciente">Paciente</label>
+						<p:inputText id="nome_paciente" value="#{pacienteController.pacientePesquisa.nome}" styleClass="form-control" />
+					</div>
+					<div class="form-group col-lg-6">
+						<label for="form_prontuario">Prontuário</label>
+						<p:inputText id="prontuario" value="#{pacienteController.pacientePesquisa.prontuario}" styleClass="form-control" />
+					</div>
 				</div>
-			<div class="form-group">
-			</div>
-			<input type="reset" value="Limpar Campos" class="btn btn-default" />
-			<h:outputText value=" " />
-			<h:commandButton value="Pequisar" styleClass="btn btn-primary" />
-			<br /><br /><br />
-			<p:dataTable id="datatable" value="#{pacienteController.listaPacientes}"
-						 var="paciente" paginator="true" rows="10" lazy="true"
-						 paginatorPosition="bottom" paginatorAlwaysVisible="false">
-				<p:column>
-					<f:facet name="header"><h:outputText value="Nome" /></f:facet>
-					<h:outputText value="#{paciente.nome}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header"><h:outputText value="Prontuário" /></f:facet>
-					<h:outputText value="#{paciente.prontuario}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header"><h:outputText value="Ações" /></f:facet>
-					<h:commandLink value="Visualizar" action="#{pacienteController.visualizarPaciente(paciente)}" rendered="#{pacienteController.pesquisar}" />
-					<h:commandLink value="Cadastrar" action="#{pacienteController.adicionarPaciente(paciente)}" rendered="#{pacienteController.adicionar}" />
-					<h:panelGroup rendered="#{pacienteController.enfermagem}">
-						<h:commandLink value="Visualizar Intervenções" action="#{enfermagemController.visualizarDiagnostico(paciente)}" />
-						<h:outputText value=" " />
-						<h:commandLink value="Adicionar Intervenção" action="#{enfermagemController.telaDianosticarEnfermagem(paciente)}" />
-					</h:panelGroup>
-				</p:column>
-			</p:dataTable>
+				<div class="form-group">
+					<input type="reset" value="Limpar Campos" class="btn btn-default" />
+					<h:outputText value=" " />
+					<h:commandButton value="Pequisar" styleClass="btn btn-primary" />
+				</div>
+				<br /><br />
+				<p:dataTable id="datatable" value="#{pacienteController.listaPacientes}"
+							 var="paciente" paginator="true" rows="10" lazy="true"
+							 paginatorPosition="bottom" paginatorAlwaysVisible="false">
+					<p:column>
+						<f:facet name="header"><h:outputText value="Nome" /></f:facet>
+						<h:outputText value="#{paciente.nome}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header"><h:outputText value="Prontuário" /></f:facet>
+						<h:outputText value="#{paciente.prontuario}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header"><h:outputText value="Ações" /></f:facet>
+						<h:commandLink value="Visualizar" action="#{pacienteController.visualizarPaciente(paciente)}" rendered="#{pacienteController.pesquisar}" />
+						<h:commandLink value="Cadastrar" action="#{pacienteController.adicionarPaciente(paciente)}" rendered="#{pacienteController.adicionar}" />
+						<h:panelGroup rendered="#{pacienteController.enfermagem}">
+							<h:commandLink value="Visualizar Intervenções" action="#{enfermagemController.visualizarDiagnostico(paciente)}" />
+							<h:outputText value=" " />
+							<h:commandLink value="Adicionar Intervenção" action="#{enfermagemController.telaDianosticarEnfermagem(paciente)}" />
+						</h:panelGroup>
+					</p:column>
+				</p:dataTable>
 			</fieldset>
 		</h:form>
 	</ui:define>

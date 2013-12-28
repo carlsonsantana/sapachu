@@ -30,10 +30,10 @@
 										  value="#{agendaController.paciente.nome}" />
 						</h:panelGroup>
 						<h:panelGroup>
+							<p:commandButton id="nao" value="Não" oncomplete="PF('eventDialog').hide();" />
 							<p:commandButton id="addButton" value="Sim"
 											 action="#{agendaController.adicionarConsulta}"
-											 oncomplete="PF('myschedule').update();PF('eventDialog').hide();consultaMarcada = true;"/>
-							<p:commandButton id="nao" value="Não" oncomplete="PF('eventDialog').hide();" />
+											 oncomplete="PF('myschedule').update();PF('eventDialog').hide();consultaMarcada = true;" />
 						</h:panelGroup>
 					</h:panelGrid>
 				</p:dialog>

@@ -10,37 +10,37 @@
 			<fieldset>
 				<legend>Pesquisar Paciente</legend>
 				<div class="row">
-			<div class="form-group col-lg-6">
-				<label for="form_nome_paciente">Paciente</label>
-				<p:inputText id="nome_paciente" value="#{consultaController.pacientePesquisa.nome}" styleClass="form-control" />
-			</div>
-			<div class="form-group col-lg-6">
-				<label for="form_prontuario">Prontuário</label>
-				<p:inputText id="prontuario" value="#{consultaController.pacientePesquisa.prontuario}" styleClass="form-control" />
-			</div>
+					<div class="form-group col-lg-6">
+						<label for="form_nome_paciente">Paciente</label>
+						<p:inputText id="nome_paciente" value="#{consultaController.pacientePesquisa.nome}" styleClass="form-control" />
+					</div>
+					<div class="form-group col-lg-6">
+						<label for="form_prontuario">Prontuário</label>
+						<p:inputText id="prontuario" value="#{consultaController.pacientePesquisa.prontuario}" styleClass="form-control" />
+					</div>
 				</div>
-			<div class="form-group">
-			</div>
-			<input type="reset" value="Limpar Campos" class="btn btn-default" />
-			<h:outputText value=" " />
-			<h:commandButton value="Pequisar" styleClass="btn btn-primary" />
-			<br /><br /><br />
-			<p:dataTable id="datatable" value="#{pacienteController.listaPacientes}"
-						 var="paciente" paginator="true" rows="10" lazy="true"
-						 paginatorPosition="bottom" paginatorAlwaysVisible="false">
-				<p:column>
-					<f:facet name="header"><h:outputText value="Nome" /></f:facet>
-					<h:outputText value="#{paciente.nome}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header"><h:outputText value="Prontuário" /></f:facet>
-					<h:outputText value="#{paciente.prontuario}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header"><h:outputText value="Ações" /></f:facet>
-					<h:commandLink value="Consultar" action="#{consultaController.consultarPaciente(paciente)}" />
-				</p:column>
-			</p:dataTable>
+				<div class="form-group">
+					<input type="reset" value="Limpar Campos" class="btn btn-default" />
+					<h:outputText value=" " />
+					<h:commandButton value="Pequisar" styleClass="btn btn-primary" />
+				</div>
+				<br /><br />
+				<p:dataTable id="datatable" value="#{consultaController.listaConsultas}"
+							 var="consulta" paginator="true" rows="10" lazy="true"
+							 paginatorPosition="bottom" paginatorAlwaysVisible="false">
+					<p:column>
+						<f:facet name="header"><h:outputText value="Nome" /></f:facet>
+						<h:outputText value="#{consulta.paciente.nome}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header"><h:outputText value="Prontuário" /></f:facet>
+						<h:outputText value="#{consulta.paciente.prontuario}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header"><h:outputText value="Ações" /></f:facet>
+						<h:commandLink value="Consultar" action="#{consultaController.consultarPaciente(consulta)}" />
+					</p:column>
+				</p:dataTable>
 			</fieldset>
 		</h:form>
 	</ui:define>

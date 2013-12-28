@@ -8,5 +8,19 @@
 		<property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/engenharia</property>
 		<property name="hibernate.connection.username">postgres</property>
 		<property name="hibernate.connection.password">postgres</property>
+		<property name="hibernate.hbm2ddl.auto">create</property>
+		<property name="hibernate.default_schema">sapac</property>
+		<mapping class="org.sapac.entities.Consulta" />
+		<mapping class="org.sapac.entities.DiagnosticoEnfermagem" />
+		<mapping class="org.sapac.entities.Enfermeiro" />
+		<mapping class="org.sapac.entities.FotoUlcera" />
+		<mapping class="org.sapac.entities.IntervencaoEnfermagem" />
+		<mapping class="org.sapac.entities.MedicamentoUso" />
+		<mapping class="org.sapac.entities.Medico" />
+		<mapping class="org.sapac.entities.Paciente" />
+		<mapping class="org.sapac.entities.SituacaoUlceraConsulta" />
+		<mapping class="org.sapac.entities.Ulcera" />
+		<mapping class="org.sapac.entities.Usuario" />
+		<mapping class="org.sapac.entities.VariaveisClinicas" />
 	</session-factory>
 </hibernate-configuration>

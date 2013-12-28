@@ -5,14 +5,31 @@
 package org.sapac.entities;
 
 import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  *
  * @author carlson
  */
+@Entity
+@Table(name = "medicamento_uso")
 public class MedicamentoUso implements Serializable {
+	@Id
+	@GeneratedValue
+	@Column(name = "id_medicamento_uso")
 	private int id;
+	
+	@ManyToOne
+	@JoinColumn(name = "id_variaveis_clinicas")
 	private VariaveisClinicas variaveisClinicas;
+	
+	
 	private String nome;
 
 	/**

@@ -112,11 +112,6 @@ public class UsuarioController extends GenericController {
 		funcionario = new Medico();
 	}
 
-	public String telaPesquisaFuncionario() {
-		operacao = Operacao.FUNCIONARIO;
-		return PaginasNavegacao.USUARIO_PESQUISAR;
-	}
-
 	public String telaPesquisaUsuario() {
 		operacao = Operacao.USUARIO;
 		return PaginasNavegacao.USUARIO_PESQUISAR;

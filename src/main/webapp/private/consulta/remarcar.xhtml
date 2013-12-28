@@ -16,16 +16,15 @@
 						update="eventDetails"
 						oncomplete="PF('eventDialog').show();" />
 				<p:ajax event="eventMove" listener="#{agendaController.onDataConsultaRemarcada}"
-						oncomplete="setTimeout(function() {document.getElementById('form_refresh').click();}, 300);" />
+						oncomplete="PF('myschedule').update();" />
 			</p:schedule>
-			<h:commandButton id="refresh" value="." styleClass="escondido" />
 			<p:dialog widgetVar="eventDialog" header="Cancelar Consulta?"
 					  showEffect="clip" hideEffect="clip" id="dialogo">
 				<h:panelGroup id="eventDetails">
+					<p:commandButton id="nao" value="Não" oncomplete="PF('eventDialog').hide();" />
 					<p:commandButton id="removeButton" value="Sim"
 									 action="#{agendaController.cancelarConsulta}"
 							oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />
-					<p:commandButton id="nao" value="Não" oncomplete="PF('eventDialog').hide();" />
 				</h:panelGroup>
 			</p:dialog>
 			<br /><br />

@@ -5,18 +5,38 @@
 package org.sapac.entities;
 
 import java.io.Serializable;
-import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import org.hibernate.annotations.Type;
 
 /**
  *
  * @author carlson
  */
+@Entity
+@Table(name = "intervencao_enfermagem")
 public class IntervencaoEnfermagem implements Serializable {
+	@Id
+	@GeneratedValue
+	@Column(name = "id_intervencao_enfermagem")
 	private int id;
+	
+	@OneToOne
+	@JoinColumn(name = "id_consulta")
 	private Consulta consulta;
+	
+	@ManyToOne
+	@JoinColumn(name = "id_enfermeiro")
 	private Enfermeiro enfermeiro;
+	
+	@Type(type = "org.hibernate.type.TextType")
 	private String descricao;
-	private Date data;
 
 	/**
 	 * @return the id
@@ -72,19 +92,5 @@ public class IntervencaoEnfermagem implements Serializable {
 	 */
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
-	}
-
-	/**
-	 * @return the data
-	 */
-	public Date getData() {
-		return data;
-	}
-
-	/**
-	 * @param data the data to set
-	 */
-	public void setData(Date data) {
-		this.data = data;
 	}
 }

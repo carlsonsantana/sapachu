@@ -9,33 +9,20 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.inject.Named;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.FlowEvent;
-import org.primefaces.event.ScheduleEntryMoveEvent;
-import org.primefaces.event.SelectEvent;
-import org.primefaces.model.DefaultScheduleEvent;
-import org.primefaces.model.DefaultScheduleModel;
-import org.primefaces.model.DefaultStreamedContent;
-import org.primefaces.model.ScheduleEvent;
-import org.primefaces.model.ScheduleModel;
-import org.primefaces.model.StreamedContent;
-import org.primefaces.model.UploadedFile;
 import org.sapac.controllers.GenericController;
 import org.sapac.controllers.PaginasNavegacao;
+import org.sapac.entities.Consulta;
 import org.sapac.entities.Paciente;
 
 /**
@@ -47,9 +34,9 @@ import org.sapac.entities.Paciente;
 public class ConsultaController extends GenericController {
 
 	private static final long serialVersionUID = 1L;
-	private Paciente paciente;
+	private Consulta consulta;
 	private Paciente pacientePesquisa;
-	private transient DataModel<Paciente> listaPacientes;
+	private transient DataModel<Consulta> listaConsultas;
 	private String area;
 	private List<String> areas;
 	private Date date;
@@ -57,51 +44,44 @@ public class ConsultaController extends GenericController {
 
 	@PostConstruct
 	public void init() {
-		paciente = new Paciente();
+		setConsulta(new Consulta());
+		getConsulta().setPaciente(new Paciente());
 		pacientePesquisa = new Paciente();
 
-		List<Paciente> pacientes = new ArrayList<Paciente>();
+		List<Consulta> consultas = new ArrayList<Consulta>();
 		Paciente paciente1 = new Paciente();
 		paciente1.setNome("Carlos Miguel Fonseca");
 		paciente1.setProntuario("3435.1212");
-		pacientes.add(paciente1);
+		Consulta consulta1 = new Consulta();
+		consulta1.setPaciente(paciente1);
+		consulta1.setSituacao(Consulta.CONSULTA_MARCADA);
+		consultas.add(consulta1);
 		paciente1 = new Paciente();
 		paciente1.setNome("Josefa Maria de Lurdes");
 		paciente1.setProntuario("9864.6324");
-		pacientes.add(paciente1);
-		pacientes.add(paciente1);
-		pacientes.add(paciente1);
-		pacientes.add(paciente1);
-		pacientes.add(paciente1);
-		pacientes.add(paciente1);
-		pacientes.add(paciente1);
-		pacientes.add(paciente1);
-		pacientes.add(paciente1);
-		pacientes.add(paciente1);
-		pacientes.add(paciente1);
-		pacientes.add(paciente1);
-		pacientes.add(paciente1);
-		pacientes.add(paciente1);
-		pacientes.add(paciente1);
-		pacientes.add(paciente1);
-		pacientes.add(paciente1);
-		pacientes.add(paciente1);
+		Consulta consulta2 = new Consulta();
+		consulta2.setPaciente(paciente1);
+		consulta2.setSituacao(Consulta.CONSULTA_MARCADA);
+		consultas.add(consulta2);
+		consultas.add(consulta2);
+		consultas.add(consulta2);
+		consultas.add(consulta2);
+		consultas.add(consulta2);
+		consultas.add(consulta2);
+		consultas.add(consulta2);
+		consultas.add(consulta2);
+		consultas.add(consulta2);
+		consultas.add(consulta2);
+		consultas.add(consulta2);
+		consultas.add(consulta2);
+		consultas.add(consulta2);
+		consultas.add(consulta2);
+		consultas.add(consulta2);
+		consultas.add(consulta2);
+		consultas.add(consulta2);
+		consultas.add(consulta2);
 
-		listaPacientes = new ListDataModel<Paciente>(pacientes);
-	}
-
-	/**
-	 * @return the paciente
-	 */
-	public Paciente getPaciente() {
-		return paciente;
-	}
-
-	/**
-	 * @param paciente the paciente to set
-	 */
-	public void setPaciente(Paciente paciente) {
-		this.paciente = paciente;
+		listaConsultas = new ListDataModel<Consulta>(consultas);
 	}
 
 	/**
@@ -116,20 +96,6 @@ public class ConsultaController extends GenericController {
 	 */
 	public void setPacientePesquisa(Paciente pacientePesquisa) {
 		this.pacientePesquisa = pacientePesquisa;
-	}
-
-	/**
-	 * @return the listaPacientes
-	 */
-	public DataModel<Paciente> getListaPacientes() {
-		return listaPacientes;
-	}
-
-	/**
-	 * @param listaPacientes the listaPacientes to set
-	 */
-	public void setListaPacientes(DataModel<Paciente> listaPacientes) {
-		this.listaPacientes = listaPacientes;
 	}
 
 	/**
@@ -150,8 +116,8 @@ public class ConsultaController extends GenericController {
 		return PaginasNavegacao.CONSULTA_PESQUISAR_PACIENTE;
 	}
 
-	public String consultarPaciente(Paciente paciente) {
-		this.paciente = paciente;
+	public String consultarPaciente(Consulta consulta) {
+		setConsulta(consulta);
 		return PaginasNavegacao.CONSULTA_CONSULTAR_PACIENTE;
 	}
 
@@ -248,5 +214,33 @@ public class ConsultaController extends GenericController {
 	
 	public String visualizarConsulta() {
 		return PaginasNavegacao.PACIENTE_VISUALIZAR_CONSULTA;
+	}
+
+	/**
+	 * @return the listaConsultas
+	 */
+	public DataModel<Consulta> getListaConsultas() {
+		return listaConsultas;
+	}
+
+	/**
+	 * @param listaConsultas the listaConsultas to set
+	 */
+	public void setListaConsultas(DataModel<Consulta> listaConsultas) {
+		this.listaConsultas = listaConsultas;
+	}
+
+	/**
+	 * @return the consulta
+	 */
+	public Consulta getConsulta() {
+		return consulta;
+	}
+
+	/**
+	 * @param consulta the consulta to set
+	 */
+	public void setConsulta(Consulta consulta) {
+		this.consulta = consulta;
 	}
 }
