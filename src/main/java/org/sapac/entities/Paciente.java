@@ -9,11 +9,12 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -24,42 +25,40 @@ import javax.persistence.TemporalType;
 public class Paciente implements Serializable {
 	
 	private static long serialVersionUID = 1L;
-
-	/**
-	 * @return the serialVersionUID
-	 */
-	public static long getSerialVersionUID() {
-		return serialVersionUID;
-	}
-
-	/**
-	 * @param aSerialVersionUID the serialVersionUID to set
-	 */
-	public static void setSerialVersionUID(long aSerialVersionUID) {
-		serialVersionUID = aSerialVersionUID;
-	}
 	
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_paciente")
 	private int id;
 	
 	@OneToOne(mappedBy = "paciente")
 	private DiagnosticoEnfermagem diagnosticoEnfermagem;
 	
-	
+	@NotNull
 	private String nome;
-	@Temporal(TemporalType.DATE)
+	@Transient
 	private Date dataNascimento;
+	@Transient
 	private String sexo;
+	@Transient
 	private String endereco;
+	@Transient
 	private String cidade;
+	@Transient
 	private String estado;
+	@Transient
 	private String telefone;
+	@Transient
 	private String estadoCivil;
+	@Transient
 	private String grauInstrucao;
+	@Transient
 	private String profissao;
+	@NotNull
 	private String prontuario;
+	@Column(name = "numero_cartao_sus")
+	@NotNull
+	private String numeroCartaoSus;
 
 	/**
 	 * @return the id
@@ -241,5 +240,19 @@ public class Paciente implements Serializable {
 	 */
 	public void setDiagnosticoEnfermagem(DiagnosticoEnfermagem diagnosticoEnfermagem) {
 		this.diagnosticoEnfermagem = diagnosticoEnfermagem;
+	}
+
+	/**
+	 * @return the numeroCartaoSus
+	 */
+	public String getNumeroCartaoSus() {
+		return numeroCartaoSus;
+	}
+
+	/**
+	 * @param numeroCartaoSus the numeroCartaoSus to set
+	 */
+	public void setNumeroCartaoSus(String numeroCartaoSus) {
+		this.numeroCartaoSus = numeroCartaoSus;
 	}
 }

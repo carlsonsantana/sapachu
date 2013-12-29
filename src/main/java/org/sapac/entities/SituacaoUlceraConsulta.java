@@ -5,17 +5,16 @@
 package org.sapac.entities;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -25,36 +24,58 @@ import javax.persistence.Table;
 @Table(name = "situacao_ulcera_consulta")
 public class SituacaoUlceraConsulta implements Serializable {
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_situacao_ulcera_consulta")
 	private int id;
 	
 	@ManyToOne
 	@JoinColumn(name = "id_consulta")
+	@NotNull
 	private Consulta consulta;
 	
 	@ManyToOne
 	@JoinColumn(name = "id_ulcera")
+	@NotNull
 	private Ulcera ulcera;
 	
 	@OneToOne(mappedBy = "situacaoUlceraConsulta")
 	private FotoUlcera fotoUlcera;
 	
+	@NotNull
 	private float area;
+	@Column(name = "estado_ulcera")
+	@NotNull
 	private int estadoUlcera;
+	@NotNull
 	private int profundidade;
+	@Column(name = "nivel_dor")
+	@NotNull
 	private int nivelDor;
+	@NotNull
 	private int edema;
+	@NotNull
 	private int secrecao;
+	@Column(name = "ciclo_litico")
+	@NotNull
 	private int cicloLitico;
+	@NotNull
 	private boolean fibrina;
+	@NotNull
 	private boolean granula;
+	@NotNull
 	private boolean reulcera;
+	@NotNull
 	private boolean prurido;
+	@NotNull
 	private boolean ecsema;
+	@NotNull
 	private boolean odor;
+	@Column(name = "sinal_cicatrizacao")
+	@NotNull
 	private boolean sinalCicatrizacao;
+	@NotNull
 	private boolean circular;
+	@NotNull
 	private boolean lado;
 
 	/**

@@ -9,11 +9,13 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -24,7 +26,7 @@ import javax.persistence.Table;
 public class Ulcera implements Serializable {
 	
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_ulcera")
 	private int id;
 	
@@ -35,7 +37,9 @@ public class Ulcera implements Serializable {
 	@OneToMany(mappedBy = "ulcera")
 	private List<SituacaoUlceraConsulta> situacaoUlceraConsultas;
 	
+	@NotNull
 	private int situacao;
+	@NotNull
 	private String pontos;
 
 	/**
@@ -92,5 +96,19 @@ public class Ulcera implements Serializable {
 	 */
 	public void setPontos(String pontos) {
 		this.pontos = pontos;
+	}
+
+	/**
+	 * @return the situacaoUlceraConsultas
+	 */
+	public List<SituacaoUlceraConsulta> getSituacaoUlceraConsultas() {
+		return situacaoUlceraConsultas;
+	}
+
+	/**
+	 * @param situacaoUlceraConsultas the situacaoUlceraConsultas to set
+	 */
+	public void setSituacaoUlceraConsultas(List<SituacaoUlceraConsulta> situacaoUlceraConsultas) {
+		this.situacaoUlceraConsultas = situacaoUlceraConsultas;
 	}
 }

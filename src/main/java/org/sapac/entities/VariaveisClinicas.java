@@ -10,14 +10,15 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -27,73 +28,109 @@ import javax.persistence.TemporalType;
 @Table(name = "variaveis_clinicas")
 public class VariaveisClinicas implements Serializable {
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_variaveis_clinicas")
 	private int id;
 	
 	@OneToOne
 	@JoinColumn(name = "id_consulta")
+	@NotNull
 	private Consulta consulta;
 	
 	@OneToMany(mappedBy = "variaveisClinicas")
 	private Collection<MedicamentoUso> medicamentosUso;
 	
 	@Column(name = "pressao_arterial")
+	@NotNull
 	private float pressaoArterial;
 	@Column(name = "indice_massa_corporal")
+	@NotNull
 	private float indiceMassaCorporal;
 	@Column(name = "nivel_glicemia")
+	@NotNull
 	private float nivelGlicemia;
 	@Column(name = "nivel_creatina")
+	@NotNull
 	private float nivelCreatina;
 	@Column(name = "colesterol_hdl")
+	@NotNull
 	private float colesterolHDL;
+	@NotNull
 	private float vhs;
+	@NotNull
 	private float cintura;
+	@NotNull
 	private float quadril;
 	@Column(name = "indice_tornozelo_braco")
+	@NotNull
 	private float indiceTornozeloBraco;
 	@Column(name = "velocidade_hemossedimentacao")
+	@NotNull
 	private float velocidadeHemossedimentacao;
+	@NotNull
 	private char mobilidade;
 	@Column(name = "desbridamento_cirurgico")
+	@NotNull
 	private boolean desbridamentoCirurgico;
+	@NotNull
 	private boolean compressao;
+	@NotNull
 	private boolean repouso;
+	@NotNull
 	private boolean coopera;
+	@NotNull
 	private boolean diabetes;
 	@Column(name = "cardiopatia_isquemica")
+	@NotNull
 	private boolean cardiopatiaIsquemica;
 	@Column(name = "doenca_renal")
+	@NotNull
 	private boolean doencaRenal;
 	@Column(name = "acidente_vascular_cerebral")
+	@NotNull
 	private boolean acidenteVascularCerebral;
+	@NotNull
 	private boolean artrite;
 	@Column(name = "alteracoes_visao")
+	@NotNull
 	private boolean alteracoesVisao;
 	@Column(name = "trombose_vascular_profunda")
+	@NotNull
 	private boolean tromboseVascularProfunda;
+	@NotNull
 	private boolean fratura;
+	@NotNull
 	private boolean cirurgia;
 	@Column(name = "doenca_arterial_periferica")
+	@NotNull
 	private boolean doencaArterialPeriferica;
+	@NotNull
 	private boolean alcoolista;
 	@Column(name = "dermatite_ocre")
+	@NotNull
 	private boolean dermatiteOcre;
+	@NotNull
 	private boolean lipodermatoesclerose;
+	@NotNull
 	private boolean asma;
 	@Column(name = "anemia_falciforme")
+	@NotNull
 	private boolean anemiaFalciforme;
 	@Column(name = "macos_cigarro_diarios")
+	@NotNull
 	private int macosCigarroDiarios;
+	@NotNull
 	private int ceap;
 	@Column(name = "outras_drogas")
+	@NotNull
 	private String outrasDrogas;
 	@Temporal(TemporalType.DATE)
 	@Column(name = "periodo_inicial_ferida")
+	@NotNull
 	private Date periodoInicialFerida;
 	@Temporal(TemporalType.DATE)
 	@Column(name = "periodo_final_ferida")
+	@NotNull
 	private Date periodoFinalFerida;
 
 	/**

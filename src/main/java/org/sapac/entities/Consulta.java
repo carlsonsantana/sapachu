@@ -9,17 +9,18 @@ import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -30,12 +31,13 @@ import javax.validation.constraints.NotNull;
 @Table(name = "consulta")
 public class Consulta implements Serializable {
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_consulta")
 	private int id;
 	
 	@ManyToOne
 	@JoinColumn(name = "id_paciente")
+	@NotNull
 	private Paciente paciente;
 	
 	@OneToOne(mappedBy = "consulta")
@@ -44,7 +46,9 @@ public class Consulta implements Serializable {
 	@OneToMany(mappedBy = "consulta")
 	private Collection<SituacaoUlceraConsulta> situacoesUlcera;
 	
-	@Transient
+	@ManyToMany
+	@JoinTable(joinColumns = {@JoinColumn(name = "id_consulta")},
+			inverseJoinColumns = {@JoinColumn(name = "id_membro_equipe")})
 	private Collection<MembroEquipe> membrosEquipe;
 	
 	@OneToOne(mappedBy = "consulta")
@@ -55,6 +59,7 @@ public class Consulta implements Serializable {
 	@NotNull
 	private Date data;
 	
+	@NotNull
 	private int situacao;
 	
 	public final static int CONSULTA_MARCADA = 0;
@@ -158,5 +163,19 @@ public class Consulta implements Serializable {
 	 */
 	public void setPaciente(Paciente paciente) {
 		this.paciente = paciente;
+	}
+
+	/**
+	 * @return the intervencaoEnfermagem
+	 */
+	public IntervencaoEnfermagem getIntervencaoEnfermagem() {
+		return intervencaoEnfermagem;
+	}
+
+	/**
+	 * @param intervencaoEnfermagem the intervencaoEnfermagem to set
+	 */
+	public void setIntervencaoEnfermagem(IntervencaoEnfermagem intervencaoEnfermagem) {
+		this.intervencaoEnfermagem = intervencaoEnfermagem;
 	}
 }
