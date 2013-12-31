@@ -5,12 +5,15 @@
 package org.sapac.entities;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -23,7 +26,6 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name="paciente")
 public class Paciente implements Serializable {
-	
 	private static long serialVersionUID = 1L;
 	
 	@Id
@@ -33,6 +35,9 @@ public class Paciente implements Serializable {
 	
 	@OneToOne(mappedBy = "paciente")
 	private DiagnosticoEnfermagem diagnosticoEnfermagem;
+	
+	@OneToMany(mappedBy = "paciente")
+	private Collection<Ulcera> ulceras;
 	
 	@NotNull
 	private String nome;
@@ -254,5 +259,38 @@ public class Paciente implements Serializable {
 	 */
 	public void setNumeroCartaoSus(String numeroCartaoSus) {
 		this.numeroCartaoSus = numeroCartaoSus;
+	}
+	
+	
+	@Override
+	public boolean equals(Object object) {
+		if (object != this) {
+			if (!(object instanceof Paciente)) {
+				return false;
+			}
+			Paciente paciente = (Paciente) object;
+			if ((paciente.getId() != 0) && (this.getId() != 0)) {
+				if (paciente.getId() != this.getId()) {
+					return false;
+				}
+			} else if (!paciente.getProntuario().equals(this.getProntuario())) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * @return the ulceras
+	 */
+	public Collection<Ulcera> getUlceras() {
+		return ulceras;
+	}
+
+	/**
+	 * @param ulceras the ulceras to set
+	 */
+	public void setUlceras(Collection<Ulcera> ulceras) {
+		this.ulceras = ulceras;
 	}
 }

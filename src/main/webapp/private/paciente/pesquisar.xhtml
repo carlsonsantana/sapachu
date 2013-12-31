@@ -22,7 +22,8 @@
 				<div class="form-group">
 					<input type="reset" value="Limpar Campos" class="btn btn-default" />
 					<h:outputText value=" " />
-					<h:commandButton value="Pequisar" styleClass="btn btn-primary" />
+					<h:commandButton value="Pequisar" styleClass="btn btn-primary" rendered="#{pacienteController.pesquisar}" action="#{pacienteController.pesquisarPaciente()}" />
+					<h:commandButton value="Pequisar" styleClass="btn btn-primary" rendered="#{pacienteController.adicionar}" action="#{pacienteController.cadastrarPaciente()}" />
 				</div>
 				<br /><br />
 				<p:dataTable id="datatable" value="#{pacienteController.listaPacientes}"

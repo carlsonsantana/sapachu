@@ -21,4 +21,8 @@ public interface ConsultaDAO extends GenericDAO {
 	public Collection<Consulta> procurarConsultasDia(Date data);
 	public Collection<Consulta> procurarConsultasPaciente(Paciente paciente);
 	public Paciente cadastrarPaciente(Paciente paciente);
+	public Collection<Paciente> procurarPacientes(Paciente paciente);
+	public boolean temConsultaDia(Paciente paciente, Date data);
+	public Consulta carregarConsulta(Consulta consulta);
+	public Consulta editarConsulta(Consulta consulta);
 }

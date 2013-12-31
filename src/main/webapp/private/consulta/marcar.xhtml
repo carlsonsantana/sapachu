@@ -25,7 +25,7 @@
 					<h:commandButton type="reset" value="Limpar Campos"
 							styleClass="btn btn-default" />
 					<h:outputText value=" " />
-					<h:commandButton value="Pequisar" styleClass="btn btn-primary" />
+					<h:commandButton value="Pequisar" styleClass="btn btn-primary" action="#{agendaController.telaMarcarConsulta()}" />
 				</div>
 				<br /><br />
 				<p:dataTable id="datatable" value="#{agendaController.listaPacientes}"

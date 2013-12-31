@@ -8,4 +8,11 @@
 			<default-locale>pt_BR</default-locale>
 		</locale-config>
 	</application>
+	<render-kit>
+		<renderer>
+			<component-family>org.primefaces.component</component-family>
+			<renderer-type>org.primefaces.component.FileUploadRenderer</renderer-type>
+			<renderer-class>org.sapac.utils.FileUploadRenderer</renderer-class>
+		</renderer>
+	</render-kit>
 </faces-config>

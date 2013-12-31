@@ -36,11 +36,9 @@ public class IntervencaoEnfermagem implements Serializable {
 	
 	@ManyToOne
 	@JoinColumn(name = "id_enfermeiro")
-	@NotNull
 	private Enfermeiro enfermeiro;
 	
 	@Type(type = "org.hibernate.type.TextType")
-	@NotNull
 	private String descricao;
 
 	/**

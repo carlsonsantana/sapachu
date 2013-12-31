@@ -126,11 +126,9 @@ public class VariaveisClinicas implements Serializable {
 	private String outrasDrogas;
 	@Temporal(TemporalType.DATE)
 	@Column(name = "periodo_inicial_ferida")
-	@NotNull
 	private Date periodoInicialFerida;
 	@Temporal(TemporalType.DATE)
 	@Column(name = "periodo_final_ferida")
-	@NotNull
 	private Date periodoFinalFerida;
 
 	/**

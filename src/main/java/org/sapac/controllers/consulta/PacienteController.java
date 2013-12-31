@@ -13,9 +13,13 @@ import javax.faces.model.ListDataModel;
 import javax.inject.Named;
 import org.primefaces.model.chart.CartesianChartModel;
 import org.primefaces.model.chart.ChartSeries;
+import org.sapac.adapters.PEPAdapter;
+import org.sapac.adapters.SistemaPacienteAdapter;
 import org.sapac.controllers.GenericController;
 import org.sapac.controllers.PaginasNavegacao;
 import org.sapac.entities.Paciente;
+import org.sapac.models.ConsultaDAO;
+import org.sapac.models.hibernate.ConsultaDAOHibernate;
 
 /**
  *
@@ -70,34 +74,7 @@ public class PacienteController extends GenericController {
 		paciente = new Paciente();
 		pacientePesquisa = new Paciente();
 		
-		List<Paciente> pacientes = new ArrayList<Paciente>();
-		Paciente paciente1 = new Paciente();
-		paciente1.setNome("Carlos Miguel Fonseca");
-		paciente1.setProntuario("3435.1212");
-		pacientes.add(paciente1);
-		paciente1 = new Paciente();
-		paciente1.setNome("Josefa Maria de Lurdes");
-		paciente1.setProntuario("9864.6324");
-		pacientes.add(paciente1);
-		pacientes.add(paciente1);
-		pacientes.add(paciente1);
-		pacientes.add(paciente1);
-		pacientes.add(paciente1);
-		pacientes.add(paciente1);
-		pacientes.add(paciente1);
-		pacientes.add(paciente1);
-		pacientes.add(paciente1);
-		pacientes.add(paciente1);
-		pacientes.add(paciente1);
-		pacientes.add(paciente1);
-		pacientes.add(paciente1);
-		pacientes.add(paciente1);
-		pacientes.add(paciente1);
-		pacientes.add(paciente1);
-		pacientes.add(paciente1);
-		pacientes.add(paciente1);
-		
-		listaPacientes = new ListDataModel<Paciente>(pacientes);
+		listaPacientes = new ListDataModel<Paciente>();
 	}
 
 	/**
@@ -120,6 +97,10 @@ public class PacienteController extends GenericController {
 	 */
 	public String pesquisarPaciente() {
 		operacao = Operacao.PESQUISAR;
+		
+		ConsultaDAO dao = new ConsultaDAOHibernate();
+		listaPacientes = new ListDataModel<Paciente>((List) dao.procurarPacientes(pacientePesquisa));
+		
 		return PaginasNavegacao.PACIENTE_PESQUISAR;
 	}
 
@@ -129,11 +110,19 @@ public class PacienteController extends GenericController {
 	 */
 	public String cadastrarPaciente() {
 		operacao = Operacao.ADICIONAR;
+		
+		SistemaPacienteAdapter sistemaPacienteAdapter = new PEPAdapter();
+		listaPacientes = new ListDataModel<Paciente>((List) sistemaPacienteAdapter.procurarPaciente(pacientePesquisa));
+		
 		return PaginasNavegacao.PACIENTE_PESQUISAR;
 	}
 	
 	public String pesquisarPacienteEnfermagem() {
 		operacao = Operacao.PESQUISAR_ENFERMAGEM;
+		
+		ConsultaDAOHibernate dao = new ConsultaDAOHibernate();
+		listaPacientes = new ListDataModel<Paciente>((List) dao.procurarPacientes(pacientePesquisa));
+		
 		return PaginasNavegacao.PACIENTE_PESQUISAR;
 	}
 
@@ -157,6 +146,8 @@ public class PacienteController extends GenericController {
 	 * @return A tela para visualizar um paciente.
 	 */
 	public String visualizarPaciente(Paciente paciente) {
+		SistemaPacienteAdapter sistemaPacienteAdapter = new PEPAdapter();
+		sistemaPacienteAdapter.carregarInformacoesPaciente(paciente);
 		setPaciente(paciente);
 		
 		
@@ -215,7 +206,10 @@ public class PacienteController extends GenericController {
 	 * @return 
 	 */
 	public String cadastrar() {
+		ConsultaDAO dao = new ConsultaDAOHibernate();
+		
+		paciente = dao.cadastrarPaciente(paciente);
+		
 		return visualizarPaciente(paciente);
-		//return PaginasNavegacao.PACIENTE_VISUALIZAR;
 	}
 }

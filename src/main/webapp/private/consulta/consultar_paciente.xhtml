@@ -6,7 +6,7 @@
 				xmlns:f="http://xmlns.jcp.org/jsf/core">
 	<ui:define name="title">Consulta Paciente</ui:define>
 	<ui:define name="content">
-		<h:form id="form" enctype="multipart/form-data">
+		<h:form id="form">
 			<fieldset>
 				<legend>Consultar Paciente</legend>
 				Nome: <h:outputText value="#{consultaController.consulta.paciente.nome}" /><br />
@@ -19,6 +19,9 @@
 					</ui:insert>
 					<ui:insert name="ulceras">
 						<ui:include src="/private/consulta/consulta/ulceras.xhtml" />
+					</ui:insert>
+					<ui:insert name="intervencao">
+						<ui:include src="/private/consulta/consulta/intervencao_enfermagem.xhtml" />
 					</ui:insert>
 					<ui:insert name="confirmacao">
 						<ui:include src="/private/consulta/consulta/confirmar.xhtml" />

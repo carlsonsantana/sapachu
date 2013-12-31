@@ -2,7 +2,8 @@
 				xmlns:h="http://java.sun.com/jsf/html"
 				xmlns:ui="http://java.sun.com/jsf/facelets"
 				xmlns:p="http://primefaces.org/ui"
-				template="/templates/defaulttemplate.xhtml">
+				template="/templates/defaulttemplate.xhtml"
+				xmlns:f="http://xmlns.jcp.org/jsf/core">
 	<ui:define name="title">Visualizar Paciente</ui:define>
 	<ui:define name="content">
 		<fieldset>
@@ -16,25 +17,35 @@
 				</tr>
 				<tr>
 					<th>Gênero</th>
-					<td>Masculino</td>
+					<td><h:outputText value="#{pacienteController.paciente.sexo}" /></td>
 					<th>Telefone</th>
-					<td>(79) 9943-6515</td>
+					<td><h:outputText value="#{pacienteController.paciente.telefone}" /></td>
 				</tr>
 				<tr>
 					<th>Endereço</th>
-					<td>Rua Cepó</td>
+					<td><h:outputText value="#{pacienteController.paciente.endereco}" /></td>
 					<th>Cidade</th>
-					<td>Geremuabo</td>
+					<td><h:outputText value="#{pacienteController.paciente.cidade}" /></td>
 				</tr>
 				<tr>
+					<th>Estado</th>
+					<td><h:outputText value="#{pacienteController.paciente.estado}" /></td>
 					<th>Estado Civil</th>
-					<td>União Estável</td>
-					<th>Grau de Instrução</th>
-					<td>Analfabeto</td>
+					<td><h:outputText value="#{pacienteController.paciente.estadoCivil}" /></td>
 				</tr>
 				<tr>
+					<th>Grau de Instrução</th>
+					<td><h:outputText value="#{pacienteController.paciente.grauInstrucao}" /></td>
 					<th>Profissão</th>
-					<td>Aposentado</td>
+					<td><h:outputText value="#{pacienteController.paciente.profissao}" /></td>
+				</tr>
+				<tr>
+					<th>Data de Nascimento</th>
+					<td>
+						<h:outputText value="#{pacienteController.paciente.dataNascimento}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</td>
 					<th></th>
 					<td></td>
 				</tr>

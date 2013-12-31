@@ -4,10 +4,12 @@
  */
 package org.sapac.models;
 
+import org.hibernate.Session;
+
 /**
  *
  * @author carlson
  */
 public interface GenericDAO {
-	
+	public Session getSession();
 }

@@ -42,8 +42,14 @@
 .remarcado {
 	background-color: green !important;
 }
+.marcada {
+	background-color: #ff7a00 !important;
+}
 .label.label-info {
 	color: #000000;
 	text-align: left;
 	cursor: pointer;
+}
+.form-control {
+	margin-bottom: 20px;
 }

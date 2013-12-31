@@ -12,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -36,6 +37,10 @@ public class Ulcera implements Serializable {
 	
 	@OneToMany(mappedBy = "ulcera")
 	private List<SituacaoUlceraConsulta> situacaoUlceraConsultas;
+	
+	@ManyToOne
+	@JoinColumn(name = "id_paciente")
+	private Paciente paciente;
 	
 	@NotNull
 	private int situacao;
@@ -110,5 +115,19 @@ public class Ulcera implements Serializable {
 	 */
 	public void setSituacaoUlceraConsultas(List<SituacaoUlceraConsulta> situacaoUlceraConsultas) {
 		this.situacaoUlceraConsultas = situacaoUlceraConsultas;
+	}
+
+	/**
+	 * @return the paciente
+	 */
+	public Paciente getPaciente() {
+		return paciente;
+	}
+
+	/**
+	 * @param paciente the paciente to set
+	 */
+	public void setPaciente(Paciente paciente) {
+		this.paciente = paciente;
 	}
 }

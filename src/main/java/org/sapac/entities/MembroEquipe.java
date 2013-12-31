@@ -53,13 +53,6 @@ public class MembroEquipe implements Serializable {
 	@NotNull
 	private long matricula;
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
 
 	public String getNome() {
 		return nome;
@@ -173,5 +166,19 @@ public class MembroEquipe implements Serializable {
 	 */
 	public void setConsultas(List<Consulta> consultas) {
 		this.consultas = consultas;
+	}
+
+	/**
+	 * @return the id
+	 */
+	public int getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(int id) {
+		this.id = id;
 	}
 }

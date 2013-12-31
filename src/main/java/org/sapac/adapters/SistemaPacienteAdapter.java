@@ -13,6 +13,7 @@ import org.sapac.entities.Paciente;
  * @author carlson
  */
 public interface SistemaPacienteAdapter {
+	public void carregarInformacoesPaciente(Paciente paciente);
 	public Collection<Paciente> procurarPaciente(Paciente paciente);
 	public boolean salvarInformacoesProntuario(Consulta consulta);
 }

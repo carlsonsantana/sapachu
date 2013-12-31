@@ -6,26 +6,28 @@ function gerarAreas(loaded) {
 	}
 }
 function generateAreas() {
-	var image = '#form_pernas';
+	var image = '#form_pernas,#form_pernas2';
 	var top;
 	top = jQuery(image).offset().top;
 	var left;
 	left = jQuery(image).offset().left;
-	var usemap = jQuery('#form_pernas').attr('usemap') + 'Id';
-	var areas = jQuery(usemap).children('area');
+	var usemap = jQuery(image).attr('usemap') + 'Id';
+	var areas = jQuery(usemap).children('area, a');
 	var length = areas.length;
 	for (var i = 0; i < length; i++) {
 		var area = areas.eq(i);
 		var coordenadas = area.attr('coords').split(',');
-		var div = '<a href="' + area.attr('href') + '" style="display:block;" class="mapareas"><div style="border:1px solid black; height:' + (coordenadas[3] - coordenadas[1]) + 'px; width:' + (coordenadas[2] - coordenadas[0]) + 'px;position:absolute;top:' + (top + parseInt(coordenadas[1])) + 'px;left:' + (left + parseInt(coordenadas[0])) + 'px; z-index: 3000"> </div></a>';
-		jQuery(div).insertBefore(jQuery("div").eq(0));
+		var div = '<a href="#" style="display:block;" class="mapareas" onclick="document.getElementById(\'' + area.attr('id') + '\').onclick();"><div style="border:1px solid black; height:' + (coordenadas[3] - coordenadas[1]) + 'px; width:' + (coordenadas[2] - coordenadas[0]) + 'px;position:absolute;top:' + (top + parseInt(coordenadas[1])) + 'px;left:' + (left + parseInt(coordenadas[0])) + 'px;z-index: 10"> </div></a>';
+		jQuery(div).insertBefore(jQuery("#after").eq(0));
 	}
 }
 function sumirAreas() {
 	jQuery('.mapareas').remove();
 	if (jQuery("#form_pernas").size() > 0) {
-		mapaImagem.setOptions({remove: true, disable: true, hide: true});
-		mapaImagem.update();
+		if (typeof mapaImagem != typeof undefined) {
+			mapaImagem.setOptions({remove: true, disable: true, hide: true});
+			mapaImagem.update();
+		}
 		//generateAreas();
 	}
 }
@@ -34,10 +36,17 @@ function cancelar() {
 			'todos os dados informados serão perdidos.';
 	return confirm(mensagem);
 }
-function adicionarArea(mapa, posx1, posy1, posx2, posy2) {
+function substituirArea(posx1, posy1, posx2, posy2) {
+	var coords = '((' + posx1 + ',' + posy1 + '),(' + posx2 + ',' + posy2 + '))';
+	jQuery('#form_pontos').attr("value", coords);
+	sumirAreas();
+	gerarAreas(true);
+	mapaImagem.setOptions({remove: false, disable: false, hide: false});
+	mapaImagem.update();
+}
+function adicionarArea(mapa, coordenadas) {
 	var map = document.getElementById(mapa);
-	var area = '<area shape="rect" coords="' + posx1 + ',' + posy1 + ',' +
-			posx2 + ',' + posy2 + '" href="javascript:mostrarUlcera();" />';
+	var area = '<area shape="rect" coords="' + coordenadas + '" href="javascript:mostrarUlcera();" />';
 	map.innerHTML += area;
 	sumirAreas();
 	gerarAreas(true);
@@ -60,4 +69,7 @@ function adicionarMedicamento() {
 
 function adicionarCirurgia() {
 	jQuery('<div class=\'form-group cirurgias\'><label>Cirurgia</label><input type=\'text\' class=\'form-control\' /></div>').insertAfter(jQuery('.cirurgias').eq(jQuery('.cirurgias').size() - 1));
+}
+function limparAreas() {
+	jQuery('.mapareas').remove();
 }

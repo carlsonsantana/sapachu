@@ -13,6 +13,7 @@
 				<script type="text/javascript">
 					var consultaMarcada = false;
 				</script>
+				<p:growl id="mensagensWarn" showDetail="true" sticky="true" severity="warn" />
 				Nome: <h:outputText value="#{agendaController.paciente.nome}" /><br />
 				Prontuário: <h:outputText value="#{agendaController.paciente.prontuario}" /><br /><br />
 				<p:schedule id="schedule" widgetVar="myschedule" locale="pt"
@@ -33,7 +34,8 @@
 							<p:commandButton id="nao" value="Não" oncomplete="PF('eventDialog').hide();" />
 							<p:commandButton id="addButton" value="Sim"
 											 action="#{agendaController.adicionarConsulta}"
-											 oncomplete="PF('myschedule').update();PF('eventDialog').hide();consultaMarcada = true;" />
+											 oncomplete="PF('myschedule').update();PF('eventDialog').hide();consultaMarcada = true;"
+											 update="mensagensWarn" />
 						</h:panelGroup>
 					</h:panelGrid>
 				</p:dialog>

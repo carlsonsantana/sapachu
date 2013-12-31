@@ -10,15 +10,11 @@ function getPosition(mouseEvent, sigCanvas) {
 		y = mouseEvent.offsetY;
 	}
 	if (mouseEvent.pageX !== undefined && mouseEvent.pageY !== undefined) {
-		x = mouseEvent.pageX;
-		y = mouseEvent.pageY;
-		x = x - jQuery(sigCanvas).offset().left;
-		y = y - jQuery(sigCanvas).offset().top;
+		x = mouseEvent.pageX - jQuery(sigCanvas).offset().left;
+		y = mouseEvent.pageY - jQuery(sigCanvas).offset().top;
 	} else {
-		x = mouseEvent.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
-		y = mouseEvent.clientY + document.body.scrollTop + document.documentElement.scrollTop;
-		x = x - jQuery(sigCanvas).offset().left;
-		y = y - jQuery(sigCanvas).offset().top;
+		x = mouseEvent.clientX + document.body.scrollLeft + document.documentElement.scrollLeft - jQuery(sigCanvas).offset().left;
+		y = mouseEvent.clientY + document.body.scrollTop + document.documentElement.scrollTop - jQuery(sigCanvas).offset().top;
 	}
 	return {X: x, Y: y};
 }
@@ -107,17 +103,22 @@ function initialize() {
 		});
 		$("#complete").mousedown(function() {
 			positions.push(positions[0]);
-			var numero = document.getElementById("valor_area");
+			var numero = document.getElementById("form_valorarea");
+			var pontos = document.getElementById("form_pontosulcera");
+			pontos.value = '(';
 			var cont = 0;
 			numero.value = "";
 			for (var i = 0; i < positions.length; i++) {
+				pontos.value += '(' + positions[i].X + ',' + positions[i].Y + ')';
 				if (i !== 0) {
 					cont = cont + (positions[i].X * positions[i - 1].Y);
 				}
 				if ((i + 1) !== positions.length) {
 					cont = cont - (positions[i].X * positions[i + 1].Y);
+					pontos.value += ',';
 				}
 			}
+			pontos.value = ')';
 			if (cont < 0) {
 				cont = -cont;
 			}
@@ -135,7 +136,6 @@ function initialize() {
 				}
 				context.lineTo(positions[i].X, positions[i].Y);
 				context.stroke();
-
 			}
 		});
 		// start drawing when the mousedown event fires, and attach handlers to
@@ -153,33 +153,12 @@ function initialize() {
 			$(this).mousemove(function(mouseEvent) {
 				drawLine(mouseEvent, sigCanvas, context);
 			}).mouseup(function(mouseEvent) {
-				//alert("pi");
 				finishDrawing(mouseEvent, sigCanvas, context);
 			}).mouseout(function(mouseEvent) {
-				//alert("lambda");
 				finishDrawing(mouseEvent, sigCanvas, context);
 			});
 			clicked = true;
 		});
-		/*$("#canvasSignature").mousemove(function (mouseEvent) {
-		 var position = getPosition(mouseEvent, sigCanvas);
-		 
-		 context.moveTo(position.X, position.Y);
-		 context.beginPath();
-		 if (clicked) {
-		 drawLine(mouseEvent, sigCanvas, context);
-		 }
-		 // attach event handlers
-		 /*$(this).mousemove(function (mouseEvent) {
-		 drawLine(mouseEvent, sigCanvas, context);
-		 }).mouseup(function (mouseEvent) {
-		 //alert("pi");
-		 finishDrawing(mouseEvent, sigCanvas, context);
-		 }).mouseout(function (mouseEvent) {
-		 //alert("lambda");
-		 finishDrawing(mouseEvent, sigCanvas, context);
-		 });
-		 });*/
 	}
 }
 var casos = 0;
@@ -199,8 +178,6 @@ function drawLine(mouseEvent, sigCanvas, context) {
 			context.stroke();
 		}
 	}
-	// context.lineTo(position.X, position.Y);
-	//context.stroke();
 }
 
 // draws a line from the last coordiantes in the path to the finishing

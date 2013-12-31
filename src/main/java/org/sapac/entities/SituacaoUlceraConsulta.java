@@ -62,7 +62,7 @@ public class SituacaoUlceraConsulta implements Serializable {
 	private boolean fibrina;
 	@NotNull
 	private boolean granula;
-	@NotNull
+	
 	private boolean reulcera;
 	@NotNull
 	private boolean prurido;
@@ -75,8 +75,6 @@ public class SituacaoUlceraConsulta implements Serializable {
 	private boolean sinalCicatrizacao;
 	@NotNull
 	private boolean circular;
-	@NotNull
-	private boolean lado;
 
 	/**
 	 * @return the id
@@ -342,19 +340,5 @@ public class SituacaoUlceraConsulta implements Serializable {
 	 */
 	public void setCircular(boolean circular) {
 		this.circular = circular;
-	}
-
-	/**
-	 * @return the lado
-	 */
-	public boolean isLado() {
-		return lado;
-	}
-
-	/**
-	 * @param lado the lado to set
-	 */
-	public void setLado(boolean lado) {
-		this.lado = lado;
 	}
 }

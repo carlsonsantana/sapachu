@@ -8,7 +8,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -22,7 +21,14 @@ import org.primefaces.event.FlowEvent;
 import org.sapac.controllers.GenericController;
 import org.sapac.controllers.PaginasNavegacao;
 import org.sapac.entities.Consulta;
+import org.sapac.entities.FotoUlcera;
+import org.sapac.entities.IntervencaoEnfermagem;
 import org.sapac.entities.Paciente;
+import org.sapac.entities.SituacaoUlceraConsulta;
+import org.sapac.entities.Ulcera;
+import org.sapac.entities.VariaveisClinicas;
+import org.sapac.models.ConsultaDAO;
+import org.sapac.models.hibernate.ConsultaDAOHibernate;
 
 /**
  *
@@ -40,47 +46,14 @@ public class ConsultaController extends GenericController {
 	private List<String> areas;
 	private Date date;
 	private String imagem;
+	private SituacaoUlceraConsulta situacaoUlceraConsulta;
+	private String poligonoUlcera;
 
 	@PostConstruct
 	public void init() {
 		setConsulta(new Consulta());
 		getConsulta().setPaciente(new Paciente());
 		pacientePesquisa = new Paciente();
-
-		List<Consulta> consultas = new ArrayList<Consulta>();
-		Paciente paciente1 = new Paciente();
-		paciente1.setNome("Carlos Miguel Fonseca");
-		paciente1.setProntuario("3435.1212");
-		Consulta consulta1 = new Consulta();
-		consulta1.setPaciente(paciente1);
-		consulta1.setSituacao(Consulta.CONSULTA_MARCADA);
-		consultas.add(consulta1);
-		paciente1 = new Paciente();
-		paciente1.setNome("Josefa Maria de Lurdes");
-		paciente1.setProntuario("9864.6324");
-		Consulta consulta2 = new Consulta();
-		consulta2.setPaciente(paciente1);
-		consulta2.setSituacao(Consulta.CONSULTA_MARCADA);
-		consultas.add(consulta2);
-		consultas.add(consulta2);
-		consultas.add(consulta2);
-		consultas.add(consulta2);
-		consultas.add(consulta2);
-		consultas.add(consulta2);
-		consultas.add(consulta2);
-		consultas.add(consulta2);
-		consultas.add(consulta2);
-		consultas.add(consulta2);
-		consultas.add(consulta2);
-		consultas.add(consulta2);
-		consultas.add(consulta2);
-		consultas.add(consulta2);
-		consultas.add(consulta2);
-		consultas.add(consulta2);
-		consultas.add(consulta2);
-		consultas.add(consulta2);
-
-		listaConsultas = new ListDataModel<Consulta>(consultas);
 	}
 
 	/**
@@ -112,15 +85,31 @@ public class ConsultaController extends GenericController {
 	}
 
 	public String pesquisarPacienteConsulta() {
+		ConsultaDAO dao = new ConsultaDAOHibernate();
+		listaConsultas = new ListDataModel<Consulta>((List<Consulta>) dao.procurarConsultasDia(getDataAtual()));
+		
 		return PaginasNavegacao.CONSULTA_PESQUISAR_PACIENTE;
 	}
 
 	public String consultarPaciente(Consulta consulta) {
+		ConsultaDAO dao = new ConsultaDAOHibernate();
+		consulta = dao.carregarConsulta(consulta);
+		
 		setConsulta(consulta);
+		
+		if (consulta.getVariaveisClinicas() == null) {
+			consulta.setVariaveisClinicas(new VariaveisClinicas());
+		}
+		if (consulta.getIntervencaoEnfermagem() == null) {
+			consulta.setIntervencaoEnfermagem(new IntervencaoEnfermagem());
+		}
+		
 		return PaginasNavegacao.CONSULTA_CONSULTAR_PACIENTE;
 	}
 
 	public String onFlowProcess(FlowEvent event) {
+		situacaoUlceraConsulta = null;
+		
 		return event.getNewStep();
 	}
 
@@ -184,10 +173,12 @@ public class ConsultaController extends GenericController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		//UploadedFile uploadedFile = event.getFile();
-
-		/*imagem = new DefaultStreamedContent(uploadedFile.getInputstream(),
-		 uploadedFile.getContentType());*/
+		
+		if (situacaoUlceraConsulta.getFotoUlcera() == null) {
+			situacaoUlceraConsulta.setFotoUlcera(new FotoUlcera());
+		}
+		situacaoUlceraConsulta.getFotoUlcera().setEnderecoImagem(imagem);
+		
 		adicionarMensagemAviso("Arquivo enviado com sucesso",
 				event.getFile().getFileName());
 	}
@@ -207,7 +198,11 @@ public class ConsultaController extends GenericController {
 	}
 
 	public String confirmarConsulta() {
+		ConsultaDAO dao = new ConsultaDAOHibernate();
+		dao.editarConsulta(consulta);
+		
 		adicionarMensagemAviso("Consulta realizada", "Consulta salva com sucesso.");
+		
 		return pesquisarPacienteConsulta();
 	}
 	
@@ -242,4 +237,53 @@ public class ConsultaController extends GenericController {
 	public void setConsulta(Consulta consulta) {
 		this.consulta = consulta;
 	}
+	
+	public void adicionarUlcera() {
+		Ulcera ulcera = new Ulcera();
+		ulcera.setPontos(area);
+		
+		SituacaoUlceraConsulta situacaoUlceraConsulta = new SituacaoUlceraConsulta();
+		situacaoUlceraConsulta.setUlcera(ulcera);
+		
+		consulta.getSituacoesUlcera().add(situacaoUlceraConsulta);
+	}
+	
+	public void editarSituacaoUlcera(SituacaoUlceraConsulta situacaoUlcera) {
+		setSituacaoUlceraConsulta(situacaoUlcera);
+	}
+	
+	public void finalizarSituacaoUlcera() {
+		situacaoUlceraConsulta.getFotoUlcera().setPontos(poligonoUlcera);
+		
+		situacaoUlceraConsulta = null;
+	}
+
+	/**
+	 * @return the situacaoUlceraConsulta
+	 */
+	public SituacaoUlceraConsulta getSituacaoUlceraConsulta() {
+		return situacaoUlceraConsulta;
+	}
+
+	/**
+	 * @param situacaoUlceraConsulta the situacaoUlceraConsulta to set
+	 */
+	public void setSituacaoUlceraConsulta(SituacaoUlceraConsulta situacaoUlceraConsulta) {
+		this.situacaoUlceraConsulta = situacaoUlceraConsulta;
+	}
+
+	/**
+	 * @return the poligonoUlcera
+	 */
+	public String getPoligonoUlcera() {
+		return poligonoUlcera;
+	}
+
+	/**
+	 * @param poligonoUlcera the poligonoUlcera to set
+	 */
+	public void setPoligonoUlcera(String poligonoUlcera) {
+		this.poligonoUlcera = poligonoUlcera;
+	}
+	
 }
