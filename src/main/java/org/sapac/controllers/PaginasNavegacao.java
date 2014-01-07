@@ -55,8 +55,8 @@ public abstract class PaginasNavegacao {
 		
 		ENFERMAGEM_EDITAR_INTERVENCAO = "/private/enfermagem/intervencao";
 		ENFERMAGEM_EDITAR_DIAGNOSTICO = "/private/enfermagem/diagnosticar";
-		ENFERMAGEM_VISUALIZAR_INTERVENCAO = "/private/enfermagem/visualizar_diagnostico";
-		ENFERMAGEM_VISUALIZAR_DIAGNOSTICO = "/private/enfermagem/visualizar_intervencao";
+		ENFERMAGEM_VISUALIZAR_INTERVENCAO = "/private/enfermagem/visualizar_intervencao";
+		ENFERMAGEM_VISUALIZAR_DIAGNOSTICO = "/private/enfermagem/visualizar_diagnostico";
 		
 		CONSULTA_PESQUISAR_PACIENTE = "/private/consulta/pesquisar_paciente";
 		CONSULTA_MARCAR = "/private/consulta/marcar_consulta";

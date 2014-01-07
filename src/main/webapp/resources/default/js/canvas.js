@@ -16,7 +16,7 @@ function getPosition(mouseEvent, sigCanvas) {
 		x = mouseEvent.clientX + document.body.scrollLeft + document.documentElement.scrollLeft - jQuery(sigCanvas).offset().left;
 		y = mouseEvent.clientY + document.body.scrollTop + document.documentElement.scrollTop - jQuery(sigCanvas).offset().top;
 	}
-	return {X: x, Y: y};
+	return {'x': x, 'y': y};
 }
 
 function rgbToHex(r, g, b) {
@@ -104,21 +104,17 @@ function initialize() {
 		$("#complete").mousedown(function() {
 			positions.push(positions[0]);
 			var numero = document.getElementById("form_valorarea");
-			var pontos = document.getElementById("form_pontosulcera");
-			pontos.value = '(';
 			var cont = 0;
 			numero.value = "";
 			for (var i = 0; i < positions.length; i++) {
-				pontos.value += '(' + positions[i].X + ',' + positions[i].Y + ')';
 				if (i !== 0) {
-					cont = cont + (positions[i].X * positions[i - 1].Y);
+					cont = cont + (positions[i].x * positions[i - 1].y);
 				}
 				if ((i + 1) !== positions.length) {
-					cont = cont - (positions[i].X * positions[i + 1].Y);
-					pontos.value += ',';
+					cont = cont - (positions[i].x * positions[i + 1].y);
 				}
 			}
-			pontos.value = ')';
+			document.getElementById("form_pontosulcera").value = convertArrayToPoints(positions);
 			if (cont < 0) {
 				cont = -cont;
 			}
@@ -127,14 +123,14 @@ function initialize() {
 			positions.push(positions[0]);
 
 			context.clearRect(0, 0, context.canvas.width, context.canvas.heigth);
-			context.moveTo(positions[0].X, positions[0].Y);
+			context.moveTo(positions[0].x, positions[0].y);
 			for (var i = 1, length = positions.length; i < length; i++) {
 				if ((i + 1) === length) {
 					context.strokeStyle = 'red';
 				} else {
 					context.strokeStyle = 'black';
 				}
-				context.lineTo(positions[i].X, positions[i].Y);
+				context.lineTo(positions[i].x, positions[i].y);
 				context.stroke();
 			}
 		});
@@ -143,7 +139,7 @@ function initialize() {
 		$("#canvasSignature").mousedown(function(mouseEvent) {
 			var position = getPosition(mouseEvent, sigCanvas);
 
-			context.moveTo(position.X, position.Y);
+			context.moveTo(position.x, position.y);
 			context.beginPath();
 			context.strokeStyle = 'Black';
 			if (!clicked) {
@@ -167,14 +163,14 @@ var casos = 0;
 function drawLine(mouseEvent, sigCanvas, context) {
 	if (!travado) {
 		context.clearRect(0, 0, context.canvas.width, context.canvas.heigth);
-		context.moveTo(positions[0].X, positions[0].Y);
+		context.moveTo(positions[0].x, positions[0].y);
 		for (var i = 1, length = positions.length; i < length; i++) {
 			if ((i + 1) === length) {
 				context.strokeStyle = 'red';
 			} else {
 				context.strokeStyle = 'black';
 			}
-			context.lineTo(positions[i].X, positions[i].Y);
+			context.lineTo(positions[i].x, positions[i].y);
 			context.stroke();
 		}
 	}

@@ -1,7 +1,8 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
 				xmlns:h="http://xmlns.jcp.org/jsf/html"
 				xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-				xmlns:p="http://primefaces.org/ui">
+				xmlns:p="http://primefaces.org/ui"
+				xmlns:c="http://java.sun.com/jsp/jstl/core">
 	<div id="after"></div>
 	<div class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
@@ -32,16 +33,27 @@
 								<li><h:commandLink id="adicionar_paciente" value="Adicionar" action="#{pacienteController.cadastrarPaciente()}" /></li>
 							</ul>
 						</li>
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Membro Equipe <span class="caret"></span></a>
-							<ul class="dropdown-menu">
-								<li><h:commandLink id="pesquisar_usuario" value="Pesquisar" action="#{usuarioController.telaPesquisaUsuario()}" /></li>
-								<li><h:commandLink id="adicionar_usuario" value="Adicionar" action="#{usuarioController.cadastrarFuncionario()}" /></li>
-							</ul>
-						</li>
+						<c:if test="#{perfilController.coordenador}">
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Membro Equipe <span class="caret"></span></a>
+								<ul class="dropdown-menu">
+									<li><h:commandLink id="pesquisar_usuario" value="Pesquisar" action="#{usuarioController.telaPesquisaUsuario()}" /></li>
+									<li><h:commandLink id="adicionar_usuario" value="Adicionar" action="#{usuarioController.telaCadastrarUsuario()}" /></li>
+								</ul>
+							</li>
+						</c:if>
 						<li>
 							<h:link id="relatorio" value="Gerar Relatório de Desempenho" outcome="/private/relatorio/pesquisar.xhtml" />
 						</li>
+						<c:if test="#{perfilController.enfermeiro}">
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">SAE <span class="caret"></span></a>
+								<ul class="dropdown-menu">
+									<li><h:commandLink id="pesquisarsae" value="Pesquisar" action="#{pacienteController.pesquisarPacienteEnfermagem()}" /></li>
+									<li><h:commandLink value="Editar" action="#{enfermagemController.pesquisarIntervencoes()}" /></li>
+								</ul>
+							</li>
+						</c:if>
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Conta <span class="caret"></span></a>
 							<ul class="dropdown-menu" role="menu">

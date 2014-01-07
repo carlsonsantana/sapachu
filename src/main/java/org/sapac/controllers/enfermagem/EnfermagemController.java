@@ -4,45 +4,39 @@
  */
 package org.sapac.controllers.enfermagem;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.SessionScoped;
+import javax.faces.model.DataModel;
+import javax.faces.model.ListDataModel;
+import javax.inject.Inject;
 import javax.inject.Named;
 import org.sapac.controllers.GenericController;
 import org.sapac.controllers.PaginasNavegacao;
+import org.sapac.controllers.usuario.PerfilController;
+import org.sapac.entities.Consulta;
+import org.sapac.entities.Enfermeiro;
+import org.sapac.entities.IntervencaoEnfermagem;
 import org.sapac.entities.Paciente;
+import org.sapac.models.EnfermagemDAO;
+import org.sapac.models.hibernate.EnfermagemDAOHibernate;
 
 /**
  *
  * @author carlson
  */
 @Named
-@javax.enterprise.context.SessionScoped
+@SessionScoped
 public class EnfermagemController extends GenericController {
-	
+
 	private Paciente paciente;
-	
 	private Paciente pacientePesquisa;
-	
-	@PostConstruct
-	public void init() {
-		
-	}
-	
-	public String telaDianosticarEnfermagem(Paciente paciente) {
-		this.paciente = paciente;
-		return PaginasNavegacao.ENFERMAGEM_EDITAR_DIAGNOSTICO;
-	}
-	
-	public String telaIntervencaoEnfermagem() {
-		return PaginasNavegacao.ENFERMAGEM_EDITAR_INTERVENCAO;
-	}
-	
-	public String visualizarDiagnostico(Paciente paciente) {
-		return PaginasNavegacao.ENFERMAGEM_VISUALIZAR_DIAGNOSTICO;
-	}
-	
-	public String visualizarIntervencao() {
-		return PaginasNavegacao.ENFERMAGEM_VISUALIZAR_INTERVENCAO;
-	}
+	private IntervencaoEnfermagem intervencaoEnfermagem;
+	private DataModel<IntervencaoEnfermagem> intervencoesEnfermagem;
+	@Inject
+	private PerfilController perfilController;
 
 	/**
 	 * @return the paciente
@@ -59,6 +53,20 @@ public class EnfermagemController extends GenericController {
 	}
 
 	/**
+	 * @return the intervencaoEnfermagem
+	 */
+	public IntervencaoEnfermagem getIntervencaoEnfermagem() {
+		return intervencaoEnfermagem;
+	}
+
+	/**
+	 * @param intervencaoEnfermagem the intervencaoEnfermagem to set
+	 */
+	public void setIntervencaoEnfermagem(IntervencaoEnfermagem intervencaoEnfermagem) {
+		this.intervencaoEnfermagem = intervencaoEnfermagem;
+	}
+
+	/**
 	 * @return the pacientePesquisa
 	 */
 	public Paciente getPacientePesquisa() {
@@ -70,5 +78,89 @@ public class EnfermagemController extends GenericController {
 	 */
 	public void setPacientePesquisa(Paciente pacientePesquisa) {
 		this.pacientePesquisa = pacientePesquisa;
+	}
+
+	/**
+	 * @return the intervencoesEnfermagem
+	 */
+	public DataModel<IntervencaoEnfermagem> getIntervencoesEnfermagem() {
+		return intervencoesEnfermagem;
+	}
+
+	/**
+	 * @param intervencoesEnfermagem the intervencoesEnfermagem to set
+	 */
+	public void setIntervencoesEnfermagem(DataModel<IntervencaoEnfermagem> intervencoesEnfermagem) {
+		this.intervencoesEnfermagem = intervencoesEnfermagem;
+	}
+
+	@PostConstruct
+	public void init() {
+		pacientePesquisa = new Paciente();
+	}
+
+	public String telaDianosticarEnfermagem(Paciente paciente) {
+		this.paciente = paciente;
+
+		EnfermagemDAO dao = new EnfermagemDAOHibernate();
+		paciente.setDiagnosticoEnfermagem(dao.procurarDiagnosticoEnfermagem(paciente));
+
+		return PaginasNavegacao.ENFERMAGEM_EDITAR_DIAGNOSTICO;
+	}
+
+	public String telaIntervencaoEnfermagem(IntervencaoEnfermagem intervencaoEnfermagem) {
+		setIntervencaoEnfermagem(intervencaoEnfermagem);
+		setPaciente(intervencaoEnfermagem.getConsulta().getPaciente());
+
+		return PaginasNavegacao.ENFERMAGEM_EDITAR_INTERVENCAO;
+	}
+
+	public String visualizarDiagnostico(Paciente paciente) {
+		EnfermagemDAO dao = new EnfermagemDAOHibernate();
+		paciente.setDiagnosticoEnfermagem(dao.procurarDiagnosticoEnfermagem(paciente));
+		paciente.setConsultas(new ArrayList<Consulta>());
+
+		Collection<IntervencaoEnfermagem> intervencoesEnfermagem = dao.procurarIntervencoesEnfermagem(paciente);
+		for (IntervencaoEnfermagem intervencaoEnfermagem : intervencoesEnfermagem) {
+			paciente.getConsultas().add(intervencaoEnfermagem.getConsulta());
+		}
+
+		setPaciente(paciente);
+		setIntervencaoEnfermagem(null);
+
+		return PaginasNavegacao.ENFERMAGEM_VISUALIZAR_DIAGNOSTICO;
+	}
+
+	public String visualizarIntervencao(IntervencaoEnfermagem intervencaoEnfermagem) {
+		setIntervencaoEnfermagem(intervencaoEnfermagem);
+
+		return PaginasNavegacao.ENFERMAGEM_VISUALIZAR_DIAGNOSTICO;
+	}
+
+	public String salvarDiagnosticoEnfermagem() {
+		EnfermagemDAO dao = new EnfermagemDAOHibernate();
+		dao.alterarDiagnosticoEnfermagem(paciente.getDiagnosticoEnfermagem());
+
+		return PaginasNavegacao.PAGINA_INICIAL;
+	}
+
+	public String pesquisarIntervencoes() {
+		EnfermagemDAO dao = new EnfermagemDAOHibernate();
+		Collection<IntervencaoEnfermagem> intervencoes = dao.procurarIntervencoesEnfermagemDia(pacientePesquisa, getDataAtual());
+		setIntervencoesEnfermagem(new ListDataModel<IntervencaoEnfermagem>((List<IntervencaoEnfermagem>) intervencoes));
+
+		return "/private/enfermagem/pesquisar_paciente";
+	}
+
+	public String salvarIntervencaoEnfermagem() {
+		Enfermeiro enfermeiro = (Enfermeiro) perfilController.getUsuario().getMembroEquipe();
+		intervencaoEnfermagem.setEnfermeiro(enfermeiro);
+
+		EnfermagemDAO dao = new EnfermagemDAOHibernate();
+		dao.alterarIntervencaoEnfermagem(intervencaoEnfermagem);
+
+		init();
+
+		return pesquisarIntervencoes();
 	}
 }

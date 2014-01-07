@@ -32,8 +32,7 @@
 						<p:fileUpload allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
 									  update="imagemupload" mode="advanced"
 									  fileUploadListener="#{consultaController.handleFileUpload}"
-									  id="fileupload" rendered="#{empty consultaController.imagem}"
-									  uploadLabel="Carregar Arquivo" label="Escolher Arquivo..."
+									  id="fileupload" uploadLabel="Carregar Arquivo" label="Escolher Arquivo..."
 									  cancelLabel="Cancelar" />
 						<br /><br />
 						<p:growl id="mensagensUpload" showDetail="true" />
@@ -51,10 +50,10 @@
 								<input type="button" value="Completar" id="complete" class="btn btn-default" />
 								<br />
 								<div class="input-group">
-									<h:inputText id="pontosulcera" styleClass="form-control" value="#{consultaController.poligonoUlcera}" />
 									<h:inputText id="valorarea" styleClass="form-control" value="#{consultaController.situacaoUlceraConsulta.area}" />
 									<span class="input-group-addon">cm²</span>
 								</div>
+								<h:inputHidden id="pontosulcera" value="#{consultaController.poligonoUlcera}" />
 								<p id="numero"></p>
 							</div>
 						</div>
@@ -162,12 +161,12 @@
 								<h:outputLabel for="estado" value="Estado" />
 								<h:selectOneMenu id="estado" styleClass="form-control"
 												 value="#{consultaController.situacaoUlceraConsulta.estadoUlcera}">
-									<f:selectItem itemLabel="Limpa" itemValue="#{0}" />
-									<f:selectItem itemLabel="Limpa Contaminada" itemValue="#{1}"  />
-									<f:selectItem itemLabel="Contaminada" itemValue="#{2}" />
-									<f:selectItem itemLabel="Infectada" itemValue="#{3}" />
-									<f:selectItem itemLabel="Necrosada" itemValue="#{4}" />
-									<f:selectItem itemLabel="Cicatrizada" itemValue="#{5}" />
+									<f:selectItem itemLabel="Limpa" itemValue="#{1}" />
+									<f:selectItem itemLabel="Limpa Contaminada" itemValue="#{2}"  />
+									<f:selectItem itemLabel="Contaminada" itemValue="#{3}" />
+									<f:selectItem itemLabel="Infectada" itemValue="#{4}" />
+									<f:selectItem itemLabel="Necrosada" itemValue="#{5}" />
+									<f:selectItem itemLabel="Cicatrizada" itemValue="#{6}" />
 								</h:selectOneMenu>
 							</div>
 						</div>

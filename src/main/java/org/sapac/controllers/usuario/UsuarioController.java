@@ -23,10 +23,9 @@ import org.sapac.entities.Medico;
 @Named
 @javax.enterprise.context.SessionScoped
 public class UsuarioController extends GenericController {
-	
+
 	//@Inject
 	//private Conversation conversation;
-
 	/**
 	 * @return the funcionario
 	 */
@@ -84,6 +83,7 @@ public class UsuarioController extends GenericController {
 	}
 
 	private enum Operacao {
+
 		FUNCIONARIO,
 		USUARIO;
 	}
@@ -92,7 +92,7 @@ public class UsuarioController extends GenericController {
 	private transient DataModel<MembroEquipe> listaFuncionaros;
 	private String senha;
 	private String confirmacaoSenha;
-	
+
 	@PostConstruct
 	public void init() {
 		List<MembroEquipe> funcionarios = new ArrayList<MembroEquipe>();
@@ -133,7 +133,7 @@ public class UsuarioController extends GenericController {
 		this.funcionario = funcionario;
 		return PaginasNavegacao.USUARIO_EDITAR;
 	}
-	
+
 	public String cadastrar(MembroEquipe membroEquipe) {
 		if (!senha.equals(confirmacaoSenha)) {
 			adicionarMensagemErro("Senhas diferentes", "A senha digitada "
@@ -144,7 +144,7 @@ public class UsuarioController extends GenericController {
 			return PaginasNavegacao.USUARIO_PESQUISAR;
 		}
 	}
-	
+
 	public String editar(MembroEquipe funcionario) {
 		if (!senha.equals(confirmacaoSenha)) {
 			adicionarMensagemErro("Senhas diferentes", "A senha digitada "

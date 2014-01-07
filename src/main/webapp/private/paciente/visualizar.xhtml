@@ -54,10 +54,14 @@
 			<div>
 				Consultas:
 				<h:form id="form">
-					<h:outputText value=" " />
-					<h:commandLink value="10/10/2013" action="#{consultaController.visualizarConsulta()}" />
-					<h:outputText value=" " />
-					<h:commandLink value="15/10/2013" action="#{consultaController.visualizarConsulta()}" />
+					<ui:repeat value="#{pacienteController.paciente.consultas}" var="consulta">
+						<h:outputText value=" " />
+						<h:commandLink action="#{consultaController.visualizarConsulta(consulta)}">
+							<h:outputText value="#{consulta.data}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText>
+						</h:commandLink>
+					</ui:repeat>
 				</h:form>
 			</div>
 			<div>

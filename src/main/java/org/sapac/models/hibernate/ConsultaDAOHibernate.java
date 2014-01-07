@@ -4,14 +4,15 @@
  */
 package org.sapac.models.hibernate;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.sapac.entities.Consulta;
 import org.sapac.entities.DiagnosticoEnfermagem;
-import org.sapac.entities.FotoUlcera;
 import org.sapac.entities.Paciente;
 import org.sapac.entities.SituacaoUlceraConsulta;
 import org.sapac.entities.Ulcera;
@@ -117,7 +118,27 @@ public class ConsultaDAOHibernate extends GenericDAOHibernate implements Consult
 
 	@Override
 	public Collection<Consulta> procurarConsultasPaciente(Paciente paciente) {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		Collection<Consulta> consultas = new ArrayList<Consulta>();
+		Session session = getSession();
+		
+		Transaction transaction = session.beginTransaction();
+		
+		StringBuilder hql = new StringBuilder();
+		hql.append("SELECT consulta FROM Consulta AS consulta ")
+				.append(" LEFT JOIN consulta.paciente AS paciente ")
+				.append(" WHERE 1 = 1 ")
+				.append(" AND paciente.id = :idPaciente ")
+				.append(" AND consulta.situacao IN (:situacoes) ");
+		
+		Query query = session.createQuery(hql.toString());
+		query.setInteger("idPaciente", paciente.getId());
+		query.setParameterList("situacoes", new Object[] {Consulta.CONSULTA_REALIZADA});
+		
+		consultas = query.list();
+		
+		transaction.commit();
+		
+		return consultas;
 	}
 
 	
@@ -215,30 +236,10 @@ public class ConsultaDAOHibernate extends GenericDAOHibernate implements Consult
 		
 		consulta = (Consulta) query.uniqueResult();
 		
-		sql = new StringBuilder();
-		sql.append("SELECT paciente FROM Paciente AS paciente ")
-				.append(" LEFT JOIN FETCH paciente.ulceras AS ulceras ")
-				.append(" WHERE 1 = 1 ")
-				.append(" AND paciente.id = :idPaciente ");
+		Hibernate.initialize(consulta.getPaciente().getUlceras());
 		
-		query = session.createQuery(sql.toString());
-		query.setInteger("idPaciente", consulta.getId());
+		Hibernate.initialize(consulta.getMembrosEquipe());
 		
-		Collection<Ulcera> ulceras = query.list();
-		
-		consulta.getPaciente().setUlceras(ulceras);
-		/*
-		sql = new StringBuilder();
-		sql.append("SELECT consulta FROM Consulta AS consulta ")
-				.append(" LEFT JOIN FETCH consulta.membrosEquipe AS membrosEquipe ")
-				.append(" WHERE 1 = 1 ")
-				.append(" AND consulta.id = :idConsulta ");
-		
-		query = session.createQuery(sql.toString());
-		query.setInteger("idConsulta", consulta.getId());
-		
-		consulta.setMembrosEquipe(query.list());
-		*/
 		transaction.commit();
 		
 		return consulta;

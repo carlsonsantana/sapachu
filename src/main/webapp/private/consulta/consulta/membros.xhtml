@@ -1,0 +1,58 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:ui="http://java.sun.com/jsf/facelets"
+				xmlns:p="http://primefaces.org/ui"
+				xmlns:f="http://xmlns.jcp.org/jsf/core">
+	<p:tab id="participantes" title="Participantes">
+		<p:panel header="Participantes">
+			<p:dataTable id="participantesatuais" value="#{consultaController.consulta.membrosEquipe}"
+						 var="membroEquipe" paginator="true" rows="10" lazy="true"
+						 paginatorPosition="bottom" paginatorAlwaysVisible="false">
+				<p:column>
+					<f:facet name="header"><h:outputText value="Nome" /></f:facet>
+					<h:outputText value="#{membroEquipe.nome}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header"><h:outputText value="Tipo" /></f:facet>
+					<h:outputText value="Médico" rendered="#{membroEquipe.medico}" />
+					<h:outputText value="Enfermeiro" rendered="#{membroEquipe.enfermeiro}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header"><h:outputText value="Ações" /></f:facet>
+					<h:commandLink value="Remover" action="#{consultaController.removerMembroEquipe(membroEquipe)}" />
+				</p:column>
+			</p:dataTable>
+			<br /><br /><br />
+			<div class="row">
+				<div class="form-group col-lg-6">
+					<label for="form_nome_paciente">Membro</label>
+					<p:inputText id="nome_paciente" value="#{usuarioController.membroEquipePesquisa.nome}" styleClass="form-control" />
+				</div>
+			</div>
+			<div class="form-group">
+				<input type="reset" value="Limpar Campos" class="btn btn-default" />
+				<h:outputText value=" " />
+				<h:commandButton value="Pequisar" styleClass="btn btn-primary"
+								 action="#{usuarioController.pesquisarUsuario()}" />
+			</div>
+			<br /><br />
+			<p:dataTable id="datatable" value="#{usuarioController.listaMembros}"
+						 var="membroEquipe" paginator="true" rows="10" lazy="true"
+						 paginatorPosition="bottom" paginatorAlwaysVisible="false">
+				<p:column>
+					<f:facet name="header"><h:outputText value="Nome" /></f:facet>
+					<h:outputText value="#{membroEquipe.nome}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header"><h:outputText value="Tipo" /></f:facet>
+					<h:outputText value="Médico" rendered="#{membroEquipe.medico}" />
+					<h:outputText value="Enfermeiro" rendered="#{membroEquipe.enfermeiro}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header"><h:outputText value="Ações" /></f:facet>
+					<h:commandLink value="Adicionar" action="#{consultaController.adicionarMembroEquipe(membroEquipe)}" />
+				</p:column>
+			</p:dataTable>
+		</p:panel>
+	</p:tab>
+</ui:composition>

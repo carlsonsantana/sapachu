@@ -256,6 +256,9 @@
 				</map>
 			</h:panelGroup>
 			<h:panelGroup id="informacoesulcera2" rendered="#{not empty consultaController.situacaoUlceraConsulta}">
+				<canvas id="canvasSignature" width="500px"
+						height="500px"
+						style="border:2px solid #000000;background: url('#{consultaController.situacaoUlceraConsulta.fotoUlcera.enderecoImagem}') no-repeat; background-size: 100% 100%;"></canvas>
 				<hr />
 				<div class="container">
 					<div class="row">

@@ -1,4 +1,11 @@
 jQuery(document).ready(function() {
+	var areas = jQuery("#mapaImagemId area, #mapaImagemId a, #mapaImagem2Id area, #mapaImagem2Id a");
+	for (var i = 0, length = areas.length; i < length; i++) {
+		var area = areas.eq(i);
+		
+		area.attr("coords", convertPointsToHTMLCoords(area.attr("coords")));
+	}
+	
 	try {
 		var coordenadas;
 		var mapaImagem = jQuery("#form_pernas").imgAreaSelect({

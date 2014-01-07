@@ -44,29 +44,6 @@ public class AgendaController extends GenericController {
 	private boolean consultaMarcada;
 	private Collection<Consulta> remarcados;
 	private Collection<Consulta> cancelados;
-	
-	@PostConstruct
-	public void init() {
-		pacientePesquisa = new Paciente();
-		calendario = new DefaultScheduleModel();
-		clear();
-	}
-	
-	public void clear() {
-		paciente = new Paciente();
-		consultaMarcada = false;
-		if (remarcados == null) {
-			remarcados = new ArrayList<Consulta>();
-		} else {
-			remarcados.clear();
-		}
-		if (cancelados == null) {
-			cancelados = new ArrayList<Consulta>();
-		} else {
-			cancelados.clear();
-		}
-		eventoCalendario = new DefaultScheduleEvent();
-	}
 
 	/**
 	 * @return the paciente
@@ -165,31 +142,54 @@ public class AgendaController extends GenericController {
 	public void setConsultaMarcada(boolean consultaMarcada) {
 		this.consultaMarcada = consultaMarcada;
 	}
-	
+
+	@PostConstruct
+	public void init() {
+		pacientePesquisa = new Paciente();
+		calendario = new DefaultScheduleModel();
+		clear();
+	}
+
+	public void clear() {
+		paciente = new Paciente();
+		consultaMarcada = false;
+		if (remarcados == null) {
+			remarcados = new ArrayList<Consulta>();
+		} else {
+			remarcados.clear();
+		}
+		if (cancelados == null) {
+			cancelados = new ArrayList<Consulta>();
+		} else {
+			cancelados.clear();
+		}
+		eventoCalendario = new DefaultScheduleEvent();
+	}
+
 	public String telaMarcarConsulta() {
 		ConsultaDAO dao = new ConsultaDAOHibernate();
 		listaPacientes = new ListDataModel<Paciente>((List) dao.procurarPacientes(pacientePesquisa));
-		
+
 		clear();
-		
+
 		return "/private/consulta/marcar";
 	}
 
 	public String telaRemarcarConsulta() {
 		clear();
-		
+
 		carregarConsultas();
-		
+
 		return PaginasNavegacao.CONSULTA_REMARCAR;
 	}
-	
+
 	public String selecionarPacienteMarcarConsulta(Paciente paciente) {
 		clear();
-		
+
 		this.paciente = paciente;
-		
+
 		carregarConsultas();
-		
+
 		return PaginasNavegacao.CONSULTA_MARCAR;
 	}
 
@@ -203,19 +203,18 @@ public class AgendaController extends GenericController {
 				adicionarMensagemAviso("Consulta Marcada", "A consulta do paciente \""
 						+ paciente.getNome() + "\", para o dia "
 						+ getDataFormatada(data) + ", foi marcada com sucesso" + ".");
-				
+
 				return PaginasNavegacao.PAGINA_INICIAL;
 			} else {
 				return PaginasNavegacao.CONSULTA_MARCAR;
 			}
 		} else {
 			adicionarMensagemErro("Nenhuma data selecionada", "Selecione a data no calendário da consulta do paciente.");
-			
+
 			return PaginasNavegacao.CONSULTA_MARCAR;
 		}
 	}
-	
-	
+
 	public void onDataConsultaSelecionada(SelectEvent selectEvent) {
 		if (!consultaMarcada) {
 			data = (Date) selectEvent.getObject();
@@ -223,7 +222,7 @@ public class AgendaController extends GenericController {
 			Date dataFim = new Date(data.getTime());
 			eventoCalendario = new DefaultScheduleEvent("Consultar Paciente: "
 					+ paciente.getNome(), dataInicio, dataFim);
-			
+
 			((DefaultScheduleEvent) eventoCalendario).setStyleClass("marcada");
 		}
 	}
@@ -235,77 +234,77 @@ public class AgendaController extends GenericController {
 		if (validaConsulta(consulta)) {
 			getCalendario().addEvent(eventoCalendario);
 			calendario.updateEvent(eventoCalendario);
-			
+
 			consultaMarcada = true;
-				
+
 			consulta.setSituacao(Consulta.CONSULTA_MARCADA);
 			((DefaultScheduleEvent) eventoCalendario).setData(consulta);
 		}
 	}
-	
+
 	public void onDataConsultaRemarcada(ScheduleEntryMoveEvent event) {
 		DefaultScheduleEvent scheduleEvent = (DefaultScheduleEvent) event.getScheduleEvent();
 		Consulta consulta = (Consulta) scheduleEvent.getData();
-		
+
 		consulta.setData(scheduleEvent.getStartDate());
-		
+
 		if (validaConsulta(consulta)) {
 			scheduleEvent.setStyleClass("remarcado");
-			
+
 			consulta.setSituacao(Consulta.CONSULTA_REMARCADA);
-			
+
 			cancelados.remove(consulta);
 			remarcados.add(consulta);
 		}
 	}
-	
+
 	public void onConsultaSelecionada(SelectEvent selectEvent) {
 		eventoCalendario = (ScheduleEvent) selectEvent.getObject();
 	}
-	
+
 	public void cancelarConsulta() {
 		DefaultScheduleEvent defaultScheduleEvent = (DefaultScheduleEvent) eventoCalendario;
 		Consulta consulta = (Consulta) defaultScheduleEvent.getData();
-		
+
 		defaultScheduleEvent.setStyleClass("removido");
 		consulta.setSituacao(Consulta.CONSULTA_CANCELADA);
-		
+
 		remarcados.remove(consulta);
 		cancelados.add(consulta);
 	}
-	
+
 	public String remarcarDatas() {
 		ConsultaDAO dao = new ConsultaDAOHibernate();
-		
+
 		dao.remarcarConsultas(remarcados);
 		dao.cancelarConsultas(cancelados);
-		
+
 		remarcados.clear();
 		cancelados.clear();
-		
+
 		adicionarMensagemAviso("Consultas Remarcadas", "Consultas remarcadas com sucesso.");
-		
+
 		return PaginasNavegacao.PAGINA_INICIAL;
 	}
-	
+
 	private void carregarConsultas() {
 		ConsultaDAO dao = new ConsultaDAOHibernate();
-		
+
 		Collection<Consulta> consultas = dao.procurarConsultasMes(getDataAtual());
 		calendario = new DefaultScheduleModel();
 		for (Consulta consulta : consultas) {
 			String mensagem = "Consultar Paciente: " + consulta.getPaciente().getNome();
-			
+
 			Date dataInicio = new Date(consulta.getData().getTime());
 			Date dataFim = new Date(consulta.getData().getTime());
-			
+
 			ScheduleEvent evento = new DefaultScheduleEvent(mensagem, dataInicio, dataFim);
 			((DefaultScheduleEvent) evento).setData(consulta);
-			
+
 			calendario.addEvent(evento);
 		}
 	}
-	
+
 	private boolean validaConsulta(Consulta consulta) {
 		ConsultaDAO dao = new ConsultaDAOHibernate();
 		Date hoje = new Date();

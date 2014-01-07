@@ -12,7 +12,7 @@
 				<div class="row">
 					<div class="form-group col-lg-6">
 						<label for="form_nome_paciente">Membro</label>
-						<p:inputText id="nome_paciente" value="#{usuarioController.funcionario.nome}" styleClass="form-control" />
+						<p:inputText id="nome_paciente" value="#{usuarioController.membroEquipePesquisa.nome}" styleClass="form-control" />
 					</div>
 				</div>
 				<div class="form-group">
@@ -21,22 +21,21 @@
 					<h:commandButton value="Pequisar" styleClass="btn btn-primary" />
 				</div>
 				<br /><br />
-				<p:dataTable id="datatable" value="#{usuarioController.listaFuncionaros}"
-							 var="funcionario" paginator="true" rows="10" lazy="true"
+				<p:dataTable id="datatable" value="#{usuarioController.listaMembros}"
+							 var="membroEquipe" paginator="true" rows="10" lazy="true"
 							 paginatorPosition="bottom" paginatorAlwaysVisible="false">
 					<p:column>
 						<f:facet name="header"><h:outputText value="Nome" /></f:facet>
-						<h:outputText value="#{funcionario.nome}" />
+						<h:outputText value="#{membroEquipe.nome}" />
 					</p:column>
 					<p:column>
 						<f:facet name="header"><h:outputText value="Tipo" /></f:facet>
-						<h:outputText value="Médico" rendered="#{funcionario.medico}" />
-						<h:outputText value="Enfermeiro" rendered="#{funcionario.enfermeiro}" />
+						<h:outputText value="Médico" rendered="#{membroEquipe.medico}" />
+						<h:outputText value="Enfermeiro" rendered="#{membroEquipe.enfermeiro}" />
 					</p:column>
 					<p:column>
 						<f:facet name="header"><h:outputText value="Ações" /></f:facet>
-						<h:commandLink value="Editar" action="#{usuarioController.editarUsuario(funcionario)}" rendered="#{usuarioController.pesquisarUsuario}" />
-						<h:commandLink value="Cadastrar" action="#{usuarioController.cadastrarFuncionario(funcionario)}" rendered="#{usuarioController.pesquisarFuncionario}" />
+						<h:commandLink value="Editar" action="#{usuarioController.telaEditarUsuario(membroEquipe)}" />
 					</p:column>
 				</p:dataTable>
 			</fieldset>

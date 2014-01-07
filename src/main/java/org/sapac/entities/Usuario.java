@@ -97,11 +97,11 @@ public class Usuario implements Serializable {
 	}
 	
 	public boolean isMedico() {
-		return true;
+		return membroEquipe.isMedico();
 	}
 	
 	public boolean isEnfermeiro() {
-		return true;
+		return membroEquipe.isEnfermeiro();
 	}
 
 	/**

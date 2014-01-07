@@ -42,9 +42,9 @@
 						<h:commandLink value="Visualizar" action="#{pacienteController.visualizarPaciente(paciente)}" rendered="#{pacienteController.pesquisar}" />
 						<h:commandLink value="Cadastrar" action="#{pacienteController.adicionarPaciente(paciente)}" rendered="#{pacienteController.adicionar}" />
 						<h:panelGroup rendered="#{pacienteController.enfermagem}">
-							<h:commandLink value="Visualizar Intervenções" action="#{enfermagemController.visualizarDiagnostico(paciente)}" />
+							<h:commandLink value="Visualizar" action="#{enfermagemController.visualizarDiagnostico(paciente)}" />
 							<h:outputText value=" " />
-							<h:commandLink value="Adicionar Intervenção" action="#{enfermagemController.telaDianosticarEnfermagem(paciente)}" />
+							<h:commandLink value="Editar" action="#{enfermagemController.telaDianosticarEnfermagem(paciente)}" />
 						</h:panelGroup>
 					</p:column>
 				</p:dataTable>

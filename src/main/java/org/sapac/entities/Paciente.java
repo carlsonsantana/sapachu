@@ -39,6 +39,9 @@ public class Paciente implements Serializable {
 	@OneToMany(mappedBy = "paciente")
 	private Collection<Ulcera> ulceras;
 	
+	@OneToMany(mappedBy = "paciente")
+	private Collection<Consulta> consultas;
+	
 	@NotNull
 	private String nome;
 	@Transient
@@ -292,5 +295,19 @@ public class Paciente implements Serializable {
 	 */
 	public void setUlceras(Collection<Ulcera> ulceras) {
 		this.ulceras = ulceras;
+	}
+
+	/**
+	 * @return the consultas
+	 */
+	public Collection<Consulta> getConsultas() {
+		return consultas;
+	}
+
+	/**
+	 * @param consultas the consultas to set
+	 */
+	public void setConsultas(Collection<Consulta> consultas) {
+		this.consultas = consultas;
 	}
 }

@@ -9,23 +9,72 @@
 		<h:form id="form">
 			<fieldset>
 				<legend>Diagnóstico da Enfermagem</legend>
-			Nome: <h:outputText value="#{enfermagemController.paciente.nome}" /><br />
-			Prontuário: <h:outputText value="#{enfermagemController.paciente.prontuario}" /><br /><br />
-			<div class="form-group">
-				<h:outputLabel>Risco de glicemia instável relacionada</h:outputLabel>
-				<h:inputTextarea id="diagnostico1" styleClass="form-control"></h:inputTextarea>
-			</div>
-			<div class="form-group">
-				<h:outputLabel>Risco de nutrição desequilibrada</h:outputLabel>
-				<h:inputTextarea id="diagnostico2" styleClass="form-control"></h:inputTextarea>
-			</div>
-			<div class="form-group">
-				<h:outputLabel>Padrão de sono prejudicado</h:outputLabel>
-				<h:inputTextarea id="diagnostico3" styleClass="form-control"></h:inputTextarea>
-			</div>
-			<h:commandButton value="Cancelar" styleClass="btn btn-danger" />
-			<h:outputText value=" " />
-			<h:commandButton value="Avançar" styleClass="btn btn-primary" action="#{enfermagemController.telaIntervencaoEnfermagem()}" />
+				Nome: <h:outputText value="#{enfermagemController.paciente.nome}" /><br />
+				Prontuário: <h:outputText value="#{enfermagemController.paciente.prontuario}" /><br /><br />
+				<div class="form-group">
+					<h:outputLabel for="riscoGlicemia">Risco de glicemia instável relacionada</h:outputLabel>
+					<h:inputTextarea id="riscoGlicemia" styleClass="form-control"
+									 value="#{enfermagemController.paciente.diagnosticoEnfermagem.riscoGlicemia}"></h:inputTextarea>
+				</div>
+				<div class="form-group">
+					<h:outputLabel for="nutricaoDesequilibrada">Risco de nutrição desequilibrada</h:outputLabel>
+					<h:inputTextarea id="nutricaoDesequilibrada" styleClass="form-control"
+									 value="#{enfermagemController.paciente.diagnosticoEnfermagem.riscoNutricaoDesequilibrada}"></h:inputTextarea>
+				</div>
+				<div class="form-group">
+					<h:outputLabel for="sonoPrejudicado">Padrão de sono prejudicado</h:outputLabel>
+					<h:inputTextarea id="sonoPrejudicado" styleClass="form-control"
+									 value="#{enfermagemController.paciente.diagnosticoEnfermagem.sonoPrejudicado}"></h:inputTextarea>
+				</div>
+				<div class="form-group">
+					<h:outputLabel for="mobilidadePrejudicada">Mobilidade física prejudicada</h:outputLabel>
+					<h:inputTextarea id="mobilidadePrejudicada" styleClass="form-control"
+									 value="#{enfermagemController.paciente.diagnosticoEnfermagem.mobilidadeFisicaPrejudicada}"></h:inputTextarea>
+				</div>
+				<div class="form-group">
+					<h:outputLabel for="perfusaoTissularPerifericaIneficaz">Perfusão tissular periférica ineficaz</h:outputLabel>
+					<h:inputTextarea id="perfusaoTissularPerifericaIneficaz" styleClass="form-control"
+									 value="#{enfermagemController.paciente.diagnosticoEnfermagem.perfusaoTissularPerifericaIneficaz}"></h:inputTextarea>
+				</div>
+				<div class="form-group">
+					<h:outputLabel for="interacaoSocialPrejudicada">Interação Social prejudicada</h:outputLabel>
+					<h:inputTextarea id="interacaoSocialPrejudicada" styleClass="form-control"
+									 value="#{enfermagemController.paciente.diagnosticoEnfermagem.interacaoSocialPrejudicada}"></h:inputTextarea>
+				</div>
+				<div class="form-group">
+					<h:outputLabel for="faltaAdesao">Falta de Adesão</h:outputLabel>
+					<h:inputTextarea id="faltaAdesao" styleClass="form-control"
+									 value="#{enfermagemController.paciente.diagnosticoEnfermagem.faltaAdesao}"></h:inputTextarea>
+				</div>
+				<div class="form-group">
+					<h:outputLabel for="riscoInfeccao">Risco de Infecção</h:outputLabel>
+					<h:inputTextarea id="riscoInfeccao" styleClass="form-control"
+									 value="#{enfermagemController.paciente.diagnosticoEnfermagem.riscoInfeccao}"></h:inputTextarea>
+				</div>
+				<div class="form-group">
+					<h:outputLabel for="integridadePelePrejudicada">Integridade da pele prejudicada</h:outputLabel>
+					<h:inputTextarea id="integridadePelePrejudicada" styleClass="form-control"
+									 value="#{enfermagemController.paciente.diagnosticoEnfermagem.integridadePelePrejudicada}"></h:inputTextarea>
+				</div>
+				<div class="form-group">
+					<h:outputLabel for="dorAguda">Dor aguda</h:outputLabel>
+					<h:inputTextarea id="dorAguda" styleClass="form-control"
+									 ></h:inputTextarea>
+				</div>
+				<div class="form-group">
+					<h:outputLabel for="dorCronica">Dor crônica</h:outputLabel>
+					<h:inputTextarea id="dorCronica" styleClass="form-control"></h:inputTextarea>
+				</div>
+				<div class="form-group">
+					<h:outputLabel for="outrosDiagnosticos">Outros Diagnósticos</h:outputLabel>
+					<h:inputTextarea id="outrosDiagnosticos" styleClass="form-control"
+									 value="#{enfermagemController.paciente.diagnosticoEnfermagem.outrosDiagnosticos}"></h:inputTextarea>
+				</div>
+				<h:commandButton value="Cancelar" styleClass="btn btn-danger"
+								 action="#{pacienteController.pesquisarPacienteEnfermagem()}"
+								 onclick="return cancelar();" />
+				<h:outputText value=" " />
+				<h:commandButton value="Editar" styleClass="btn btn-primary" action="#{enfermagemController.salvarDiagnosticoEnfermagem()}" />
 			</fieldset>
 		</h:form>
 	</ui:define>

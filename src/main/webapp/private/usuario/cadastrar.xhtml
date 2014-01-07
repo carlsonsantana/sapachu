@@ -12,55 +12,64 @@
 				<div class="row">
 					<div class="form-group col-lg-3">
 						<h:outputLabel for="nome" value="Nome" />
-						<h:inputText id="nome" styleClass="form-control" />
+						<h:inputText id="nome" styleClass="form-control"
+									 value="#{usuarioController.membroEquipe.nome}" />
 					</div>
 					<div class="form-group col-lg-3">
 						<h:outputLabel for="tipo" value="Tipo" />
-						<h:selectOneMenu value="1" styleClass="form-control">
+						<h:selectOneMenu id="tipo" value="#{usuarioController.tipo}" styleClass="form-control">
 							<f:selectItem itemLabel="Enfermeiro" itemValue="1" />
 							<f:selectItem itemLabel="Médico" itemValue="2" />
 						</h:selectOneMenu>
 					</div>
 					<div class="form-group col-lg-3">
 						<h:outputLabel for="login" value="Login" />
-						<h:inputText id="login" styleClass="form-control" />
+						<h:inputText id="login" styleClass="form-control"
+									 value="#{usuarioController.membroEquipe.usuario.nomeUsuario}" />
 					</div>
 					<div class="form-group col-lg-3">
 						<h:outputLabel for="email" value="E-mail" />
-						<h:inputText id="email" styleClass="form-control" />
+						<h:inputText id="email" styleClass="form-control"
+									 value="#{usuarioController.membroEquipe.email}" />
 					</div>
-				</div>
-				<div class="row">
 					<div class="form-group col-lg-3">
 						<h:outputLabel for="rg" value="RG" />
-						<h:inputText id="rg" styleClass="form-control">
+						<h:inputText id="rg" styleClass="form-control"
+									 value="#{usuarioController.membroEquipe.rg}">
 							<f:passThroughAttribute name="placeholder" value="Com pontos e traços" />
 						</h:inputText>
 					</div>
 					<div class="form-group col-lg-3">
 						<h:outputLabel for="cpf" value="CPF" />
-						<h:inputText id="cpf" styleClass="form-control">
+						<h:inputText id="cpf" styleClass="form-control"
+									 value="#{usuarioController.membroEquipe.cpf}">
 							<f:passThroughAttribute name="placeholder" value="000.000.000-00" />
 						</h:inputText>
 					</div>
 					<div class="form-group col-lg-3">
 						<h:outputLabel for="profissional" value="Vínculo" />
-						<h:selectOneMenu value="1" styleClass="form-control" onchange="var label = document.getElementById('form_matricula_label');
+						<h:selectOneMenu styleClass="form-control" onchange="var label = document.getElementById('form_matricula_label');
 								if (this.value == 1)
 									label.innerHTML = 'Matrícula';
 								else
-									label.innerHTML = 'SIAPI';">
+									label.innerHTML = 'SIAPI';"
+									value="#{usuarioController.membroEquipe.vinculo}">
 							<f:selectItem itemLabel="Aluno" itemValue="1" />
 							<f:selectItem itemLabel="Funcionário" itemValue="2" />
 						</h:selectOneMenu>
 					</div>
 					<div class="form-group col-lg-3">
 						<h:outputLabel id="matricula_label" for="matricula" value="Matrícula" />
-						<h:inputText id="matricula" styleClass="form-control" />
+						<h:inputText id="matricula" styleClass="form-control"
+									 value="#{usuarioController.membroEquipe.matricula}" />
+					</div>
+					<div class="form-group col-lg-3">
+						<h:selectBooleanCheckbox id="coordenador" value="#{usuarioController.membroEquipe.usuario.coordenador}" />
+						<h:outputLabel for="coordenador" value="Coordenador" />
 					</div>
 					<div class="form-group col-lg-6">
 						<h:outputLabel for="senha" value="Senha" />
-						<h:inputSecret id="senha" styleClass="form-control" value="#{usuarioController.senha}" />
+						<h:inputSecret id="senha" styleClass="form-control" value="#{usuarioController.membroEquipe.usuario.senha}" />
 					</div>
 					<div class="form-group col-lg-6">
 						<h:outputLabel for="confirmacao-senha" value="Confirmação de Senha" />
@@ -73,7 +82,7 @@
 								 onclick="return cancelar();" />
 				<h:outputText value=" " />
 				<h:commandButton value="Cadastrar" styleClass="btn btn-primary"
-								 action="#{usuarioController.cadastrar(usuarioController.funcionario)}" />
+								 action="#{usuarioController.cadastrar()}" />
 			</fieldset>
 		</h:form>
 	</ui:define>

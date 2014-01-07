@@ -63,11 +63,19 @@ public class MembroEquipe implements Serializable {
 	}
 	
 	public boolean isMedico() {
-		return true;
+		if (this instanceof Medico) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	public boolean isEnfermeiro() {
-		return false;
+		if (this instanceof Enfermeiro) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	/**
@@ -180,5 +188,27 @@ public class MembroEquipe implements Serializable {
 	 */
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	@Override
+	public boolean equals(Object object) {
+		if (this != object) {
+			if (!(object instanceof MembroEquipe)) {
+				return false;
+			}
+			
+			MembroEquipe membroEquipe = (MembroEquipe) object;
+			
+			if (this.getId() == membroEquipe.getId()) {
+				return true;
+			}
+			
+			if (this.getCpf().equals(membroEquipe.getCpf())) {
+				return true;
+			}
+		} else {
+			return true;
+		}
+		return false;
 	}
 }

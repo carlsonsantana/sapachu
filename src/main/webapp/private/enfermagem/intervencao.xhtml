@@ -6,20 +6,21 @@
 				xmlns:f="http://xmlns.jcp.org/jsf/core">
 	<ui:define name="title">Pesquisar Paciente</ui:define>
 	<ui:define name="content">
-		<h:form id="form">
+		<h:form id="form" acceptcharset="UTF-8">
 			<fieldset>
 				<legend>Intervenção da Enfermagem</legend>
-			Nome: <h:outputText value="#{enfermagemController.paciente.nome}" /><br />
-			Prontuário: <h:outputText value="#{enfermagemController.paciente.prontuario}" /><br /><br />
-			<div class="form-group">
-				<h:outputLabel>Intervenção</h:outputLabel>
-				<h:inputTextarea id="diagnostico1" styleClass="form-control"></h:inputTextarea>
-			</div>
-			<h:commandButton value="Cancelar" styleClass="btn btn-danger" />
-			<h:outputText value=" " />
-			<h:commandButton value="Voltar" styleClass="btn btn-default" />
-			<h:outputText value=" " />
-			<h:commandButton value="Confirmar" styleClass="btn btn-primary" />
+				Nome: <h:outputText value="#{enfermagemController.paciente.nome}" /><br />
+				Prontuário: <h:outputText value="#{enfermagemController.paciente.prontuario}" /><br /><br />
+				<div class="form-group">
+					<h:outputLabel>Intervenção</h:outputLabel>
+					<h:inputTextarea styleClass="form-control"
+									 value="#{enfermagemController.intervencaoEnfermagem.descricao}" />
+				</div>
+				<h:commandButton value="Cancelar" styleClass="btn btn-danger"
+								 onclick="return cancelar()" action="#{enfermagemController.pesquisarIntervencoes()}" />
+				<h:outputText value=" " />
+				<h:commandButton value="Confirmar" styleClass="btn btn-primary"
+								 action="#{enfermagemController.salvarIntervencaoEnfermagem()}" />
 			</fieldset>
 		</h:form>
 	</ui:define>

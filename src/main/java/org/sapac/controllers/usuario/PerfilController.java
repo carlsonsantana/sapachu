@@ -5,19 +5,20 @@
 package org.sapac.controllers.usuario;
 
 import javax.annotation.PostConstruct;
-import javax.faces.context.FacesContext;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import org.sapac.controllers.GenericController;
 import org.sapac.controllers.PaginasNavegacao;
 import org.sapac.entities.Usuario;
-import org.sapac.utils.ConecaoHibernate;
+import org.sapac.models.UsuarioDAO;
+import org.sapac.models.hibernate.UsuarioDAOHibernate;
 
 /**
  *
  * @author carlson
  */
 @Named
-@javax.enterprise.context.SessionScoped
+@SessionScoped
 public class PerfilController extends GenericController {
 	
 	private String senhaAtual;
@@ -30,11 +31,6 @@ public class PerfilController extends GenericController {
 	 * Usuário logado na sessão.
 	 */
 	private Usuario usuario;
-
-	@PostConstruct
-	public void init() {
-		usuario = new Usuario();
-	}
 
 	/**
 	 * @return the usuario
@@ -49,47 +45,7 @@ public class PerfilController extends GenericController {
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
-
-	/**
-	 * Fecha a sessão para o usuário.
-	 *
-	 * @return A tela de login.
-	 */
-	public String logoff() {
-		clearSessions();
-		return PaginasNavegacao.LOGIN;
-	}
-
-	/**
-	 *
-	 */
-	public String telaMudarSenha() {
-		return PaginasNavegacao.USUARIO_MUDAR_SENHA;
-	}
-
-	/**
-	 *
-	 */
-	public boolean isLogado() {
-		if (((usuario.getNomeUsuario() != null) && (!usuario.getNomeUsuario().isEmpty()))
-				&& ((usuario.getSenha() != null) && (!usuario.getSenha().isEmpty()))) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	/**
-	 * Abre uma sessão para o usuário.
-	 *
-	 * @return A página inicial.
-	 */
-	public String logar() {
-		FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-		ConecaoHibernate.getSession();
-		return PaginasNavegacao.PAGINA_INICIAL;
-	}
-
+	
 	/**
 	 * @return the novaSenha
 	 */
@@ -118,26 +74,6 @@ public class PerfilController extends GenericController {
 		this.confirmacaoNovaSenha = confirmacaoNovaSenha;
 	}
 	
-	public String mudarSenha() {
-		boolean erro = false;
-		if (!usuario.getSenha().equals(senhaAtual)) {
-			adicionarMensagemErro("Senha incorreta", "A senha digitada não "
-					+ "corresponde a senha atual.");
-			erro = true;
-		}
-		if (!novaSenha.equals(confirmacaoNovaSenha)) {
-			adicionarMensagemErro("Senhas diferentes", "A nova senha digitada "
-					+ "e sua confirmação estão diferentes.");
-			erro = true;
-		}
-		if (erro) {
-			return null;
-		} else {
-			adicionarMensagemAviso("Mudança de Senha", "Senha alterada com sucesso.");
-			return PaginasNavegacao.PAGINA_INICIAL;
-		}
-	}
-
 	/**
 	 * @return the senhaAtual
 	 */
@@ -150,5 +86,91 @@ public class PerfilController extends GenericController {
 	 */
 	public void setSenhaAtual(String senhaAtual) {
 		this.senhaAtual = senhaAtual;
+	}
+	
+	public boolean isMedico() {
+		return usuario.isMedico();
+	}
+	
+	public boolean isEnfermeiro() {
+		return usuario.isEnfermeiro();
+	}
+	
+	public boolean isCoordenador() {
+		return usuario.isCoordenador();
+	}
+	
+	@PostConstruct
+	public void init() {
+		usuario = new Usuario();
+	}
+
+	/**
+	 * Fecha a sessão para o usuário.
+	 *
+	 * @return A tela de login.
+	 */
+	public String logoff() {
+		clearSessions();
+		return PaginasNavegacao.LOGIN;
+	}
+
+	/**
+	 *
+	 */
+	public String telaMudarSenha() {
+		return PaginasNavegacao.USUARIO_MUDAR_SENHA;
+	}
+
+	/**
+	 *
+	 */
+	public boolean isLogado() {
+		UsuarioDAO dao = new UsuarioDAOHibernate();
+		if (dao.isSenhaCorreta(usuario.getNomeUsuario(), usuario.getSenha())) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Abre uma sessão para o usuário.
+	 *
+	 * @return A página inicial.
+	 */
+	public String logar() {
+		UsuarioDAO dao = new UsuarioDAOHibernate();
+		if (dao.isSenhaCorreta(usuario.getNomeUsuario(), usuario.getSenha())) {
+			usuario = dao.carregarUsuario(usuario.getNomeUsuario(), usuario.getSenha());
+			return PaginasNavegacao.PAGINA_INICIAL;
+		} else {
+			adicionarMensagemAlerta("Usuário não existe", "Não existe um usuário com o nome e a senha informados.");
+			return PaginasNavegacao.LOGIN;
+		}
+	}
+	
+	public String mudarSenha() {
+		boolean erro = false;
+		if (!usuario.getSenha().equals(senhaAtual)) {
+			adicionarMensagemErro("Senha incorreta", "A senha digitada não "
+					+ "corresponde a senha atual.");
+			erro = true;
+		}
+		if (!novaSenha.equals(confirmacaoNovaSenha)) {
+			adicionarMensagemErro("Senhas diferentes", "A nova senha digitada "
+					+ "e sua confirmação estão diferentes.");
+			erro = true;
+		}
+		
+		if (erro) {
+			return null;
+		} else {
+			UsuarioDAO dao = new UsuarioDAOHibernate();
+			dao.mudarSenha(usuario, novaSenha);
+			
+			adicionarMensagemAviso("Mudança de Senha", "Senha alterada com sucesso.");
+			return PaginasNavegacao.PAGINA_INICIAL;
+		}
 	}
 }
