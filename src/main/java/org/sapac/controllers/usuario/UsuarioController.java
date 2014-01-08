@@ -4,69 +4,33 @@
  */
 package org.sapac.controllers.usuario;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.inject.Named;
 import org.sapac.controllers.GenericController;
 import org.sapac.controllers.PaginasNavegacao;
 import org.sapac.entities.Enfermeiro;
-import org.sapac.entities.MembroEquipe;
 import org.sapac.entities.Medico;
+import org.sapac.entities.MembroEquipe;
+import org.sapac.entities.Usuario;
+import org.sapac.models.UsuarioDAO;
+import org.sapac.models.hibernate.UsuarioDAOHibernate;
 
 /**
  *
  * @author carlson
  */
 @Named
-@javax.enterprise.context.SessionScoped
+@SessionScoped
 public class UsuarioController extends GenericController {
-
-	//@Inject
-	//private Conversation conversation;
-	/**
-	 * @return the funcionario
-	 */
-	public MembroEquipe getFuncionario() {
-		return funcionario;
-	}
-
-	/**
-	 * @param funcionario the funcionario to set
-	 */
-	public void setFuncionario(MembroEquipe funcionario) {
-		this.funcionario = funcionario;
-	}
-
-	/**
-	 * @return the listaFuncionaros
-	 */
-	public DataModel<MembroEquipe> getListaFuncionaros() {
-		return listaFuncionaros;
-	}
-
-	/**
-	 * @param listaFuncionaros the listaFuncionaros to set
-	 */
-	public void setListaFuncionaros(DataModel<MembroEquipe> listaFuncionaros) {
-		this.listaFuncionaros = listaFuncionaros;
-	}
-
-	/**
-	 * @return the senha
-	 */
-	public String getSenha() {
-		return senha;
-	}
-
-	/**
-	 * @param senha the senha to set
-	 */
-	public void setSenha(String senha) {
-		this.senha = senha;
-	}
+	private MembroEquipe membroEquipe;
+	private MembroEquipe membroEquipePesquisa;
+	private transient DataModel<MembroEquipe> listaMembros;
+	private String confirmacaoSenha;
+	private int tipo;
 
 	/**
 	 * @return the confirmacaoSenha
@@ -82,77 +46,134 @@ public class UsuarioController extends GenericController {
 		this.confirmacaoSenha = confirmacaoSenha;
 	}
 
-	private enum Operacao {
-
-		FUNCIONARIO,
-		USUARIO;
+	/**
+	 * @return the membroEquipe
+	 */
+	public MembroEquipe getMembroEquipe() {
+		return membroEquipe;
 	}
-	private Operacao operacao;
-	private MembroEquipe funcionario;
-	private transient DataModel<MembroEquipe> listaFuncionaros;
-	private String senha;
-	private String confirmacaoSenha;
+
+	/**
+	 * @param membroEquipe the membroEquipe to set
+	 */
+	public void setMembroEquipe(MembroEquipe membroEquipe) {
+		this.membroEquipe = membroEquipe;
+	}
+
+	/**
+	 * @return the membroEquipePesquisa
+	 */
+	public MembroEquipe getMembroEquipePesquisa() {
+		return membroEquipePesquisa;
+	}
+
+	/**
+	 * @param membroEquipePesquisa the membroEquipePesquisa to set
+	 */
+	public void setMembroEquipePesquisa(MembroEquipe membroEquipePesquisa) {
+		this.membroEquipePesquisa = membroEquipePesquisa;
+	}
+
+	/**
+	 * @return the listaMembros
+	 */
+	public DataModel<MembroEquipe> getListaMembros() {
+		return listaMembros;
+	}
+
+	/**
+	 * @param listaMembros the listaMembros to set
+	 */
+	public void setListaMembros(DataModel<MembroEquipe> listaMembros) {
+		this.listaMembros = listaMembros;
+	}
+
+	/**
+	 * @return the tipo
+	 */
+	public int getTipo() {
+		return tipo;
+	}
+
+	/**
+	 * @param tipo the tipo to set
+	 */
+	public void setTipo(int tipo) {
+		this.tipo = tipo;
+	}
 
 	@PostConstruct
 	public void init() {
-		List<MembroEquipe> funcionarios = new ArrayList<MembroEquipe>();
-		MembroEquipe f = new Medico();
-		f.setNome("Lia Chagas");
-		funcionarios.add(f);
-		f = new Medico();
-		f.setNome("Fernando Brito");
-		funcionarios.add(f);
-		f = new Enfermeiro();
-		f.setNome("Marta Jasmine");
-		funcionarios.add(f);
-		listaFuncionaros = new ListDataModel<MembroEquipe>(funcionarios);
-		funcionario = new Medico();
+		membroEquipePesquisa = new MembroEquipe();
 	}
 
 	public String telaPesquisaUsuario() {
-		operacao = Operacao.USUARIO;
+		pesquisarUsuario();
+		
 		return PaginasNavegacao.USUARIO_PESQUISAR;
 	}
 
-	public boolean isPesquisarFuncionario() {
-		return operacao.equals(Operacao.FUNCIONARIO);
-	}
-
-	public boolean isPesquisarUsuario() {
-		return operacao.equals(Operacao.USUARIO);
-	}
-
-	public String cadastrarFuncionario() {
-		//this.funcionario = funcionario;
+	public String telaCadastrarUsuario() {
+		membroEquipe = new MembroEquipe();
+		membroEquipe.setUsuario(new Usuario());
+		
 		return PaginasNavegacao.USUARIO_CADASTRAR;
 	}
 
-	public String editarUsuario(MembroEquipe funcionario) {
-		//conversation.begin();
-		//System.out.println("Conversation Begin");
-		this.funcionario = funcionario;
+	public String editarUsuario(MembroEquipe membroEquipe) {
+		setMembroEquipe(membroEquipe);
+		
 		return PaginasNavegacao.USUARIO_EDITAR;
 	}
 
-	public String cadastrar(MembroEquipe membroEquipe) {
-		if (!senha.equals(confirmacaoSenha)) {
+	public String cadastrar() {
+		if (!membroEquipe.getUsuario().getSenha().equals(confirmacaoSenha)) {
 			adicionarMensagemErro("Senhas diferentes", "A senha digitada "
 					+ "e sua confirmação estão diferentes.");
-			return null;
+			return PaginasNavegacao.USUARIO_CADASTRAR;
 		} else {
+			MembroEquipe membro;
+			if (tipo == 1) {
+				membro = new Enfermeiro();
+			} else {
+				membro = new Medico();
+			}
+			
+			membro.setCpf(membroEquipe.getCpf());
+			membro.setEmail(membroEquipe.getEmail());
+			membro.setMatricula(membroEquipe.getMatricula());
+			membro.setNome(membroEquipe.getNome());
+			membro.setRg(membroEquipe.getRg());
+			membro.setVinculo(membro.getVinculo());
+			membro.setUsuario(membroEquipe.getUsuario());
+			membro.getUsuario().setMembroEquipe(membroEquipe);
+			
+			UsuarioDAO dao = new UsuarioDAOHibernate();
+			dao.cadastrarUsuario(membroEquipe.getUsuario());
+			
 			adicionarMensagemAviso("Membro cadastrado", "Membro cadastrado com Sucesso.");
+			
 			return PaginasNavegacao.USUARIO_PESQUISAR;
 		}
 	}
 
-	public String editar(MembroEquipe funcionario) {
-		if (!senha.equals(confirmacaoSenha)) {
+	public String editar() {
+		if (!membroEquipe.getUsuario().getSenha().equals(confirmacaoSenha)) {
 			adicionarMensagemErro("Senhas diferentes", "A senha digitada "
 					+ "e sua confirmação estão diferentes.");
-			return null;
+			return PaginasNavegacao.USUARIO_EDITAR;
 		} else {
+			UsuarioDAO dao = new UsuarioDAOHibernate();
+			dao.editarUsuario(membroEquipe.getUsuario());
+			
 			adicionarMensagemAviso("Membro editado", "Membro editado com Sucesso.");
+			
 			return PaginasNavegacao.PAGINA_INICIAL;
 		}
+	}
+	
+	public void pesquisarUsuario() {
+		UsuarioDAO dao = new UsuarioDAOHibernate();
+		listaMembros = new ListDataModel<MembroEquipe>((List<MembroEquipe>) dao.pesquisarUsuario(membroEquipePesquisa));
 	}
 }
