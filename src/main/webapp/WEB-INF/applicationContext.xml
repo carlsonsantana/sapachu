@@ -15,22 +15,30 @@
         <intercept-url pattern="/admin/**" access="ROLE_USER"/>
         <form-login login-page="/public/login.xhtml" 
                     authentication-failure-url="/public/login.xhtml?erro=true"/>
-                    <remember-me/>
+        <remember-me/>
         <logout/>
     </http>
- 
+    <debug/>
+    
+    <b:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" >
+        <b:property name="url" value="jdbc:postgresql://localhost:5432"/>
+        <b:property name="driverClassName" value="org.postgresql.Driver" />
+        <b:property name="username" value="postgres" />
+        <b:property name="password" value="postgres" />
+    </b:bean>
+    
     <authentication-manager>
         <authentication-provider>
-            <user-service>
+            <!--            <user-service>
                 <user name="edson" password="123456" authorities="ROLE_USER"/>
-            </user-service>
+            </user-service>-->
+<!--            <password-encoder hash="md5"/>-->
+            <password-encoder hash="plaintext"/>
+            <jdbc-user-service data-source-ref="dataSource"
+                               users-by-username-query="select nome_usuario as username, senha as password, ativo as enable from sapac.usuario where nome_usuario=?"
+                               authorities-by-username-query="
+                                    select nome_usuario as username, authority from sapac.authorities where nome_usuario = ? "
+            />
         </authentication-provider>
     </authentication-manager>
-    <!-- 
-    <b:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" >
-        <b:property name="url" value="jdbc:mysql://localhost:3306/livraria" />
-        <b:property name="driverClassName" value="com.mysql.jdbc.Driver" />
-        <b:property name="username" value="root" />
-        <b:property name="password" value="123" />
-    </b:bean>-->
 </b:beans>

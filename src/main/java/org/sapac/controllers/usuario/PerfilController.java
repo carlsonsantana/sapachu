@@ -10,7 +10,6 @@ import javax.inject.Named;
 import org.sapac.controllers.GenericController;
 import org.sapac.controllers.PaginasNavegacao;
 import org.sapac.entities.Usuario;
-import org.sapac.exception.RN_Exception;
 import org.sapac.models.UsuarioDAO;
 import org.sapac.models.hibernate.UsuarioDAOHibernate;
 import org.springframework.security.core.Authentication;
@@ -32,6 +31,7 @@ public class PerfilController extends GenericController {
     private String novaSenha;
 
     private String confirmacaoNovaSenha;
+    
 
     /**
      * Usuário logado na sessão.
@@ -99,7 +99,6 @@ public class PerfilController extends GenericController {
     }
 
     public boolean isEnfermeiro() {
-        System.out.println(usuario.isEnfermeiro());
         return usuario.isEnfermeiro();
     }
 
@@ -109,7 +108,18 @@ public class PerfilController extends GenericController {
 
     @PostConstruct
     public void init() {
-        usuario = new Usuario();
+        if(usuario == null){
+        String userName = null;
+        SecurityContext context = SecurityContextHolder.getContext();
+        if (context instanceof SecurityContext) {
+            Authentication authentication = context.getAuthentication();
+            if (authentication instanceof Authentication) {
+                userName = (((User) authentication.getPrincipal()).getUsername());
+            }
+        }
+        UsuarioDAO dao = new UsuarioDAOHibernate();
+        usuario = dao.carregarUsuario(userName);
+        }
     }
 
     /**
@@ -157,19 +167,6 @@ public class PerfilController extends GenericController {
 //		}
 //	}
     public PerfilController() {
-        String userName = null;
-        SecurityContext context = SecurityContextHolder.getContext();
-        if (context instanceof SecurityContext){
-            Authentication authentication = context.getAuthentication();
-            if (authentication instanceof Authentication){
-                userName = (((User)authentication.getPrincipal()).getUsername());
-            }
-        }
-
-        UsuarioDAO dao = new UsuarioDAOHibernate();
-        usuario = dao.carregarUsuario(userName);
-        System.out.println("Novo usuário carregado: " + usuario.getNomeUsuario());
-        System.out.println(usuario.isMedico());
     }
 
     public String mudarSenha() {
@@ -195,4 +192,9 @@ public class PerfilController extends GenericController {
             return PaginasNavegacao.PAGINA_INICIAL;
         }
     }
+        
+    public String printUsuarioName() {
+        return usuario.getNomeUsuario();
+    }
+
 }
