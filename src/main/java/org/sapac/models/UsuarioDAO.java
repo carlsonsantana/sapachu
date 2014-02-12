@@ -15,7 +15,7 @@ import org.sapac.entities.Usuario;
 public interface UsuarioDAO extends GenericDAO {
 	public boolean isSenhaCorreta(String login, String senha);
 	//public Usuario carregarUsuario(String login, String senha); Desativado para permitir edição de outros usuários.
-        public Usuario carregarUsuario(String login); //Novo carregar usuário
+	public Usuario carregarUsuario(String login); //Novo carregar usuário
 	public Usuario mudarSenha(Usuario usuario, String senha);
 	public Usuario cadastrarUsuario(Usuario usuario);
 	public Usuario editarUsuario(Usuario usuario);

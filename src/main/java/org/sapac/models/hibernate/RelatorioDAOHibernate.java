@@ -6,6 +6,7 @@ package org.sapac.models.hibernate;
 
 import java.util.Collection;
 import java.util.HashMap;
+import org.sapac.annotations.DAOQualifier;
 import org.sapac.entities.MembroEquipe;
 import org.sapac.models.RelatorioDAO;
 
@@ -13,6 +14,7 @@ import org.sapac.models.RelatorioDAO;
  *
  * @author carlson
  */
+@DAOQualifier(DAOQualifier.DAOType.HIBERNATE)
 public class RelatorioDAOHibernate extends GenericDAOHibernate implements RelatorioDAO {
 
 	@Override

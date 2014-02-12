@@ -21,7 +21,7 @@
     <debug/>
     
     <b:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" >
-        <b:property name="url" value="jdbc:postgresql://localhost:5432"/>
+        <b:property name="url" value="jdbc:postgresql://localhost:5432/engenharia"/>
         <b:property name="driverClassName" value="org.postgresql.Driver" />
         <b:property name="username" value="postgres" />
         <b:property name="password" value="postgres" />

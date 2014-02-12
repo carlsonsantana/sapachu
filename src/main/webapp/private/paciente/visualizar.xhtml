@@ -65,10 +65,25 @@
 				</h:form>
 			</div>
 			<div>
-				<ui:repeat value="#{pacienteController.graficos}" var="grafico">
-					<p:lineChart value="#{grafico}" legendPosition="ne" />
-					<br />
-				</ui:repeat>
+				<h:outputScript library="default" name="third_part/jqplot/plugins/jqplot.pointLabels.min.js" />
+				<p:tabView>
+					<p:tab title="Área da úlcera">
+						<p:lineChart value="#{pacienteController.graficos[0]}" legendPosition="ne"
+									 showDatatip="false" extender="showLabelAlways" />
+					</p:tab>
+					<p:tab title="Número de úlceras">
+						<p:lineChart value="#{pacienteController.graficos[1]}" legendPosition="ne"
+									 showDatatip="false" extender="showLabelAlways" />
+					</p:tab>
+				</p:tabView>
+				<script type="text/javascript">
+					function showLabelAlways() {
+						this.cfg.seriesDefaults = {
+							pointLabels: {show: true}
+						};
+						this.cfg.stackSeries = true;
+					}
+				</script>
 			</div>
 			<div>
 				<h:form>

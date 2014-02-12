@@ -15,12 +15,11 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.faces.model.DataModel;
-import javax.faces.model.ListDataModel;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.FlowEvent;
+import org.sapac.annotations.DAOQualifier;
 import org.sapac.controllers.GenericController;
 import org.sapac.controllers.PaginasNavegacao;
 import org.sapac.controllers.usuario.PerfilController;
@@ -33,7 +32,6 @@ import org.sapac.entities.SituacaoUlceraConsulta;
 import org.sapac.entities.Ulcera;
 import org.sapac.entities.VariaveisClinicas;
 import org.sapac.models.ConsultaDAO;
-import org.sapac.models.hibernate.ConsultaDAOHibernate;
 
 /**
  *
@@ -46,7 +44,7 @@ public class ConsultaController extends GenericController {
 	private static final long serialVersionUID = 1L;
 	private Consulta consulta;
 	private Paciente pacientePesquisa;
-	private transient DataModel<Consulta> listaConsultas;
+	private Collection<Consulta> listaConsultas;
 	private String area;
 	private Date date;
 	private String imagem;
@@ -55,6 +53,9 @@ public class ConsultaController extends GenericController {
 	private Collection<Boolean> ulcerasConferidas;
 	@Inject
 	private PerfilController perfilController;
+	@Inject
+	@DAOQualifier(DAOQualifier.DAOType.HIBERNATE)
+	private ConsultaDAO consultaDAO;
 
 	/**
 	 * @return the pacientePesquisa
@@ -115,14 +116,14 @@ public class ConsultaController extends GenericController {
 	/**
 	 * @return the listaConsultas
 	 */
-	public DataModel<Consulta> getListaConsultas() {
+	public Collection<Consulta> getListaConsultas() {
 		return listaConsultas;
 	}
 
 	/**
 	 * @param listaConsultas the listaConsultas to set
 	 */
-	public void setListaConsultas(DataModel<Consulta> listaConsultas) {
+	public void setListaConsultas(Collection<Consulta> listaConsultas) {
 		this.listaConsultas = listaConsultas;
 	}
 
@@ -176,15 +177,13 @@ public class ConsultaController extends GenericController {
 	}
 
 	public String pesquisarPacienteConsulta() {
-		ConsultaDAO dao = new ConsultaDAOHibernate();
-		listaConsultas = new ListDataModel<Consulta>((List<Consulta>) dao.procurarConsultasDia(getDataAtual()));
+		listaConsultas = consultaDAO.procurarConsultasDia(getDataAtual(), pacientePesquisa);
 
 		return PaginasNavegacao.CONSULTA_PESQUISAR_PACIENTE;
 	}
 
 	public String consultarPaciente(Consulta consulta) {
-		ConsultaDAO dao = new ConsultaDAOHibernate();
-		consulta = dao.carregarConsulta(consulta);
+		consulta = consultaDAO.carregarConsulta(consulta);
 
 		setConsulta(consulta);
 
@@ -199,6 +198,9 @@ public class ConsultaController extends GenericController {
 		if ((event.getOldStep().equals("ulceras"))
 				&& (event.getNewStep().equals("participantes"))) {
 			if (!validarSituacoesUlceras()) {
+				adicionarMensagemAviso("Situações de Úlceras Não Informadas",
+						"Algumas situações das úlceras não foram informadas.");
+				
 				return event.getOldStep();
 			}
 		}
@@ -247,8 +249,7 @@ public class ConsultaController extends GenericController {
 	}
 
 	public String confirmarConsulta() {
-		ConsultaDAO dao = new ConsultaDAOHibernate();
-		dao.editarConsulta(consulta);
+		consultaDAO.editarConsulta(consulta);
 
 		adicionarMensagemAviso("Consulta realizada",
 				"Consulta salva com sucesso.");
@@ -257,8 +258,7 @@ public class ConsultaController extends GenericController {
 	}
 
 	public String visualizarConsulta(Consulta consulta1) {
-		ConsultaDAO dao = new ConsultaDAOHibernate();
-		consulta = dao.carregarConsulta(consulta1);
+		consulta = consultaDAO.carregarConsulta(consulta1);
 
 		setSituacaoUlceraConsulta(null);
 

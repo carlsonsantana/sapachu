@@ -4,6 +4,7 @@
  */
 package org.sapac.adapters;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -13,18 +14,27 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import org.sapac.annotations.DAOQualifier;
 import org.sapac.entities.Consulta;
 import org.sapac.entities.Paciente;
 import org.sapac.models.ConsultaDAO;
-import org.sapac.models.hibernate.ConsultaDAOHibernate;
 
 /**
  *
  * @author carlson
  */
-public class PEPAdapter implements SistemaPacienteAdapter {
+@ApplicationScoped
+public class PEPAdapter implements SistemaPacienteAdapter, Serializable {
 
 	private Connection connection;
+	
+	@Inject
+	@DAOQualifier(DAOQualifier.DAOType.HIBERNATE)
+	private ConsultaDAO consultaDAO;
+	
 	
 	@Override
 	public Collection<Paciente> procurarPaciente(Paciente paciente) {
@@ -90,12 +100,16 @@ public class PEPAdapter implements SistemaPacienteAdapter {
 		
 		removerPacientesCadastrados(pacientes, paciente);
 		
+		connection = null;
+		
 		return pacientes;
 	}
 
 	@Override
 	public boolean salvarInformacoesProntuario(Consulta consulta) {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		
+		
+		return true;
 	}
 	
 	@Override
@@ -145,11 +159,12 @@ public class PEPAdapter implements SistemaPacienteAdapter {
 				Logger.getLogger(PEPAdapter.class.getName()).log(Level.SEVERE, null, ex);
 			}
 		}
+		
+		connection = null;
 	}
 	
 	private Collection<Paciente> getPacientesCadastrado(Paciente paciente) {
-		ConsultaDAO dao = new ConsultaDAOHibernate();
-		return dao.procurarPacientes(paciente);
+		return consultaDAO.procurarPacientes(paciente);
 	}
 	
 	private void removerPacientesCadastrados(Collection<Paciente> pacientesPEP, Paciente paciente) {

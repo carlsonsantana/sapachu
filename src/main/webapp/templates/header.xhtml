@@ -45,7 +45,7 @@
 						<li>
 							<h:link id="relatorio" value="Gerar Relatório de Desempenho" outcome="/private/relatorio/pesquisar.xhtml" />
 						</li>
-                                                <c:if test="#{perfilController.enfermeiro}">
+						<c:if test="#{perfilController.enfermeiro}">
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown">SAE <span class="caret"></span></a>
 								<ul class="dropdown-menu">
@@ -58,7 +58,7 @@
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Conta <span class="caret"></span></a>
 							<ul class="dropdown-menu" role="menu">
 								<li><h:commandLink id="mudar_senha" value="Mudar senha" action="#{perfilController.telaMudarSenha()}" /></li>
-                                                                <li><h:outputLink id="sair" value="/SAPAC/j_spring_security_logout"><h:outputText value="Sair"/></h:outputLink></li>
+								<li><h:outputLink id="sair" value="/SAPAC/j_spring_security_logout"><h:outputText value="Sair"/></h:outputLink></li>
 							</ul>
 						</li>
 					</ul>

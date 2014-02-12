@@ -178,4 +178,36 @@ public class Consulta implements Serializable {
 	public void setIntervencaoEnfermagem(IntervencaoEnfermagem intervencaoEnfermagem) {
 		this.intervencaoEnfermagem = intervencaoEnfermagem;
 	}
+	
+	public boolean isMarcada() {
+		return this.getSituacao() == Consulta.CONSULTA_REMARCADA;
+	}
+	
+	public boolean isRemarcada() {
+		return this.getSituacao() == Consulta.CONSULTA_REMARCADA;
+	}
+	
+	public boolean isCancelada() {
+		return this.getSituacao() == Consulta.CONSULTA_CANCELADA;
+	}
+	
+	public boolean isRealizada() {
+		return this.getSituacao() == Consulta.CONSULTA_REALIZADA;
+	}
+	
+	@Override
+	public boolean equals(Object object) {
+		if (this != object) {
+			if (!(object instanceof Consulta)) {
+				return false;
+			}
+			
+			Consulta consulta = (Consulta) object;
+			
+			if (this.getId() != consulta.getId()) {
+				return false;
+			}
+		}
+		return true;
+	}
 }

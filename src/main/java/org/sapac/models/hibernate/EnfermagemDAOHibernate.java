@@ -6,9 +6,11 @@ package org.sapac.models.hibernate;
 
 import java.util.Collection;
 import java.util.Date;
+import javax.enterprise.context.ApplicationScoped;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.sapac.annotations.DAOQualifier;
 import org.sapac.entities.Consulta;
 import org.sapac.entities.DiagnosticoEnfermagem;
 import org.sapac.entities.IntervencaoEnfermagem;
@@ -19,6 +21,8 @@ import org.sapac.models.EnfermagemDAO;
  *
  * @author carlson
  */
+@ApplicationScoped
+@DAOQualifier(DAOQualifier.DAOType.HIBERNATE)
 public class EnfermagemDAOHibernate extends GenericDAOHibernate implements EnfermagemDAO {
 
 	@Override
@@ -111,7 +115,7 @@ public class EnfermagemDAOHibernate extends GenericDAOHibernate implements Enfer
 				.append(" AND consulta.data = :data ")
 				.append(" AND consulta.situacao IN (:situacoes) ");
 		if ((paciente.getNome() != null) && (!paciente.getNome().isEmpty())) {
-			hql.append(" AND paciente.nome = :nome ");
+			hql.append(" AND UPPER(paciente.nome) = UPPER(:nome) ");
 		}
 		if ((paciente.getProntuario() != null) && (!paciente.getProntuario().isEmpty())) {
 			hql.append(" AND paciente.prontuario = :prontuario ");
@@ -121,7 +125,7 @@ public class EnfermagemDAOHibernate extends GenericDAOHibernate implements Enfer
 		query.setDate("data", data);
 		query.setParameterList("situacoes", new Object[] {Consulta.CONSULTA_REALIZADA});
 		if ((paciente.getNome() != null) && (!paciente.getNome().isEmpty())) {
-			query.setString("nome", paciente.getNome());
+			query.setString("nome", "%" + paciente.getNome() + "%");
 		}
 		if ((paciente.getProntuario() != null) && (!paciente.getProntuario().isEmpty())) {
 			query.setString("prontuario", paciente.getProntuario());

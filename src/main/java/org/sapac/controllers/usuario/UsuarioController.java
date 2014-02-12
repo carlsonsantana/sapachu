@@ -4,12 +4,12 @@
  */
 package org.sapac.controllers.usuario;
 
-import java.util.List;
+import java.util.Collection;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.model.DataModel;
-import javax.faces.model.ListDataModel;
+import javax.inject.Inject;
 import javax.inject.Named;
+import org.sapac.annotations.DAOQualifier;
 import org.sapac.controllers.GenericController;
 import org.sapac.controllers.PaginasNavegacao;
 import org.sapac.entities.Enfermeiro;
@@ -17,7 +17,6 @@ import org.sapac.entities.Medico;
 import org.sapac.entities.MembroEquipe;
 import org.sapac.entities.Usuario;
 import org.sapac.models.UsuarioDAO;
-import org.sapac.models.hibernate.UsuarioDAOHibernate;
 
 /**
  *
@@ -28,9 +27,12 @@ import org.sapac.models.hibernate.UsuarioDAOHibernate;
 public class UsuarioController extends GenericController {
 	private MembroEquipe membroEquipe;
 	private MembroEquipe membroEquipePesquisa;
-	private transient DataModel<MembroEquipe> listaMembros;
+	private Collection<MembroEquipe> listaMembros;
 	private String confirmacaoSenha;
 	private int tipo;
+	@Inject
+	@DAOQualifier(DAOQualifier.DAOType.HIBERNATE)
+	private UsuarioDAO usuarioDAO;
 
 	/**
 	 * @return the confirmacaoSenha
@@ -77,14 +79,14 @@ public class UsuarioController extends GenericController {
 	/**
 	 * @return the listaMembros
 	 */
-	public DataModel<MembroEquipe> getListaMembros() {
+	public Collection<MembroEquipe> getListaMembros() {
 		return listaMembros;
 	}
 
 	/**
 	 * @param listaMembros the listaMembros to set
 	 */
-	public void setListaMembros(DataModel<MembroEquipe> listaMembros) {
+	public void setListaMembros(Collection<MembroEquipe> listaMembros) {
 		this.listaMembros = listaMembros;
 	}
 
@@ -148,8 +150,7 @@ public class UsuarioController extends GenericController {
 			membro.setUsuario(membroEquipe.getUsuario());
 			membro.getUsuario().setMembroEquipe(membroEquipe);
 			
-			UsuarioDAO dao = new UsuarioDAOHibernate();
-			dao.cadastrarUsuario(membroEquipe.getUsuario());
+			usuarioDAO.cadastrarUsuario(membroEquipe.getUsuario());
 			
 			adicionarMensagemAviso("Membro cadastrado", "Membro cadastrado com Sucesso.");
 			
@@ -163,8 +164,7 @@ public class UsuarioController extends GenericController {
 					+ "e sua confirmação estão diferentes.");
 			return PaginasNavegacao.USUARIO_EDITAR;
 		} else {
-			UsuarioDAO dao = new UsuarioDAOHibernate();
-			dao.editarUsuario(membroEquipe.getUsuario());
+			usuarioDAO.editarUsuario(membroEquipe.getUsuario());
 			
 			adicionarMensagemAviso("Membro editado", "Membro editado com Sucesso.");
 			
@@ -173,7 +173,6 @@ public class UsuarioController extends GenericController {
 	}
 	
 	public void pesquisarUsuario() {
-		UsuarioDAO dao = new UsuarioDAOHibernate();
-		listaMembros = new ListDataModel<MembroEquipe>((List<MembroEquipe>) dao.pesquisarUsuario(membroEquipePesquisa));
+		listaMembros = usuarioDAO.pesquisarUsuario(membroEquipePesquisa);
 	}
 }

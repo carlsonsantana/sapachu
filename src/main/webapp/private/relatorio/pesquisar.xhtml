@@ -11,8 +11,8 @@
 				<legend>Pesquisar Membro</legend>
 				<div class="row">
 					<div class="form-group col-lg-6">
-						<label for="form_nome_paciente">Membro</label>
-						<p:inputText id="nome_paciente"
+						<h:outputLabel for="nome-membro" value="Membro" />
+						<p:inputText id="nome-membro"
 									 value="#{relatorioController.funcionarioPesquisa.nome}" styleClass="form-control" />
 					</div>
 				</div>
@@ -24,7 +24,8 @@
 				<br /><br />
 				<p:dataTable id="datatable" value="#{relatorioController.listaFuncionaros}"
 							 var="funcionario" paginator="true" rows="10" lazy="true"
-							 paginatorPosition="bottom" paginatorAlwaysVisible="false">
+							 paginatorPosition="bottom" paginatorAlwaysVisible="false"
+							 emptyMessage="Nenhum resultado encontrado.">
 					<p:column>
 						<f:facet name="header"><h:outputText value="Nome" /></f:facet>
 						<h:outputText value="#{funcionario.nome}" />

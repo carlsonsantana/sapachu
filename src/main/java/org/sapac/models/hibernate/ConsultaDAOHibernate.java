@@ -7,23 +7,31 @@ package org.sapac.models.hibernate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.sapac.adapters.SistemaPacienteAdapter;
+import org.sapac.annotations.DAOQualifier;
 import org.sapac.entities.Consulta;
 import org.sapac.entities.DiagnosticoEnfermagem;
 import org.sapac.entities.Paciente;
 import org.sapac.entities.SituacaoUlceraConsulta;
-import org.sapac.entities.Ulcera;
 import org.sapac.models.ConsultaDAO;
 
 /**
  *
  * @author carlson
  */
+@ApplicationScoped
+@DAOQualifier(DAOQualifier.DAOType.HIBERNATE)
 public class ConsultaDAOHibernate extends GenericDAOHibernate implements ConsultaDAO {
 
+	@Inject
+	private SistemaPacienteAdapter sistemaPacienteAdapter;
+	
 	@Override
 	public Consulta marcarConsulta(Consulta consulta) {
 		consulta.setSituacao(Consulta.CONSULTA_MARCADA);
@@ -74,7 +82,7 @@ public class ConsultaDAOHibernate extends GenericDAOHibernate implements Consult
 	}
 
 	@Override
-	public Collection<Consulta> procurarConsultasMes(Date data) {
+	public Collection<Consulta> procurarConsultasMes(Date data, Paciente paciente) {
 		Session session = getSession();
 		
 		Transaction transaction = session.beginTransaction();
@@ -83,9 +91,25 @@ public class ConsultaDAOHibernate extends GenericDAOHibernate implements Consult
 		hql.append("SELECT consulta FROM Consulta AS consulta ")
 				.append(" WHERE 1 = 1 ")
 				.append(" AND consulta.situacao IN (:situacoes) ");
+		if (paciente != null) {
+			if ((paciente.getNome() != null) && (!paciente.getNome().isEmpty())) {
+				hql.append(" AND UPPER(consulta.paciente.nome) LIKE UPPER(:nome) ");
+			}
+			if ((paciente.getProntuario() != null) && (!paciente.getProntuario().isEmpty())) {
+				hql.append(" AND consulta.paciente.prontuario LIKE :prontuario ");
+			}
+		}
 		
 		Query query = session.createQuery(hql.toString());
 		query.setParameterList("situacoes", new Object[] {Consulta.CONSULTA_MARCADA, Consulta.CONSULTA_REALIZADA, Consulta.CONSULTA_REMARCADA});
+		if (paciente != null) {
+			if ((paciente.getNome() != null) && (!paciente.getNome().isEmpty())) {
+				query.setString("nome", "%" + paciente.getNome() + "%");
+			}
+			if ((paciente.getProntuario() != null) && (!paciente.getProntuario().isEmpty())) {
+				query.setString("prontuario", paciente.getProntuario());
+			}
+		}
 		
 		Collection<Consulta> consultas = query.list();
 		
@@ -95,7 +119,7 @@ public class ConsultaDAOHibernate extends GenericDAOHibernate implements Consult
 	}
 
 	@Override
-	public Collection<Consulta> procurarConsultasDia(Date data) {
+	public Collection<Consulta> procurarConsultasDia(Date data, Paciente paciente) {
 		Session session = getSession();
 		
 		Transaction transaction = session.beginTransaction();
@@ -105,9 +129,25 @@ public class ConsultaDAOHibernate extends GenericDAOHibernate implements Consult
 				.append(" WHERE 1 = 1 ")
 				.append(" AND consulta.situacao IN (:situacoes) ")
 				.append(" AND consulta.data = current_date() ");
+		if (paciente != null) {
+			if ((paciente.getNome() != null) && (!paciente.getNome().isEmpty())) {
+				hql.append(" AND UPPER(consulta.paciente.nome) LIKE UPPER(:nome) ");
+			}
+			if ((paciente.getProntuario() != null) && (!paciente.getProntuario().isEmpty())) {
+				hql.append(" AND consulta.paciente.prontuario LIKE :prontuario ");
+			}
+		}
 		
 		Query query = session.createQuery(hql.toString());
 		query.setParameterList("situacoes", new Object[] {Consulta.CONSULTA_MARCADA, Consulta.CONSULTA_REALIZADA, Consulta.CONSULTA_REMARCADA});
+		if (paciente != null) {
+			if ((paciente.getNome() != null) && (!paciente.getNome().isEmpty())) {
+				query.setString("nome", "%" + paciente.getNome() + "%");
+			}
+			if ((paciente.getProntuario() != null) && (!paciente.getProntuario().isEmpty())) {
+				query.setString("prontuario", paciente.getProntuario());
+			}
+		}
 		
 		Collection<Consulta> consultas = query.list();
 		
@@ -152,7 +192,7 @@ public class ConsultaDAOHibernate extends GenericDAOHibernate implements Consult
 		hql.append("SELECT paciente FROM Paciente AS paciente ")
 				.append(" WHERE 1 = 1 ");
 		if ((paciente.getNome() != null) && (!paciente.getNome().isEmpty())) {
-			hql.append(" AND paciente.nome LIKE :nome ");
+			hql.append(" AND UPPER(paciente.nome) LIKE UPPER(:nome) ");
 		}
 		if ((paciente.getProntuario() != null) && (!paciente.getProntuario().isEmpty())) {
 			hql.append(" AND paciente.prontuario = :prontuario ");
@@ -160,7 +200,7 @@ public class ConsultaDAOHibernate extends GenericDAOHibernate implements Consult
 		
 		Query query = session.createQuery(hql.toString());
 		if ((paciente.getNome() != null) && (!paciente.getNome().isEmpty())) {
-			query.setString("nome", paciente.getNome());
+			query.setString("nome", "%" + paciente.getNome() + "%");
 		}
 		if ((paciente.getProntuario() != null) && (!paciente.getProntuario().isEmpty())) {
 			query.setString("prontuario", paciente.getProntuario());
@@ -293,6 +333,19 @@ public class ConsultaDAOHibernate extends GenericDAOHibernate implements Consult
 		
 		transaction.commit();
 		
+		sistemaPacienteAdapter.salvarInformacoesProntuario(consulta);
+		
 		return consulta;
+	}
+
+	@Override
+	public Collection<Paciente> procurarPacientesNaoCadastrados(Paciente paciente) {
+		return sistemaPacienteAdapter.procurarPaciente(paciente);
+	}
+
+	@Override
+	public Paciente carregarPaciente(Paciente paciente) {
+		sistemaPacienteAdapter.carregarInformacoesPaciente(paciente);
+		return paciente;
 	}
 }

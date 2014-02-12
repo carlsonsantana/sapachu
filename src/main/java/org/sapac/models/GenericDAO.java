@@ -4,12 +4,13 @@
  */
 package org.sapac.models;
 
+import java.io.Serializable;
 import org.hibernate.Session;
 
 /**
  *
  * @author carlson
  */
-public interface GenericDAO {
+public interface GenericDAO extends Serializable {
 	public Session getSession();
 }

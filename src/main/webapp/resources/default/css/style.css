@@ -29,9 +29,6 @@
 .controle .btn {
 	width: 80%;
 }
-.removido {
-	background-color: red !important;
-}
 .escondido {
 	height: 0;
 	width: 0;
@@ -39,11 +36,25 @@
 	opacity: 0;
 	visibility: hidden;
 }
-.remarcado {
-	background-color: green !important;
-}
 .marcada {
 	background-color: #ff7a00 !important;
+	border-color: #ff7a00 !important;
+}
+.remarcado {
+	background-color: #C529E2 !important;
+	border-color: #C529E2 !important;
+}
+.removido {
+	background-color: #ff0000 !important;
+	border-color: #ff0000 !important;
+}
+.realizada {
+	background-color: #07B607 !important;
+	border-color: #07B607 !important;
+}
+.nao-realizada {
+	background-color: #000000 !important;
+	border-color: #000000 !important;
 }
 .label.label-info {
 	color: #000000;

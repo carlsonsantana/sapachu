@@ -11,19 +11,21 @@
 				<legend>Pesquisar Membro</legend>
 				<div class="row">
 					<div class="form-group col-lg-6">
-						<label for="form_nome_paciente">Membro</label>
-						<p:inputText id="nome_paciente" value="#{usuarioController.membroEquipePesquisa.nome}" styleClass="form-control" />
+						<h:outputLabel for="nome-membro" value="Membro" />
+						<p:inputText id="nome-membro" value="#{usuarioController.membroEquipePesquisa.nome}" styleClass="form-control" />
 					</div>
 				</div>
 				<div class="form-group">
 					<input type="reset" value="Limpar Campos" class="btn btn-default" />
 					<h:outputText value=" " />
-					<h:commandButton value="Pequisar" styleClass="btn btn-primary" />
+					<h:commandButton value="Pequisar" styleClass="btn btn-primary"
+									 action="#{usuarioController.telaPesquisaUsuario()}" />
 				</div>
 				<br /><br />
 				<p:dataTable id="datatable" value="#{usuarioController.listaMembros}"
 							 var="membroEquipe" paginator="true" rows="10" lazy="true"
-							 paginatorPosition="bottom" paginatorAlwaysVisible="false">
+							 paginatorPosition="bottom" paginatorAlwaysVisible="false"
+							 emptyMessage="Nenhum resultado encontrado.">
 					<p:column>
 						<f:facet name="header"><h:outputText value="Nome" /></f:facet>
 						<h:outputText value="#{membroEquipe.nome}" />

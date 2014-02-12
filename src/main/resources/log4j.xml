@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="false">
+	<!-- ============================== -->
+	<!-- Append messages to the console -->
+	<!-- ============================== -->
+
+	<appender name="console" class="org.apache.log4j.ConsoleAppender">
+		<errorHandler class="org.apache.log4j.helpers.OnlyOnceErrorHandler" />
+		<param name="Target" value="System.out" />
+		<param name="Threshold" value="DEBUG" />
+
+		<layout class="org.apache.log4j.PatternLayout">
+			<!-- The default pattern: Date Priority [Category] Message\n -->
+			<param name="ConversionPattern" value="%d{dd/MM/yy hh:mm:ss,sss z} %-5p [%c{1}] %m%n"/>
+		</layout>
+	</appender>
+	
+	<appender name="file" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="file" value="logging/log.log" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{dd/MM/yy hh:mm:ss,sss z} %-5p [%c{1}] %m%n" />
+		</layout>
+	</appender>
+
+	<!-- ======================= -->
+	<!-- Setup the Root category -->
+	<!-- ======================= -->
+
+	<root>
+		<!-- 
+		  Set the root logger priority via a system property. Note this is parsed by log4j         
+		-->
+		<appender-ref ref="console" />
+		<appender-ref ref="file" />
+	</root>
+
+</log4j:configuration>

@@ -8,37 +8,46 @@
 		(<h:outputText value="#{agendaController.paciente.nome}" />)</ui:define>
 	<ui:define name="content">
 		<h:form id="form">
+			<p:growl id="mensagensWarn" showDetail="true" sticky="true" severity="warn" />
+			
 			<fieldset>
 				<legend>Marcar Consulta</legend>
-				<script type="text/javascript">
-					var consultaMarcada = false;
-				</script>
-				<p:growl id="mensagensWarn" showDetail="true" sticky="true" severity="warn" />
+				
 				Nome: <h:outputText value="#{agendaController.paciente.nome}" /><br />
 				Prontuário: <h:outputText value="#{agendaController.paciente.prontuario}" /><br /><br />
 				<p:schedule id="schedule" widgetVar="myschedule" locale="pt"
 							value="#{agendaController.calendario}"
 							draggable="false" resizable="false">
-					<p:ajax event="dateSelect" listener="#{agendaController.onDataConsultaSelecionada}" update="eventDetails" oncomplete="if (!consultaMarcada) {PF('eventDialog').show();}" />
-					<p:ajax event="eventSelect" update="eventDetails" oncomplete="PF('eventDialog').show()" />
+					<p:ajax event="dateSelect" listener="#{agendaController.onDataConsultaSelecionada}"
+							update="dialogocontainer, mensagensWarn" />
 				</p:schedule>
-				<p:dialog widgetVar="eventDialog" header="Marcar Consulta?"
-						  showEffect="clip" hideEffect="clip" id="dialogo">
-					<h:panelGrid id="eventDetails" columns="1">
-						<h:panelGroup>
-							Paciente:
-							<h:outputText id="nome"
-										  value="#{agendaController.paciente.nome}" />
-						</h:panelGroup>
-						<h:panelGroup>
-							<p:commandButton id="nao" value="Não" oncomplete="PF('eventDialog').hide();" />
-							<p:commandButton id="addButton" value="Sim"
-											 action="#{agendaController.adicionarConsulta}"
-											 oncomplete="PF('myschedule').update();PF('eventDialog').hide();consultaMarcada = true;"
-											 update="mensagensWarn" />
-						</h:panelGroup>
-					</h:panelGrid>
-				</p:dialog>
+				
+				<h:panelGroup id="dialogocontainer" rendered="#{not agendaController.consultaMarcada}">
+					<h:panelGroup rendered="#{agendaController.podeMarcar}">
+						<p:dialog widgetVar="eventDialog" header="Marcar Consulta?"
+								  showEffect="clip" hideEffect="clip" id="dialogo">
+							<h:panelGrid id="eventDetails" columns="1">
+								<h:panelGroup>
+									Paciente: <h:outputText id="nome"
+												  value="#{agendaController.paciente.nome}" />
+								</h:panelGroup>
+								<h:panelGroup>
+									<p:commandButton id="nao" value="Não" oncomplete="PF('eventDialog').hide();" />
+									<p:commandButton id="addButton" value="Sim"
+													 action="#{agendaController.adicionarConsulta}"
+													 oncomplete="PF('myschedule').update();PF('eventDialog').hide();"
+													 update="dialogocontainer, mensagensWarn" />
+								</h:panelGroup>
+							</h:panelGrid>
+						</p:dialog>
+						
+						<script type="text/javascript">
+							if (typeof eventDialog != typeof undefined) {
+								PF('eventDialog').show();
+							}
+						</script>
+					</h:panelGroup>
+				</h:panelGroup>
 				<br /><br />
 				<h:commandButton value="Voltar" styleClass="btn btn-default"
 								 action="#{agendaController.telaMarcarConsulta()}" />

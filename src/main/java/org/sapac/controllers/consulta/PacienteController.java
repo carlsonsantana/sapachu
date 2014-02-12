@@ -6,20 +6,16 @@ package org.sapac.controllers.consulta;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.faces.model.DataModel;
-import javax.faces.model.ListDataModel;
+import javax.inject.Inject;
 import javax.inject.Named;
 import org.primefaces.model.chart.CartesianChartModel;
 import org.primefaces.model.chart.ChartSeries;
-import org.sapac.adapters.PEPAdapter;
-import org.sapac.adapters.SistemaPacienteAdapter;
+import org.sapac.annotations.DAOQualifier;
 import org.sapac.controllers.GenericController;
 import org.sapac.controllers.PaginasNavegacao;
 import org.sapac.entities.Paciente;
 import org.sapac.models.ConsultaDAO;
-import org.sapac.models.hibernate.ConsultaDAOHibernate;
 
 /**
  *
@@ -32,7 +28,6 @@ public class PacienteController extends GenericController {
 	private static final long serialVersionUID = 1L;
 
 	private enum Operacao {
-
 		PESQUISAR,
 		ADICIONAR,
 		PESQUISAR_ENFERMAGEM;
@@ -40,8 +35,11 @@ public class PacienteController extends GenericController {
 	private Paciente paciente;
 	private Paciente pacientePesquisa;
 	private Operacao operacao;
-	private transient DataModel<Paciente> listaPacientes;
+	private Collection<Paciente> listaPacientes;
 	private transient Collection<CartesianChartModel> graficos;
+	@Inject
+	@DAOQualifier(DAOQualifier.DAOType.HIBERNATE)
+	private ConsultaDAO consultaDAO;
 
 	/**
 	 * @return the paciente
@@ -88,14 +86,14 @@ public class PacienteController extends GenericController {
 	/**
 	 * @return the listaPacientes
 	 */
-	public DataModel<Paciente> getListaPacientes() {
+	public Collection<Paciente> getListaPacientes() {
 		return listaPacientes;
 	}
 
 	/**
 	 * @param listaPacientes the listaPacientes to set
 	 */
-	public void setListaPacientes(DataModel<Paciente> listaPacientes) {
+	public void setListaPacientes(Collection<Paciente> listaPacientes) {
 		this.listaPacientes = listaPacientes;
 	}
 
@@ -116,7 +114,7 @@ public class PacienteController extends GenericController {
 		paciente = new Paciente();
 		pacientePesquisa = new Paciente();
 
-		listaPacientes = new ListDataModel<Paciente>();
+		listaPacientes = new ArrayList<Paciente>();
 	}
 
 	/**
@@ -127,8 +125,7 @@ public class PacienteController extends GenericController {
 	public String pesquisarPaciente() {
 		operacao = Operacao.PESQUISAR;
 
-		ConsultaDAO dao = new ConsultaDAOHibernate();
-		listaPacientes = new ListDataModel<Paciente>((List) dao.procurarPacientes(pacientePesquisa));
+		listaPacientes = consultaDAO.procurarPacientes(pacientePesquisa);
 
 		return PaginasNavegacao.PACIENTE_PESQUISAR;
 	}
@@ -141,8 +138,7 @@ public class PacienteController extends GenericController {
 	public String cadastrarPaciente() {
 		operacao = Operacao.ADICIONAR;
 
-		SistemaPacienteAdapter sistemaPacienteAdapter = new PEPAdapter();
-		listaPacientes = new ListDataModel<Paciente>((List) sistemaPacienteAdapter.procurarPaciente(pacientePesquisa));
+		listaPacientes = consultaDAO.procurarPacientesNaoCadastrados(pacientePesquisa);
 
 		return PaginasNavegacao.PACIENTE_PESQUISAR;
 	}
@@ -150,8 +146,7 @@ public class PacienteController extends GenericController {
 	public String pesquisarPacienteEnfermagem() {
 		operacao = Operacao.PESQUISAR_ENFERMAGEM;
 
-		ConsultaDAOHibernate dao = new ConsultaDAOHibernate();
-		listaPacientes = new ListDataModel<Paciente>((List) dao.procurarPacientes(pacientePesquisa));
+		listaPacientes = consultaDAO.procurarPacientes(pacientePesquisa);
 
 		return PaginasNavegacao.PACIENTE_PESQUISAR;
 	}
@@ -163,14 +158,12 @@ public class PacienteController extends GenericController {
 	 * @return A tela para visualizar um paciente.
 	 */
 	public String visualizarPaciente(Paciente paciente) {
-		SistemaPacienteAdapter sistemaPacienteAdapter = new PEPAdapter();
-		sistemaPacienteAdapter.carregarInformacoesPaciente(paciente);
+		consultaDAO.carregarPaciente(paciente);
 		setPaciente(paciente);
 
-		ConsultaDAO dao = new ConsultaDAOHibernate();
-		paciente.setConsultas(dao.procurarConsultasPaciente(paciente));
+		paciente.setConsultas(consultaDAO.procurarConsultasPaciente(paciente));
 
-		/*
+		
 		 setGraficos(new ArrayList<CartesianChartModel>());
 		 CartesianChartModel graficoAreaTotalUlceras = new CartesianChartModel();
 		 ChartSeries series = new ChartSeries("Área Total das Úlceras do Paciente");
@@ -186,16 +179,16 @@ public class PacienteController extends GenericController {
 		
 		 CartesianChartModel graficoNumeroTotalUlceras = new CartesianChartModel();
 		 series = new ChartSeries("Número Total de Úlceras do Paciente");
-		 series.set("20/01/2013", 3.2);
-		 series.set("25/01/2013", 3.4);
+		 series.set("20/01/2013", 3);
+		 series.set("25/01/2013", 3);
 		 series.set("30/01/2013", 3);
-		 series.set("01/02/2013", 3.1);
-		 series.set("05/02/2013", 2.8);
-		 series.set("10/02/2013", 2.6);
-		 series.set("15/02/2013", 2);
-		 graficoAreaTotalUlceras.addSeries(series);
+		 series.set("01/02/2013", 3);
+		 series.set("05/02/2013", 2);
+		 series.set("10/02/2013", 2);
+		 series.set("15/02/2013", 1);
+		 graficoNumeroTotalUlceras.addSeries(series);
 		 getGraficos().add(graficoNumeroTotalUlceras);
-		 */
+		
 
 		return PaginasNavegacao.PACIENTE_VISUALIZAR;
 	}
@@ -216,9 +209,7 @@ public class PacienteController extends GenericController {
 	 * @return
 	 */
 	public String cadastrar() {
-		ConsultaDAO dao = new ConsultaDAOHibernate();
-
-		paciente = dao.cadastrarPaciente(paciente);
+		paciente = consultaDAO.cadastrarPaciente(paciente);
 
 		return visualizarPaciente(paciente);
 	}

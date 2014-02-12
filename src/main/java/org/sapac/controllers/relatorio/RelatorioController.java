@@ -8,16 +8,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.faces.model.DataModel;
-import javax.faces.model.ListDataModel;
+import javax.inject.Inject;
 import javax.inject.Named;
 import org.primefaces.model.chart.CartesianChartModel;
 import org.primefaces.model.chart.ChartSeries;
+import org.sapac.annotations.DAOQualifier;
 import org.sapac.controllers.GenericController;
 import org.sapac.controllers.PaginasNavegacao;
 import org.sapac.entities.Enfermeiro;
 import org.sapac.entities.MembroEquipe;
 import org.sapac.entities.Medico;
+import org.sapac.models.RelatorioDAO;
 
 /**
  *
@@ -30,7 +31,11 @@ public class RelatorioController extends GenericController {
 	private MembroEquipe funcionario;
 	private MembroEquipe funcionarioPesquisa;
 	private transient Collection<CartesianChartModel> graficos;
-	private transient DataModel<MembroEquipe> listaFuncionaros;
+	private Collection<MembroEquipe> listaFuncionaros;
+	
+	@Inject
+	@DAOQualifier(DAOQualifier.DAOType.HIBERNATE)
+	private RelatorioDAO relatorioDAO;
 
 	@PostConstruct
 	public void init() {
@@ -44,7 +49,7 @@ public class RelatorioController extends GenericController {
 		f = new Enfermeiro();
 		f.setNome("Marta Jasmine");
 		funcionarios.add(f);
-		listaFuncionaros = new ListDataModel<MembroEquipe>(funcionarios);
+		listaFuncionaros = funcionarios;
 		funcionario = new Medico();
 		funcionarioPesquisa = new Medico();
 	}
@@ -111,14 +116,14 @@ public class RelatorioController extends GenericController {
 	/**
 	 * @return the listaFuncionaros
 	 */
-	public DataModel<MembroEquipe> getListaFuncionaros() {
+	public Collection<MembroEquipe> getListaFuncionaros() {
 		return listaFuncionaros;
 	}
 
 	/**
 	 * @param listaFuncionaros the listaFuncionaros to set
 	 */
-	public void setListaFuncionaros(DataModel<MembroEquipe> listaFuncionaros) {
+	public void setListaFuncionaros(Collection<MembroEquipe> listaFuncionaros) {
 		this.listaFuncionaros = listaFuncionaros;
 	}
 

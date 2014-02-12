@@ -6,13 +6,11 @@ package org.sapac.controllers.enfermagem;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.model.DataModel;
-import javax.faces.model.ListDataModel;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.sapac.annotations.DAOQualifier;
 import org.sapac.controllers.GenericController;
 import org.sapac.controllers.PaginasNavegacao;
 import org.sapac.controllers.usuario.PerfilController;
@@ -21,7 +19,6 @@ import org.sapac.entities.Enfermeiro;
 import org.sapac.entities.IntervencaoEnfermagem;
 import org.sapac.entities.Paciente;
 import org.sapac.models.EnfermagemDAO;
-import org.sapac.models.hibernate.EnfermagemDAOHibernate;
 
 /**
  *
@@ -34,9 +31,12 @@ public class EnfermagemController extends GenericController {
 	private Paciente paciente;
 	private Paciente pacientePesquisa;
 	private IntervencaoEnfermagem intervencaoEnfermagem;
-	private DataModel<IntervencaoEnfermagem> intervencoesEnfermagem;
+	private Collection<IntervencaoEnfermagem> intervencoesEnfermagem;
 	@Inject
 	private PerfilController perfilController;
+	@Inject
+	@DAOQualifier(DAOQualifier.DAOType.HIBERNATE)
+	private EnfermagemDAO enfermagemDAO;
 
 	/**
 	 * @return the paciente
@@ -83,14 +83,14 @@ public class EnfermagemController extends GenericController {
 	/**
 	 * @return the intervencoesEnfermagem
 	 */
-	public DataModel<IntervencaoEnfermagem> getIntervencoesEnfermagem() {
+	public Collection<IntervencaoEnfermagem> getIntervencoesEnfermagem() {
 		return intervencoesEnfermagem;
 	}
 
 	/**
 	 * @param intervencoesEnfermagem the intervencoesEnfermagem to set
 	 */
-	public void setIntervencoesEnfermagem(DataModel<IntervencaoEnfermagem> intervencoesEnfermagem) {
+	public void setIntervencoesEnfermagem(Collection<IntervencaoEnfermagem> intervencoesEnfermagem) {
 		this.intervencoesEnfermagem = intervencoesEnfermagem;
 	}
 
@@ -102,8 +102,7 @@ public class EnfermagemController extends GenericController {
 	public String telaDianosticarEnfermagem(Paciente paciente) {
 		this.paciente = paciente;
 
-		EnfermagemDAO dao = new EnfermagemDAOHibernate();
-		paciente.setDiagnosticoEnfermagem(dao.procurarDiagnosticoEnfermagem(paciente));
+		paciente.setDiagnosticoEnfermagem(enfermagemDAO.procurarDiagnosticoEnfermagem(paciente));
 
 		return PaginasNavegacao.ENFERMAGEM_EDITAR_DIAGNOSTICO;
 	}
@@ -116,11 +115,10 @@ public class EnfermagemController extends GenericController {
 	}
 
 	public String visualizarDiagnostico(Paciente paciente) {
-		EnfermagemDAO dao = new EnfermagemDAOHibernate();
-		paciente.setDiagnosticoEnfermagem(dao.procurarDiagnosticoEnfermagem(paciente));
+		paciente.setDiagnosticoEnfermagem(enfermagemDAO.procurarDiagnosticoEnfermagem(paciente));
 		paciente.setConsultas(new ArrayList<Consulta>());
 
-		Collection<IntervencaoEnfermagem> intervencoesEnfermagem = dao.procurarIntervencoesEnfermagem(paciente);
+		Collection<IntervencaoEnfermagem> intervencoesEnfermagem = enfermagemDAO.procurarIntervencoesEnfermagem(paciente);
 		for (IntervencaoEnfermagem intervencaoEnfermagem : intervencoesEnfermagem) {
 			paciente.getConsultas().add(intervencaoEnfermagem.getConsulta());
 		}
@@ -138,16 +136,14 @@ public class EnfermagemController extends GenericController {
 	}
 
 	public String salvarDiagnosticoEnfermagem() {
-		EnfermagemDAO dao = new EnfermagemDAOHibernate();
-		dao.alterarDiagnosticoEnfermagem(paciente.getDiagnosticoEnfermagem());
+		enfermagemDAO.alterarDiagnosticoEnfermagem(paciente.getDiagnosticoEnfermagem());
 
 		return PaginasNavegacao.PAGINA_INICIAL;
 	}
 
 	public String pesquisarIntervencoes() {
-		EnfermagemDAO dao = new EnfermagemDAOHibernate();
-		Collection<IntervencaoEnfermagem> intervencoes = dao.procurarIntervencoesEnfermagemDia(pacientePesquisa, getDataAtual());
-		setIntervencoesEnfermagem(new ListDataModel<IntervencaoEnfermagem>((List<IntervencaoEnfermagem>) intervencoes));
+		Collection<IntervencaoEnfermagem> intervencoes = enfermagemDAO.procurarIntervencoesEnfermagemDia(pacientePesquisa, getDataAtual());
+		setIntervencoesEnfermagem(intervencoes);
 
 		return "/private/enfermagem/pesquisar_paciente";
 	}
@@ -156,8 +152,7 @@ public class EnfermagemController extends GenericController {
 		Enfermeiro enfermeiro = (Enfermeiro) perfilController.getUsuario().getMembroEquipe();
 		intervencaoEnfermagem.setEnfermeiro(enfermeiro);
 
-		EnfermagemDAO dao = new EnfermagemDAOHibernate();
-		dao.alterarIntervencaoEnfermagem(intervencaoEnfermagem);
+		enfermagemDAO.alterarIntervencaoEnfermagem(intervencaoEnfermagem);
 
 		init();
 
