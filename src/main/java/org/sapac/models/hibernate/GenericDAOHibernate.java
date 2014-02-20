@@ -10,7 +10,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.sapac.models.GenericDAO;
-import org.sapac.utils.ConecaoHibernate;
+import org.sapac.utils.ConexaoHibernate;
 
 /**
  *
@@ -50,6 +50,6 @@ public class GenericDAOHibernate implements GenericDAO {
 	
 	@Override
 	public Session getSession() {
-		return ConecaoHibernate.getSession();
+		return ConexaoHibernate.getSession();
 	}
 }

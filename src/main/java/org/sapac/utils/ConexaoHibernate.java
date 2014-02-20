@@ -15,7 +15,7 @@ import org.hibernate.service.ServiceRegistryBuilder;
  *
  * @author carlson
  */
-public final class ConecaoHibernate {
+public final class ConexaoHibernate {
 	
 	private static SessionFactory sessionFactory;
 	

@@ -116,7 +116,7 @@ public class PerfilController extends GenericController {
 			if (context instanceof SecurityContext) {
 				Authentication authentication = context.getAuthentication();
 				if (authentication instanceof Authentication) {
-					userName = (((User) authentication.getPrincipal()).getUsername());
+					userName = (authentication.getPrincipal()).toString();
 				}
 			}
 			usuario = usuarioDAO.carregarUsuario(userName);

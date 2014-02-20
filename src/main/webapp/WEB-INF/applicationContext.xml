@@ -11,11 +11,10 @@
  
     <http auto-config="true">
         <intercept-url pattern="/public/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
-        <intercept-url pattern="/private/**" access="ROLE_USER"/>
-        <intercept-url pattern="/admin/**" access="ROLE_USER"/>
+        <intercept-url pattern="/private/**" access="ROLE_MEDICO, ROLE_ENFERMEIRO"/>
+        <intercept-url pattern="/admin/**" access="ROLE_COORDENADOR"/>
         <form-login login-page="/public/login.xhtml" 
                     authentication-failure-url="/public/login.xhtml?erro=true"/>
-        <remember-me/>
         <logout/>
     </http>
     <debug/>
@@ -28,17 +27,24 @@
     </b:bean>
     
     <authentication-manager>
-        <authentication-provider>
+        <!--<authentication-provider>-->
             <!--            <user-service>
                 <user name="edson" password="123456" authorities="ROLE_USER"/>
-            </user-service>-->
-<!--            <password-encoder hash="md5"/>-->
+            </user-service>
+           <password-encoder hash="md5"/>
             <password-encoder hash="plaintext"/>
             <jdbc-user-service data-source-ref="dataSource"
                                users-by-username-query="select nome_usuario as username, senha as password, ativo as enable from sapac.usuario where nome_usuario=?"
                                authorities-by-username-query="
                                     select nome_usuario as username, authority from sapac.authorities where nome_usuario = ? "
-            />
-        </authentication-provider>
+            />-->
+            
+        <!--</authentication-provider>-->
+        <authentication-provider ref="UserPasswordAuthenticationProvider"/>
+        
     </authentication-manager>
+ 
+
+  <b:bean id="UserPasswordAuthenticationProvider" class="org.sapac.controllers.usuario.SpringAdapter"/>
+    
 </b:beans>
