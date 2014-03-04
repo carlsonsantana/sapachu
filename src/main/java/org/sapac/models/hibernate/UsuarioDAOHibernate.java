@@ -83,7 +83,7 @@ public class UsuarioDAOHibernate extends GenericDAOHibernate implements UsuarioD
 
 		Query query = session.createQuery(hql.toString());
 		query.setString("login", login);
-                
+
 		Usuario usuario = (Usuario) query.uniqueResult();
 
 		transaction.commit();
