@@ -11,7 +11,7 @@ import java.util.logging.Logger;
  *
  * @author carlson
  */
-public class MD5Generator {
+public class HashGenerator {
 
 	private static MessageDigest messageDigest;
 
@@ -20,7 +20,7 @@ public class MD5Generator {
 			messageDigest = MessageDigest.getInstance("MD5");
 			messageDigest.reset();
 		} catch (NoSuchAlgorithmException ex) {
-			Logger.getLogger(MD5Generator.class.getName()).log(Level.SEVERE, null, ex);
+			Logger.getLogger(HashGenerator.class.getName()).log(Level.SEVERE, null, ex);
 		}
 	}
 
@@ -35,7 +35,7 @@ public class MD5Generator {
 			}
 			return stringHash;
 		} catch (UnsupportedEncodingException ex) {
-			Logger.getLogger(MD5Generator.class.getName()).log(Level.SEVERE, null, ex);
+			Logger.getLogger(HashGenerator.class.getName()).log(Level.SEVERE, null, ex);
 			return null;
 		}
 	}

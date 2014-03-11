@@ -5,13 +5,12 @@
  */
 package org.sapac.controllers.usuario;
 
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import org.sapac.entities.Usuario;
 import org.sapac.models.UsuarioDAO;
 import org.sapac.models.hibernate.UsuarioDAOHibernate;
-import org.springframework.security.authentication.AccountStatusException;
+import org.sapac.utils.HashGenerator;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -19,11 +18,7 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 /**
@@ -31,11 +26,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
  * @author edson
  */
 public class SpringAdapter implements AuthenticationProvider {
-
     @Override
     public Authentication authenticate(Authentication a) throws AuthenticationException {
         Authentication authObject = a;
         String nome = authObject.getName();
+		String senha = HashGenerator.gerar(authObject.getCredentials().toString());
 
         UsuarioDAO dao = new UsuarioDAOHibernate();
         Usuario usuario = dao.carregarUsuario(nome);
@@ -43,12 +38,11 @@ public class SpringAdapter implements AuthenticationProvider {
   
         if (usuario == null) {
             throw new UsernameNotFoundException("Usuário não encontrado no banco de dados!");
-        } else if (!usuario.getSenha().equals(authObject.getCredentials())) {
+        } else if (!usuario.getSenha().equals(senha)) {
             throw new BadCredentialsException("Senha incorreta");
         } else if (!usuario.isAtivo()) {
             throw new DisabledException("Usuário " + nome + " está desativado");
         } else {
-
             if (usuario.isMedico()) {
                 papeis.add(new SimpleGrantedAuthority("ROLE_MEDICO"));
                 if (usuario.isCoordenador()) {
@@ -68,5 +62,4 @@ public class SpringAdapter implements AuthenticationProvider {
     public boolean supports(Class<?> type) {
         return type.equals(UsernamePasswordAuthenticationToken.class);
     }
-
 }

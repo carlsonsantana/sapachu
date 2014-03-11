@@ -25,6 +25,7 @@ import org.sapac.models.UsuarioDAO;
 @Named
 @SessionScoped
 public class UsuarioController extends GenericController {
+
 	private MembroEquipe membroEquipe;
 	private MembroEquipe membroEquipePesquisa;
 	private Collection<MembroEquipe> listaMembros;
@@ -111,36 +112,50 @@ public class UsuarioController extends GenericController {
 
 	public String telaPesquisaUsuario() {
 		pesquisarUsuario();
-		
+
 		return PaginasNavegacao.USUARIO_PESQUISAR;
 	}
 
 	public String telaCadastrarUsuario() {
 		membroEquipe = new MembroEquipe();
 		membroEquipe.setUsuario(new Usuario());
-		
+		membroEquipe.getUsuario().setMembroEquipe(membroEquipe);
+
 		return PaginasNavegacao.USUARIO_CADASTRAR;
 	}
 
 	public String editarUsuario(MembroEquipe membroEquipe) {
 		setMembroEquipe(membroEquipe);
-		
+		if (membroEquipe.isEnfermeiro()) {
+			tipo = 1;
+		} else if (membroEquipe.isMedico()) {
+			tipo = 2;
+		}
+
 		return PaginasNavegacao.USUARIO_EDITAR;
 	}
 
+	public String inativarUsuario(MembroEquipe membroEquipe) {
+		usuarioDAO.inativarUsuario(membroEquipe.getUsuario());
+
+		return PaginasNavegacao.USUARIO_PESQUISAR;
+	}
+
+	public String ativarUsuario(MembroEquipe membroEquipe) {
+		usuarioDAO.ativarUsuario(membroEquipe.getUsuario());
+
+		return PaginasNavegacao.USUARIO_PESQUISAR;
+	}
+
 	public String cadastrar() {
-		if (!membroEquipe.getUsuario().getSenha().equals(confirmacaoSenha)) {
-			adicionarMensagemErro("Senhas diferentes", "A senha digitada "
-					+ "e sua confirmação estão diferentes.");
-			return PaginasNavegacao.USUARIO_CADASTRAR;
-		} else {
+		if (validarUsuario(membroEquipe.getUsuario())) {
 			MembroEquipe membro;
 			if (tipo == 1) {
 				membro = new Enfermeiro();
 			} else {
 				membro = new Medico();
 			}
-			
+
 			membro.setCpf(membroEquipe.getCpf());
 			membro.setEmail(membroEquipe.getEmail());
 			membro.setMatricula(membroEquipe.getMatricula());
@@ -148,31 +163,63 @@ public class UsuarioController extends GenericController {
 			membro.setRg(membroEquipe.getRg());
 			membro.setVinculo(membro.getVinculo());
 			membro.setUsuario(membroEquipe.getUsuario());
-			membro.getUsuario().setMembroEquipe(membroEquipe);
-			
-			usuarioDAO.cadastrarUsuario(membroEquipe.getUsuario());
-			
+			membro.getUsuario().setMembroEquipe(membro);
+
+			usuarioDAO.cadastrarUsuario(membro.getUsuario());
+
 			adicionarMensagemAviso("Membro cadastrado", "Membro cadastrado com Sucesso.");
-			
+
 			return PaginasNavegacao.USUARIO_PESQUISAR;
+		} else {
+			return PaginasNavegacao.USUARIO_CADASTRAR;
 		}
 	}
 
 	public String editar() {
-		if (!membroEquipe.getUsuario().getSenha().equals(confirmacaoSenha)) {
-			adicionarMensagemErro("Senhas diferentes", "A senha digitada "
-					+ "e sua confirmação estão diferentes.");
-			return PaginasNavegacao.USUARIO_EDITAR;
-		} else {
+		if (validarUsuario(membroEquipe.getUsuario())) {
 			usuarioDAO.editarUsuario(membroEquipe.getUsuario());
-			
+
 			adicionarMensagemAviso("Membro editado", "Membro editado com Sucesso.");
-			
+
 			return PaginasNavegacao.PAGINA_INICIAL;
+		} else {
+			return PaginasNavegacao.USUARIO_EDITAR;
 		}
 	}
-	
+
 	public void pesquisarUsuario() {
 		listaMembros = usuarioDAO.pesquisarUsuario(membroEquipePesquisa);
+	}
+
+	private boolean validarUsuario(Usuario usuario) {
+		boolean resultado = true;
+		Usuario usuarioExistente = usuarioDAO.getUsuarioExistente(usuario);
+		if (usuarioExistente != null) {
+			if (usuarioExistente.getNomeUsuario().equals(membroEquipe.getUsuario().getNomeUsuario().toLowerCase())) {
+				adicionarMensagemErro("Login já existe", "Já existe um usuário com este login.");
+			}
+			if (usuarioExistente.getMembroEquipe().getEmail().equals(membroEquipe.getEmail().toLowerCase())) {
+				adicionarMensagemErro("E-mail já existe", "Já existe um usuário com este e-mail.");
+			}
+			if (usuarioExistente.getMembroEquipe().getCpf().equals(membroEquipe.getCpf())) {
+				adicionarMensagemErro("CPF já existe", "Já existe um usuário com este CPF.");
+			}
+			resultado = false;
+		}
+		if (!isCPFValido(usuario.getMembroEquipe().getCpf())) {
+			adicionarMensagemErro("CPF inválido", "O CPF informado é inválido.");
+			resultado = false;
+		}
+		if (!usuario.getSenha().equals(confirmacaoSenha)) {
+			adicionarMensagemErro("Senhas diferentes", "A senha digitada "
+					+ "e sua confirmação estão diferentes.");
+			resultado = false;
+		}
+		return resultado;
+	}
+
+	private boolean isCPFValido(String cpf) {
+		//TODO Validação do CPF
+		return true;
 	}
 }

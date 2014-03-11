@@ -35,7 +35,7 @@ public class Usuario implements Serializable {
 	/**
 	 * O login do usuário.
 	 */
-	@Column(name = "nome_usuario")
+	@Column(name = "nome_usuario", unique = true)
 	@NotNull
 	private String nomeUsuario;
 

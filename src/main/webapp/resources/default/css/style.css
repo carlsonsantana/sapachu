@@ -41,16 +41,16 @@
 	border-color: #ff7a00 !important;
 }
 .remarcado {
-	background-color: #C529E2 !important;
-	border-color: #C529E2 !important;
+	background-color: #c529e2 !important;
+	border-color: #c529e2 !important;
 }
 .removido {
 	background-color: #ff0000 !important;
 	border-color: #ff0000 !important;
 }
 .realizada {
-	background-color: #07B607 !important;
-	border-color: #07B607 !important;
+	background-color: #07b607 !important;
+	border-color: #07b607 !important;
 }
 .nao-realizada {
 	background-color: #000000 !important;
@@ -63,4 +63,23 @@
 }
 .form-control {
 	margin-bottom: 20px;
+}
+.ajax-status {
+	width: 64px;
+	height: 64px;
+	position: fixed;
+	right: 5px;
+	bottom: 5px;
+}
+.ajax-status img {
+	width: 100%;
+	height: 100%;
+}
+.ui-state-highlight,
+.ui-widget-content .ui-state-highlight,
+.ui-widget-header .ui-state-highlight {
+	background: #aaaaaa !important;
+}
+.ui-growl-icon-close {
+	display: block !important;
 }

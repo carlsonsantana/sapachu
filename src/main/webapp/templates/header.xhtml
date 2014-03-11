@@ -2,7 +2,8 @@
 				xmlns:h="http://java.sun.com/jsf/html"
 				xmlns:ui="http://java.sun.com/jsf/facelets"
 				xmlns:p="http://primefaces.org/ui"
-				xmlns:c="http://java.sun.com/jsp/jstl/core">
+				xmlns:c="http://java.sun.com/jsp/jstl/core"
+				xmlns:f="http://xmlns.jcp.org/jsf/core">
 	<div id="after"></div>
 	<div class="navbar navbar-inverse navbar-fixed-top">
 		<div class="container">
@@ -22,14 +23,14 @@
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Consulta <span class="caret"></span></a>
 							<ul class="dropdown-menu">
 								<li><h:commandLink id="marca_consulta" value="Marcar Consulta" action="#{agendaController.telaMarcarConsulta()}" /></li>
-								<li><h:commandLink id="remarcar_consulta" value="Remarcar Consulta" action="#{agendaController.telaRemarcarConsulta()}" /></li>
+								<li><h:commandLink id="remarcar_consulta" value="Remarcar ou Cancelar Consultas" action="#{agendaController.telaRemarcarConsulta()}" /></li>
 								<li><h:commandLink id="consultar_paciente" value="Consultar Paciente" action="#{consultaController.pesquisarPacienteConsulta()}" /></li>
 							</ul>
 						</li>
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Paciente <span class="caret"></span></a>
 							<ul class="dropdown-menu">
-								<li><h:commandLink id="pesquisar_paciente" value="Pesquisar" action="#{pacienteController.pesquisarPaciente()}" /></li>
+								<li><h:commandLink id="pesquisar_paciente" value="Visualizar Dados" action="#{pacienteController.pesquisarPaciente()}" /></li>
 								<li><h:commandLink id="adicionar_paciente" value="Adicionar" action="#{pacienteController.cadastrarPaciente()}" /></li>
 							</ul>
 						</li>
@@ -37,13 +38,13 @@
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Membro Equipe <span class="caret"></span></a>
 								<ul class="dropdown-menu">
-									<li><h:commandLink id="pesquisar_usuario" value="Pesquisar" action="#{usuarioController.telaPesquisaUsuario()}" /></li>
+									<li><h:commandLink id="pesquisar_usuario" value="Editar" action="#{usuarioController.telaPesquisaUsuario()}" /></li>
 									<li><h:commandLink id="adicionar_usuario" value="Adicionar" action="#{usuarioController.telaCadastrarUsuario()}" /></li>
 								</ul>
 							</li>
 						</c:if>
 						<li>
-							<h:link id="relatorio" value="Gerar Relatório de Desempenho" outcome="/private/relatorio/pesquisar.xhtml" />
+							<h:commandLink id="relatorio" value="Gerar Relatório de Desempenho" action="#{relatorioController.pesquisarUsuarioRelatorio()}" />
 						</li>
 						<c:if test="#{perfilController.enfermeiro}">
 							<li class="dropdown">
@@ -67,4 +68,10 @@
 		</div>
 	</div>
 	<p:growl id="mensagens" showDetail="true" sticky="true" />
+	<p:ajaxStatus styleClass="ajax-status">
+		<f:facet name="start">
+			<p:graphicImage value="/resources/default/img/loading.gif" alt="Carregando" />
+		</f:facet>
+		<f:facet name="complete"></f:facet>
+	</p:ajaxStatus>
 </ui:composition>

@@ -5,6 +5,7 @@
 package org.sapac.models.hibernate;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import javax.enterprise.context.ApplicationScoped;
@@ -55,7 +56,15 @@ public class ConsultaDAOHibernate extends GenericDAOHibernate implements Consult
 		
 		for (Consulta consulta : consultas) {
 			consulta.setSituacao(Consulta.CONSULTA_REMARCADA);
+			consulta.setMembrosEquipe(null);
+			consulta.setIntervencaoEnfermagem(null);
+			consulta.setSituacoesUlcera(null);
+			consulta.setVariaveisClinicas(null);
+			
+			Consulta novaConsulta = consulta.getConsultaMarcada();
+			novaConsulta.setSituacao(Consulta.CONSULTA_MARCADA);
 
+			session.save(novaConsulta);
 			session.update(consulta);
 		}
 		
@@ -91,6 +100,10 @@ public class ConsultaDAOHibernate extends GenericDAOHibernate implements Consult
 		hql.append("SELECT consulta FROM Consulta AS consulta ")
 				.append(" WHERE 1 = 1 ")
 				.append(" AND consulta.situacao IN (:situacoes) ");
+		if (data != null) {
+			hql.append(" AND month(consulta.data) = :mes ")
+				.append(" AND year(consulta.data) = :ano ");
+		}
 		if (paciente != null) {
 			if ((paciente.getNome() != null) && (!paciente.getNome().isEmpty())) {
 				hql.append(" AND UPPER(consulta.paciente.nome) LIKE UPPER(:nome) ");
@@ -101,7 +114,14 @@ public class ConsultaDAOHibernate extends GenericDAOHibernate implements Consult
 		}
 		
 		Query query = session.createQuery(hql.toString());
-		query.setParameterList("situacoes", new Object[] {Consulta.CONSULTA_MARCADA, Consulta.CONSULTA_REALIZADA, Consulta.CONSULTA_REMARCADA});
+		query.setParameterList("situacoes", new Object[] {Consulta.CONSULTA_MARCADA, Consulta.CONSULTA_REALIZADA});
+		if (data != null) {
+			Calendar calendario = Calendar.getInstance();
+			calendario.setTime(data);
+		
+			query.setInteger("mes", calendario.get(Calendar.MONTH) + 1);
+			query.setInteger("ano", calendario.get(Calendar.YEAR));
+		}
 		if (paciente != null) {
 			if ((paciente.getNome() != null) && (!paciente.getNome().isEmpty())) {
 				query.setString("nome", "%" + paciente.getNome() + "%");
@@ -139,7 +159,7 @@ public class ConsultaDAOHibernate extends GenericDAOHibernate implements Consult
 		}
 		
 		Query query = session.createQuery(hql.toString());
-		query.setParameterList("situacoes", new Object[] {Consulta.CONSULTA_MARCADA, Consulta.CONSULTA_REALIZADA, Consulta.CONSULTA_REMARCADA});
+		query.setParameterList("situacoes", new Object[] {Consulta.CONSULTA_MARCADA, Consulta.CONSULTA_REALIZADA});
 		if (paciente != null) {
 			if ((paciente.getNome() != null) && (!paciente.getNome().isEmpty())) {
 				query.setString("nome", "%" + paciente.getNome() + "%");
@@ -246,7 +266,7 @@ public class ConsultaDAOHibernate extends GenericDAOHibernate implements Consult
 		Query query = session.createQuery(hql.toString());
 		query.setInteger("idPaciente", paciente.getId());
 		query.setDate("dataConsulta", data);
-		query.setParameterList("situacoes", new Object[] {Consulta.CONSULTA_MARCADA, Consulta.CONSULTA_REALIZADA, Consulta.CONSULTA_REMARCADA});
+		query.setParameterList("situacoes", new Object[] {Consulta.CONSULTA_MARCADA, Consulta.CONSULTA_REALIZADA});
 		
 		boolean resultado = query.list().size() > 0;
 		

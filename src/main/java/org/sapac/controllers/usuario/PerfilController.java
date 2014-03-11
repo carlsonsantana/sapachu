@@ -13,10 +13,10 @@ import org.sapac.controllers.GenericController;
 import org.sapac.controllers.PaginasNavegacao;
 import org.sapac.entities.Usuario;
 import org.sapac.models.UsuarioDAO;
+import org.sapac.utils.HashGenerator;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 
 /**
  *
@@ -168,7 +168,7 @@ public class PerfilController extends GenericController {
 	
 	public String mudarSenha() {
 		boolean erro = false;
-		if (!usuario.getSenha().equals(senhaAtual)) {
+		if (!usuario.getSenha().equals(HashGenerator.gerar(senhaAtual))) {
 			adicionarMensagemErro("Senha incorreta", "A senha digitada não "
 					+ "corresponde a senha atual.");
 			erro = true;

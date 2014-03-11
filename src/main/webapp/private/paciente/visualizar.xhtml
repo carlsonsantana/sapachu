@@ -51,40 +51,38 @@
 				</tr>
 			</table>
 			<br /><br />
-			<div>
-				Consultas:
-				<h:form id="form">
-					<ui:repeat value="#{pacienteController.paciente.consultas}" var="consulta">
-						<h:outputText value=" " />
-						<h:commandLink action="#{consultaController.visualizarConsulta(consulta)}">
-							<h:outputText value="#{consulta.data}">
-								<f:convertDateTime pattern="dd/MM/yyyy" />
-							</h:outputText>
-						</h:commandLink>
-					</ui:repeat>
-				</h:form>
-			</div>
-			<div>
-				<h:outputScript library="default" name="third_part/jqplot/plugins/jqplot.pointLabels.min.js" />
-				<p:tabView>
-					<p:tab title="Área da úlcera">
-						<p:lineChart value="#{pacienteController.graficos[0]}" legendPosition="ne"
-									 showDatatip="false" extender="showLabelAlways" />
-					</p:tab>
-					<p:tab title="Número de úlceras">
-						<p:lineChart value="#{pacienteController.graficos[1]}" legendPosition="ne"
-									 showDatatip="false" extender="showLabelAlways" />
-					</p:tab>
-				</p:tabView>
-				<script type="text/javascript">
-					function showLabelAlways() {
-						this.cfg.seriesDefaults = {
-							pointLabels: {show: true}
-						};
-						this.cfg.stackSeries = true;
-					}
-				</script>
-			</div>
+			<h:panelGroup rendered="#{not empty pacienteController.paciente.consultas}">
+				<div>
+					Consultas:
+					<h:form id="form">
+						<ui:repeat value="#{pacienteController.paciente.consultas}" var="consulta">
+							<h:outputText value=" " />
+							<h:commandLink action="#{consultaController.visualizarConsulta(consulta)}">
+								<h:outputText value="#{consulta.data}">
+									<f:convertDateTime pattern="dd/MM/yyyy" />
+								</h:outputText>
+							</h:commandLink>
+						</ui:repeat>
+					</h:form>
+				</div>
+				<div style="margin: 20px 0;">
+					<h:outputScript library="default" name="third_part/jqplot/plugins/jqplot.pointLabels.min.js" />
+					<p:tabView value="#{pacienteController.graficos}" var="grafico">
+						<p:tab title="#{grafico.series[0].label}">
+							<p:lineChart value="#{grafico}" 
+										 showDatatip="true" extender="showLabelAlways" />
+						</p:tab>
+					</p:tabView>
+					<script type="text/javascript">
+						function showLabelAlways() {
+							this.cfg.seriesDefaults = {
+								pointLabels: {show: true}
+							};
+							this.cfg.stackSeries = true;
+						}
+					</script>
+				</div>
+			</h:panelGroup>
 			<div>
 				<h:form>
 					<h:commandButton value="Pesquisar outro Paciente"

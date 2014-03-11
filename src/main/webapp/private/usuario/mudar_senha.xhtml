@@ -10,19 +10,19 @@
 			<fieldset>
 				<legend>Mudar senha</legend>
 			<div class="form-group">
-				<h:outputLabel for="senha-atual" value="Senha Atual" />
+				<p:outputLabel for="senha-atual" value="Senha Atual" />
 				<h:inputSecret id="senha-atual" required="true"
 						value="#{perfilController.senhaAtual}"
 						styleClass="form-control" />
 			</div>
 			<div class="form-group">
-				<h:outputLabel for="nova-senha" value="Nova Senha" />
+				<p:outputLabel for="nova-senha" value="Nova Senha" />
 				<h:inputSecret id="nova-senha" required="true"
 						value="#{perfilController.novaSenha}"
 						styleClass="form-control" />
 			</div>
 			<div class="form-group">
-				<h:outputLabel for="confirmacao" value="Confirmar Senha Atual" />
+				<p:outputLabel for="confirmacao" value="Confirmar Senha Atual" />
 				<h:inputSecret id="confirmacao" required="true"
 						value="#{perfilController.confirmacaoNovaSenha}"
 						styleClass="form-control" />

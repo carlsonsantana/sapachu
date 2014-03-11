@@ -33,7 +33,7 @@ public class MembroEquipe implements Serializable {
 	private int id;
 	
 	@OneToOne
-	@JoinColumn(name = "id_usuario")
+	@JoinColumn(name = "id_usuario", unique = true)
 	@NotNull
 	private Usuario usuario;
 	
@@ -43,10 +43,12 @@ public class MembroEquipe implements Serializable {
 	@NotNull
 	private String nome;
 	@NotNull
+	@Column(unique = true)
 	private String email;
 	@NotNull
 	private String rg;
 	@NotNull
+	@Column(unique = true)
 	private String cpf;
 	@NotNull
 	private short vinculo;

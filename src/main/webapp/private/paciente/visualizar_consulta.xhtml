@@ -7,6 +7,50 @@
 	<ui:define name="title">Visualizar Consulta</ui:define>
 	<ui:define name="content">
 		<h:form id="form">
+			<fieldset>
+			<legend>Visualizar Consulta</legend>
+			<table class="table table-responsive">
+				<tr>
+					<th>Nome</th>
+					<td><h:outputText value="#{pacienteController.paciente.nome}" /></td>
+					<th>Prontuário</th>
+					<td><h:outputText value="#{pacienteController.paciente.prontuario}" /></td>
+				</tr>
+				<tr>
+					<th>Gênero</th>
+					<td><h:outputText value="#{pacienteController.paciente.sexo}" /></td>
+					<th>Telefone</th>
+					<td><h:outputText value="#{pacienteController.paciente.telefone}" /></td>
+				</tr>
+				<tr>
+					<th>Endereço</th>
+					<td><h:outputText value="#{pacienteController.paciente.endereco}" /></td>
+					<th>Cidade</th>
+					<td><h:outputText value="#{pacienteController.paciente.cidade}" /></td>
+				</tr>
+				<tr>
+					<th>Estado</th>
+					<td><h:outputText value="#{pacienteController.paciente.estado}" /></td>
+					<th>Estado Civil</th>
+					<td><h:outputText value="#{pacienteController.paciente.estadoCivil}" /></td>
+				</tr>
+				<tr>
+					<th>Grau de Instrução</th>
+					<td><h:outputText value="#{pacienteController.paciente.grauInstrucao}" /></td>
+					<th>Profissão</th>
+					<td><h:outputText value="#{pacienteController.paciente.profissao}" /></td>
+				</tr>
+				<tr>
+					<th>Data de Nascimento</th>
+					<td>
+						<h:outputText value="#{pacienteController.paciente.dataNascimento}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</td>
+					<th></th>
+					<td></td>
+				</tr>
+			</table>
 			<div class="container">
 				<div class="row">
 					<div class="form-group col-lg-3">
@@ -325,7 +369,7 @@
 						</div>
 						<!--
 						<div class="form-group col-lg-3">
-							<h:outputLabel for="nivelDor" value="Nível de Dor" />
+							<p:outputLabel for="nivelDor" value="Nível de Dor" />
 							<h:inputText id="nivelDor" value="#{consultaController.situacaoUlceraConsulta.nivelDor}">
 								<f:passThroughAttribute name="type" value="range" />
 								<f:passThroughAttribute name="min" value="0" />
@@ -348,7 +392,7 @@
 						</div>
 						<!--
 						<div class="form-group col-lg-3">
-							<h:outputLabel for="ciclo_litico" value="Ciclo Lítico" />
+							<p:outputLabel for="ciclo_litico" value="Ciclo Lítico" />
 							<h:selectOneMenu id="ciclo_litico" styleClass="form-control"
 											 value="#{consultaController.situacaoUlceraConsulta.cicloLitico}">
 								<f:selectItem itemLabel="Sim" itemValue="#{true}" />
@@ -377,6 +421,7 @@
 				</div>
 				<br /><br />
 			</h:panelGroup>
+			</fieldset>
 		</h:form>
 		<div>
 			<h:form>

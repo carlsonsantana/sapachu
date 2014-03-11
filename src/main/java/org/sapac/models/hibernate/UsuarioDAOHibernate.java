@@ -13,7 +13,7 @@ import org.sapac.annotations.DAOQualifier;
 import org.sapac.entities.MembroEquipe;
 import org.sapac.entities.Usuario;
 import org.sapac.models.UsuarioDAO;
-import org.sapac.utils.MD5Generator;
+import org.sapac.utils.HashGenerator;
 
 /**
  *
@@ -27,7 +27,7 @@ public class UsuarioDAOHibernate extends GenericDAOHibernate implements UsuarioD
 	public boolean isSenhaCorreta(String login, String senha) {
 		Usuario usuario;
 		if ((usuario = carregarUsuario(login)) != null) {
-			if (usuario.getSenha().equals(gerarMD5(senha))) {
+			if (usuario.getSenha().equals(gerarHash(senha))) {
 				return true;
 			} else {
 				return false;
@@ -56,7 +56,7 @@ public class UsuarioDAOHibernate extends GenericDAOHibernate implements UsuarioD
 		
 		Query query = session.createQuery(hql.toString());
 		query.setString("login", login);
-		query.setString("senha", gerarMD5(senha));
+		query.setString("senha", gerarHash(senha));
 		
 		Usuario usuario = (Usuario) query.uniqueResult();
 		
@@ -70,6 +70,7 @@ public class UsuarioDAOHibernate extends GenericDAOHibernate implements UsuarioD
 	}
 	*/
 
+	@Override
 	public Usuario carregarUsuario(String login) {
 		Session session = getSession();
 
@@ -79,7 +80,8 @@ public class UsuarioDAOHibernate extends GenericDAOHibernate implements UsuarioD
 		hql.append("SELECT usuario FROM Usuario AS usuario ")
 				.append(" INNER JOIN FETCH usuario.membroEquipe ")
 				.append(" WHERE 1 = 1 ")
-				.append(" AND usuario.nomeUsuario = :login ");
+				.append(" AND usuario.ativo IS TRUE ")
+				.append(" AND UPPER(usuario.nomeUsuario) = UPPER(:login) ");
 
 		Query query = session.createQuery(hql.toString());
 		query.setString("login", login);
@@ -97,7 +99,7 @@ public class UsuarioDAOHibernate extends GenericDAOHibernate implements UsuarioD
 		
 		Transaction transaction = session.beginTransaction();
 		
-		usuario.setSenha(gerarMD5(senha));
+		usuario.setSenha(gerarHash(senha));
 		session.update(usuario);
 		
 		transaction.commit();
@@ -112,7 +114,8 @@ public class UsuarioDAOHibernate extends GenericDAOHibernate implements UsuarioD
 		Transaction transaction = session.beginTransaction();
 		
 		usuario.setAtivo(true);
-		usuario.setSenha(gerarMD5(usuario.getSenha()));
+		usuario.setSenha(gerarHash(usuario.getSenha()));
+		lowerFields(usuario);
 		session.save(usuario);
 		session.save(usuario.getMembroEquipe());
 		
@@ -131,11 +134,25 @@ public class UsuarioDAOHibernate extends GenericDAOHibernate implements UsuarioD
 			Usuario user = (Usuario) session.get(Usuario.class, usuario.getId());
 			usuario.setSenha(user.getSenha());
 		} else {
-			usuario.setSenha(gerarMD5(usuario.getSenha()));
+			usuario.setSenha(gerarHash(usuario.getSenha()));
 		}
-		
+		lowerFields(usuario);
 		session.merge(usuario);
 		session.merge(usuario.getMembroEquipe());
+		
+		transaction.commit();
+		
+		return usuario;
+	}
+	
+	@Override
+	public Usuario ativarUsuario(Usuario usuario) {
+		Session session = getSession();
+		
+		Transaction transaction = session.beginTransaction();
+		
+		usuario.setAtivo(true);
+		session.update(usuario);
 		
 		transaction.commit();
 		
@@ -156,8 +173,8 @@ public class UsuarioDAOHibernate extends GenericDAOHibernate implements UsuarioD
 		return usuario;
 	}
 	
-	private String gerarMD5(String string) {
-		return MD5Generator.gerar(string);
+	private String gerarHash(String string) {
+		return HashGenerator.gerar(string);
 	}
 
 	@Override
@@ -183,5 +200,40 @@ public class UsuarioDAOHibernate extends GenericDAOHibernate implements UsuarioD
 		transaction.commit();
 		
 		return membros;
+	}
+
+	@Override
+	public Usuario getUsuarioExistente(Usuario usuario) {
+		Session session = getSession();
+		
+		Transaction transaction = session.beginTransaction();
+		
+		StringBuilder hql = new StringBuilder();
+		hql.append("SELECT usuario FROM Usuario AS usuario ")
+				.append(" WHERE 1 = 1")
+				.append(" AND usuario.id <> :idUsuario ")
+				.append(" AND ( ")
+				.append(" UPPER(usuario.nomeUsuario) = UPPER(:nomeUsuario) ")
+				.append(" OR usuario.membroEquipe.cpf = :cpf ")
+				.append(" OR UPPER(usuario.membroEquipe.email) = UPPER(:email) ")
+				.append(" ) ");
+		
+		Query query = session.createQuery(hql.toString());
+		query.setInteger("idUsuario", usuario.getId());
+		query.setString("nomeUsuario", usuario.getNomeUsuario());
+		query.setString("cpf", usuario.getMembroEquipe().getCpf());
+		query.setString("email", usuario.getMembroEquipe().getEmail());
+		query.setMaxResults(1);
+		
+		Usuario usuarioExistente = (Usuario) query.uniqueResult();
+		
+		transaction.commit();
+		
+		return usuarioExistente;
+	}
+	
+	private void lowerFields(Usuario usuario) {
+		usuario.setNomeUsuario(usuario.getNomeUsuario().toLowerCase());
+		usuario.getMembroEquipe().setEmail(usuario.getMembroEquipe().getEmail().toLowerCase());
 	}
 }

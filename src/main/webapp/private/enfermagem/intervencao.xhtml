@@ -12,8 +12,8 @@
 				Nome: <h:outputText value="#{enfermagemController.paciente.nome}" /><br />
 				Prontuário: <h:outputText value="#{enfermagemController.paciente.prontuario}" /><br /><br />
 				<div class="form-group">
-					<h:outputLabel>Intervenção</h:outputLabel>
-					<h:inputTextarea styleClass="form-control"
+					<p:outputLabel for="intervencaoenfermagem" value="Intervenção" />
+					<h:inputTextarea styleClass="form-control" id="intervencaoenfermagem"
 									 value="#{enfermagemController.intervencaoEnfermagem.descricao}" />
 				</div>
 				<h:commandButton value="Cancelar" styleClass="btn btn-danger"

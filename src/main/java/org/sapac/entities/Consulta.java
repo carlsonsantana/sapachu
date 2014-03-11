@@ -62,6 +62,10 @@ public class Consulta implements Serializable {
 	@NotNull
 	private int situacao;
 	
+	@OneToOne
+	@JoinColumn(name = "id_consulta_marcada")
+	private Consulta consultaMarcada;
+	
 	public final static int CONSULTA_MARCADA = 0;
 	public final static int CONSULTA_REALIZADA = 1;
 	public final static int CONSULTA_REMARCADA = 2;
@@ -179,6 +183,28 @@ public class Consulta implements Serializable {
 		this.intervencaoEnfermagem = intervencaoEnfermagem;
 	}
 	
+	/**
+	 * @return the consultaMarcada
+	 */
+	public Consulta getConsultaMarcada() {
+		if (consultaMarcada != null) {
+			Consulta consulta = consultaMarcada.getConsultaMarcada();
+			if (consulta != null) {
+				return consulta;
+			} else {
+				return consultaMarcada;
+			}
+		}
+		return consultaMarcada;
+	}
+
+	/**
+	 * @param consultaMarcada the consultaMarcada to set
+	 */
+	public void setConsultaMarcada(Consulta consultaMarcada) {
+		this.consultaMarcada = consultaMarcada;
+	}
+	
 	public boolean isMarcada() {
 		return this.getSituacao() == Consulta.CONSULTA_REMARCADA;
 	}
@@ -203,11 +229,38 @@ public class Consulta implements Serializable {
 			}
 			
 			Consulta consulta = (Consulta) object;
-			
-			if (this.getId() != consulta.getId()) {
-				return false;
+			if ((this.getId() != 0) && (consulta.getId() != 0)) {
+				if (this.getId() != consulta.getId()) {
+					return false;
+				}
+			} else {
+				return super.equals(object);
 			}
 		}
 		return true;
+	}
+	
+	@Override
+	public Consulta clone() {
+		Consulta consulta = new Consulta();
+		consulta.setConsultaMarcada(getConsultaMarcada());
+		consulta.setData(getData());
+		consulta.setId(getId());
+		consulta.setIntervencaoEnfermagem(getIntervencaoEnfermagem());
+		consulta.setMembrosEquipe(getMembrosEquipe());
+		consulta.setPaciente(getPaciente());
+		consulta.setSituacao(getSituacao());
+		consulta.setSituacoesUlcera(getSituacoesUlcera());
+		consulta.setVariaveisClinicas(getVariaveisClinicas());
+		
+		return consulta;
+	}
+	
+	public float getTotalAreasUlceras() {
+		float areaTotal = 0;
+		for (SituacaoUlceraConsulta situacaoUlceraConsulta : situacoesUlcera) {
+			areaTotal += situacaoUlceraConsulta.getArea();
+		}
+		return areaTotal;
 	}
 }

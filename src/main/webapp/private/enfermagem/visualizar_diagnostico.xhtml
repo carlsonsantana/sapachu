@@ -93,9 +93,11 @@
 				<br />
 				
 				<h:panelGroup rendered="#{not empty enfermagemController.paciente.consultas}">
-					Intervenções da Enfermagem: 
+					Intervenções da Enfermagem:
+					<br />
 					<ui:repeat value="#{enfermagemController.paciente.consultas}" var="consulta">
 						<h:commandLink value="#{consulta.data}" action="#{enfermagemController.visualizarIntervencao(consulta.intervencaoEnfermagem)}" /> 
+						<h:outputText value=" " />
 					</ui:repeat>
 				</h:panelGroup>
 				<br /><br />

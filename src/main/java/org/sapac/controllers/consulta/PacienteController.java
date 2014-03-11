@@ -14,6 +14,7 @@ import org.primefaces.model.chart.ChartSeries;
 import org.sapac.annotations.DAOQualifier;
 import org.sapac.controllers.GenericController;
 import org.sapac.controllers.PaginasNavegacao;
+import org.sapac.entities.Consulta;
 import org.sapac.entities.Paciente;
 import org.sapac.models.ConsultaDAO;
 
@@ -163,32 +164,33 @@ public class PacienteController extends GenericController {
 
 		paciente.setConsultas(consultaDAO.procurarConsultasPaciente(paciente));
 
+		Collection<Consulta> consultas = paciente.getConsultas();
+		setGraficos(new ArrayList<CartesianChartModel>());
 		
-		 setGraficos(new ArrayList<CartesianChartModel>());
-		 CartesianChartModel graficoAreaTotalUlceras = new CartesianChartModel();
-		 ChartSeries series = new ChartSeries("Área Total das Úlceras do Paciente");
-		 series.set("20/01/2013", 50);
-		 series.set("25/01/2013", 61);
-		 series.set("30/01/2013", 55);
-		 series.set("01/02/2013", 50);
-		 series.set("05/02/2013", 45);
-		 series.set("10/02/2013", 65);
-		 series.set("15/02/2013", 30);
-		 graficoAreaTotalUlceras.addSeries(series);
-		 getGraficos().add(graficoAreaTotalUlceras);
+		CartesianChartModel graficoAreaTotalUlceras = new CartesianChartModel();
+		CartesianChartModel graficoNumeroTotalUlceras = new CartesianChartModel();
+		CartesianChartModel graficoPressaoArterial = new CartesianChartModel();
 		
-		 CartesianChartModel graficoNumeroTotalUlceras = new CartesianChartModel();
-		 series = new ChartSeries("Número Total de Úlceras do Paciente");
-		 series.set("20/01/2013", 3);
-		 series.set("25/01/2013", 3);
-		 series.set("30/01/2013", 3);
-		 series.set("01/02/2013", 3);
-		 series.set("05/02/2013", 2);
-		 series.set("10/02/2013", 2);
-		 series.set("15/02/2013", 1);
-		 graficoNumeroTotalUlceras.addSeries(series);
-		 getGraficos().add(graficoNumeroTotalUlceras);
+		ChartSeries seriesAreaTotalUlceras = new ChartSeries("Área Total das Úlceras do Paciente");
+		ChartSeries seriesNumeroTotalUlceras = new ChartSeries("Número Total de Úlceras do Paciente");
+		ChartSeries seriesPressaoArterial = new ChartSeries("Pressão Arterial");
 		
+		for (Consulta consulta : consultas) {
+			String data = getDataFormatada(consulta.getData());
+			consulta = consultaDAO.carregarConsulta(consulta);
+			seriesAreaTotalUlceras.set(data, consulta.getTotalAreasUlceras());
+			
+			seriesNumeroTotalUlceras.set(data, consulta.getSituacoesUlcera().size());
+			
+			seriesPressaoArterial.set(data, consulta.getVariaveisClinicas().getPressaoArterial());
+		}
+		graficoAreaTotalUlceras.addSeries(seriesAreaTotalUlceras);
+		graficoNumeroTotalUlceras.addSeries(seriesNumeroTotalUlceras);
+		graficoPressaoArterial.addSeries(seriesPressaoArterial);
+		
+		getGraficos().add(graficoAreaTotalUlceras);
+		getGraficos().add(graficoNumeroTotalUlceras);
+		getGraficos().add(graficoPressaoArterial);
 
 		return PaginasNavegacao.PACIENTE_VISUALIZAR;
 	}
