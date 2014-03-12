@@ -9,7 +9,9 @@ import javax.enterprise.context.ApplicationScoped;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.jasypt.digest.StringDigester;
 import org.sapac.annotations.DAOQualifier;
+import org.sapac.controllers.usuario.SpringAdapter;
 import org.sapac.entities.MembroEquipe;
 import org.sapac.entities.Usuario;
 import org.sapac.models.UsuarioDAO;
@@ -174,7 +176,8 @@ public class UsuarioDAOHibernate extends GenericDAOHibernate implements UsuarioD
 	}
 	
 	private String gerarHash(String string) {
-		return HashGenerator.gerar(string);
+                StringDigester hasher = SpringAdapter.getHashGenerator();
+		return hasher.digest(string);
 	}
 
 	@Override

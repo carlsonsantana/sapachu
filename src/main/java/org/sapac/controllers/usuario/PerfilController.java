@@ -8,6 +8,7 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import org.jasypt.digest.StringDigester;
 import org.sapac.annotations.DAOQualifier;
 import org.sapac.controllers.GenericController;
 import org.sapac.controllers.PaginasNavegacao;
@@ -167,8 +168,9 @@ public class PerfilController extends GenericController {
 	}
 	
 	public String mudarSenha() {
+                StringDigester hasher = SpringAdapter.getHashGenerator();
 		boolean erro = false;
-		if (!usuario.getSenha().equals(HashGenerator.gerar(senhaAtual))) {
+		if (!hasher.matches(senhaAtual, usuario.getSenha())) {
 			adicionarMensagemErro("Senha incorreta", "A senha digitada não "
 					+ "corresponde a senha atual.");
 			erro = true;
