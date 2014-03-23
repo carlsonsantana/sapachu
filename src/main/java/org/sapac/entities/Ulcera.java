@@ -1,27 +1,21 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.sapac.entities;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-/**
- *
- * @author carlson
- */
 @Entity
 @Table(name = "ulcera")
 public class Ulcera implements Serializable {
@@ -31,102 +25,78 @@ public class Ulcera implements Serializable {
 	@Column(name = "id_ulcera")
 	private int id;
 	
-	@OneToOne
-	@JoinColumn(name = "id_ulcera_referencia")
-	private Ulcera ulceraReferencia;
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "ulcera_transforma_ulcera",
+			joinColumns = {@JoinColumn(name = "ulcera_original")},
+			inverseJoinColumns = {@JoinColumn(name = "ulcera_resultado")})
+	private Collection<Ulcera> ulcerasResultado;
 	
-	@OneToMany(mappedBy = "ulcera")
-	private List<SituacaoUlceraConsulta> situacaoUlceraConsultas;
+	@OneToMany(mappedBy = "ulcera", fetch = FetchType.LAZY)
+	private Collection<SituacaoUlceraConsulta> situacaoUlceraConsultas;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_paciente")
+	@NotNull
 	private Paciente paciente;
 	
 	@NotNull
 	private int situacao;
-	@NotNull
+	
 	private String pontos;
+	
+	public static final int ULCERA_LIMPA = 1;
+	public static final int ULCERA_LIMPA_CONTAMINADA = 2;
+	public static final int ULCERA_CONTAINADA = 3;
+	public static final int ULCERA_INFECTADA = 4;
+	public static final int ULCERA_NECROSADA = 5;
+	public static final int ULCERA_CICATRIZADA = 6;
+	public static final int ULCERA_SEPARADA = 7;
+	public static final int ULCERA_JUNTADA = 8;
 
-	/**
-	 * @return the id
-	 */
 	public int getId() {
 		return id;
 	}
 
-	/**
-	 * @param id the id to set
-	 */
 	public void setId(int id) {
 		this.id = id;
 	}
 
-	/**
-	 * @return the ulceraReferencia
-	 */
-	public Ulcera getUlceraReferencia() {
-		return ulceraReferencia;
+	public Collection<Ulcera> getUlcerasResultado() {
+		return ulcerasResultado;
 	}
 
-	/**
-	 * @param ulceraReferencia the ulceraReferencia to set
-	 */
-	public void setUlceraReferencia(Ulcera ulceraReferencia) {
-		this.ulceraReferencia = ulceraReferencia;
+	public void setUlcerasResultado(Collection<Ulcera> ulcerasResultado) {
+		this.ulcerasResultado = ulcerasResultado;
 	}
 
-	/**
-	 * @return the situacao
-	 */
 	public int getSituacao() {
 		return situacao;
 	}
 
-	/**
-	 * @param situacao the situacao to set
-	 */
 	public void setSituacao(int situacao) {
 		this.situacao = situacao;
 	}
 
-	/**
-	 * @return the pontos
-	 */
 	public String getPontos() {
 		return pontos;
 	}
 
-	/**
-	 * @param pontos the pontos to set
-	 */
 	public void setPontos(String pontos) {
 		this.pontos = pontos;
 	}
 
-	/**
-	 * @return the situacaoUlceraConsultas
-	 */
-	public List<SituacaoUlceraConsulta> getSituacaoUlceraConsultas() {
+	public Collection<SituacaoUlceraConsulta> getSituacaoUlceraConsultas() {
 		return situacaoUlceraConsultas;
 	}
 
-	/**
-	 * @param situacaoUlceraConsultas the situacaoUlceraConsultas to set
-	 */
-	public void setSituacaoUlceraConsultas(List<SituacaoUlceraConsulta> situacaoUlceraConsultas) {
+	public void setSituacaoUlceraConsultas(Collection<SituacaoUlceraConsulta> situacaoUlceraConsultas) {
 		this.situacaoUlceraConsultas = situacaoUlceraConsultas;
 	}
 
-	/**
-	 * @return the paciente
-	 */
 	public Paciente getPaciente() {
 		return paciente;
 	}
 
-	/**
-	 * @param paciente the paciente to set
-	 */
 	public void setPaciente(Paciente paciente) {
 		this.paciente = paciente;
 	}

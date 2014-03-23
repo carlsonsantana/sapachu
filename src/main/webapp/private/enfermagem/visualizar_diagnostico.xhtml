@@ -11,92 +11,104 @@
 				<legend>Diagnóstico da Enfermagem</legend>
 				Nome: <h:outputText value="#{enfermagemController.paciente.nome}" /><br />
 				Prontuário: <h:outputText value="#{enfermagemController.paciente.prontuario}" /><br /><br />
-				<table>
-					<tbody>
-						<tr>
-							<th>Risco de glicemia instável relacionada</th>
-							<td><h:outputText value="#{enfermagemController.paciente.diagnosticoEnfermagem.riscoGlicemia}" /></td>
-						</tr>
-						<tr>
-							<th>Risco de nutrição desequilibrada</th>
-							<td><h:outputText value="#{enfermagemController.paciente.diagnosticoEnfermagem.riscoNutricaoDesequilibrada}" /></td>
-						</tr>
-						<tr>
-							<th>Padrão de sono prejudicado</th>
-							<td><h:outputText value="#{enfermagemController.paciente.diagnosticoEnfermagem.sonoPrejudicado}" /></td>
-						</tr>
-						<tr>
-							<th>Mobilidade física prejudicada</th>
-							<td><h:outputText value="#{enfermagemController.paciente.diagnosticoEnfermagem.mobilidadeFisicaPrejudicada}" /></td>
-						</tr>
-						<tr>
-							<th>Perfusão tissular periférica ineficaz</th>
-							<td><h:outputText value="#{enfermagemController.paciente.diagnosticoEnfermagem.perfusaoTissularPerifericaIneficaz}" /></td>
-						</tr>
-						<tr>
-							<th>Interação Social prejudicada</th>
-							<td><h:outputText value="#{enfermagemController.paciente.diagnosticoEnfermagem.interacaoSocialPrejudicada}" /></td>
-						</tr>
-						<tr>
-							<th>Falta de Adesão</th>
-							<td><h:outputText value="#{enfermagemController.paciente.diagnosticoEnfermagem.faltaAdesao}" /></td>
-						</tr>
-						<tr>
-							<th>Risco de Infecção</th>
-							<td><h:outputText value="#{enfermagemController.paciente.diagnosticoEnfermagem.riscoInfeccao}" /></td>
-						</tr>
-						<tr>
-							<th>Integridade da pele prejudicada</th>
-							<td><h:outputText value="#{enfermagemController.paciente.diagnosticoEnfermagem.integridadePelePrejudicada}" /></td>
-						</tr>
-						<tr>
-							<th>Dor aguda</th>
-							<td></td>
-						</tr>
-						<tr>
-							<th>Dor crônica</th>
-							<td></td>
-						</tr>
-						<tr>
-							<th>Outros Diagnósticos</th>
-							<td><h:outputText value="#{enfermagemController.paciente.diagnosticoEnfermagem.outrosDiagnosticos}" /></td>
-						</tr>
-					</tbody>
-				</table>
+				<div class="table-responsive">
+					<table class="table table-bordered table-hover table-middle">
+						<caption>Diagnóstico da Enfermagem</caption>
+						<tbody>
+							<tr>
+								<th>Risco de glicemia instável relacionada</th>
+								<td><h:outputText value="#{enfermagemController.paciente.diagnosticoEnfermagem.riscoGlicemiaInstavel}" /></td>
+							</tr>
+							<tr>
+								<th>Risco de nutrição desequilibrada</th>
+								<td><h:outputText value="#{enfermagemController.paciente.diagnosticoEnfermagem.riscoNutricaoDesequilibrada}" /></td>
+							</tr>
+							<tr>
+								<th>Padrão de sono prejudicado</th>
+								<td><h:outputText value="#{enfermagemController.paciente.diagnosticoEnfermagem.sonoPrejudicado}" /></td>
+							</tr>
+							<tr>
+								<th>Mobilidade física prejudicada</th>
+								<td><h:outputText value="#{enfermagemController.paciente.diagnosticoEnfermagem.mobilidadeFisicaPrejudicada}" /></td>
+							</tr>
+							<tr>
+								<th>Perfusão tissular periférica ineficaz</th>
+								<td><h:outputText value="#{enfermagemController.paciente.diagnosticoEnfermagem.perfusaoTissularPerifericaIneficaz}" /></td>
+							</tr>
+							<tr>
+								<th>Interação Social prejudicada</th>
+								<td><h:outputText value="#{enfermagemController.paciente.diagnosticoEnfermagem.interacaoSocialPrejudicada}" /></td>
+							</tr>
+							<tr>
+								<th>Falta de Adesão</th>
+								<td><h:outputText value="#{enfermagemController.paciente.diagnosticoEnfermagem.faltaAdesao}" /></td>
+							</tr>
+							<tr>
+								<th>Risco de Infecção</th>
+								<td><h:outputText value="#{enfermagemController.paciente.diagnosticoEnfermagem.riscoInfeccao}" /></td>
+							</tr>
+							<tr>
+								<th>Integridade da pele prejudicada</th>
+								<td><h:outputText value="#{enfermagemController.paciente.diagnosticoEnfermagem.integridadePelePrejudicada}" /></td>
+							</tr>
+							<tr>
+								<th>Dor aguda</th>
+								<td></td>
+							</tr>
+							<tr>
+								<th>Dor crônica</th>
+								<td></td>
+							</tr>
+							<tr>
+								<th>Outros Diagnósticos</th>
+								<td><h:outputText value="#{enfermagemController.paciente.diagnosticoEnfermagem.outrosDiagnosticos}" /></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 				<br />
 				<h:panelGroup id="intervencaoenfermagem" rendered="#{not empty enfermagemController.intervencaoEnfermagem}">
 					<br />
-					<table>
-						<tr>
-							<th>Enfermeiro(a):</th>
-							<td><h:outputText value="#{enfermagemController.intervencaoEnfermagem.enfermeiro.nome}" /></td>
-						</tr>
-						<tr>
-							<th>Data:</th>
-							<td>
-								<h:outputText value="#{enfermagemController.intervencaoEnfermagem.consulta.data}">
-									<f:convertDateTime pattern="dd/MM/yyyy" />
-								</h:outputText>
-							</td>
-						</tr>
-						<tr>
-							<th colspan="2">Intervenção:</th>
-						</tr>
-						<tr>
-							<td colspan="2">
-								<h:outputText value="#{enfermagemController.intervencaoEnfermagem.descricao}" />
-							</td>
-						</tr>
-					</table>
+					<div class="table-responsive">
+						<table class="table table-bordered table-hover table-middle">
+							<caption>Intervenção da Enfermagem</caption>
+							<tbody>
+							<tr>
+								<th>Enfermeiro(a)</th>
+								<td><h:outputText value="#{enfermagemController.intervencaoEnfermagem.enfermeiro.nome}" /></td>
+							</tr>
+							<tr>
+								<th>Data</th>
+								<td>
+									<h:outputText value="#{enfermagemController.intervencaoEnfermagem.consulta.data}">
+										<f:convertDateTime pattern="dd/MM/yyyy" />
+									</h:outputText>
+								</td>
+							</tr>
+							<tr>
+								<th colspan="2">Intervenção</th>
+							</tr>
+							<tr>
+								<td colspan="2">
+									<h:outputText value="#{enfermagemController.intervencaoEnfermagem.descricao}" />
+								</td>
+							</tr>
+								</tbody>
+						</table>
+					</div>
 					<br />
 				</h:panelGroup>
 				<br />
-				
+
 				<h:panelGroup rendered="#{not empty enfermagemController.paciente.consultas}">
 					Intervenções da Enfermagem:
 					<br />
 					<ui:repeat value="#{enfermagemController.paciente.consultas}" var="consulta">
-						<h:commandLink value="#{consulta.data}" action="#{enfermagemController.visualizarIntervencao(consulta.intervencaoEnfermagem)}" /> 
+						<h:commandLink action="#{enfermagemController.visualizarIntervencao(consulta.intervencaoEnfermagem)}">
+							<h:outputText value="#{consulta.data}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText>
+						</h:commandLink>
 						<h:outputText value=" " />
 					</ui:repeat>
 				</h:panelGroup>

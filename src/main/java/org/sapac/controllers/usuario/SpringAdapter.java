@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.sapac.controllers.usuario;
 
 import java.util.ArrayList;
@@ -21,13 +16,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import  org.jasypt.digest.StandardStringDigester;
+import org.jasypt.digest.StandardStringDigester;
 import org.jasypt.digest.StringDigester;
 
-/**
- *
- * @author edson
- */
 public class SpringAdapter implements AuthenticationProvider {
     StringDigester hasher;
     public SpringAdapter() {
@@ -47,12 +38,11 @@ public class SpringAdapter implements AuthenticationProvider {
     public Authentication authenticate(Authentication a) throws AuthenticationException {
         Authentication authObject = a;
         String nome = authObject.getName();
-                String senha = authObject.getCredentials().toString();
-                
+        String senha = authObject.getCredentials().toString();
         UsuarioDAO dao = new UsuarioDAOHibernate();
         Usuario usuario = dao.carregarUsuario(nome);
         List<SimpleGrantedAuthority> papeis = new ArrayList<SimpleGrantedAuthority>();
-        
+  
         if (usuario == null) {
             throw new UsernameNotFoundException("Usuário não encontrado no banco de dados!");
         } else if (!hasher.matches(senha, usuario.getSenha())) {

@@ -1,3 +1,6 @@
+mapaImagem = undefined;
+coordenadas = undefined;
+
 jQuery(document).ready(function() {
 	var areas = jQuery("#mapaImagemId area, #mapaImagemId a, #mapaImagem2Id area, #mapaImagem2Id a");
 	for (var i = 0, length = areas.length; i < length; i++) {
@@ -7,8 +10,7 @@ jQuery(document).ready(function() {
 	}
 	
 	try {
-		var coordenadas;
-		var mapaImagem = jQuery("#form_pernas").imgAreaSelect({
+		mapaImagem = jQuery("#form_pernas").imgAreaSelect({
 			handles: true,
 			instance: true,
 			onSelectEnd: function(img, selection) {
@@ -31,15 +33,20 @@ jQuery(document).ready(function() {
 	
 	generateAreas();
 	
-	if ((document.getElementById('form_adicionarulcera') != undefined) && (document.getElementById('form_adicionarulcera') != null)) {
-		var funcaoAnterior = document.getElementById('form_adicionarulcera').onclick;
-		document.getElementById('form_adicionarulcera').onclick = function() {
-			substituirArea(coordenadas.x1, coordenadas.y1, coordenadas.x2, coordenadas.y2);
-			if (typeof funcaoAnterior != typeof undefined) {
-				return funcaoAnterior;
-			} else {
-				return true;
-			}
-		}
+	if (typeof poligonoUlcera != typeof undefined) {
+		drawLine(undefined, undefined, getContext(), polygonToArrayPositions(poligonoUlcera));
 	}
 });
+
+function polygonToArrayPositions(polygon) {
+	var points = polygon;
+	while ((points.indexOf("(") > -1) || (points.indexOf(")") > -1)) {
+		points = points.replace("(", "").replace(")", "");
+	}
+	var array = points.split(",");
+	var objects = [];
+	for (var i = 0, length = array.length; i < length; i = i + 2) {
+		objects.push({"x": array[i], "y": array[i + 1]});
+	}
+	return objects;
+}

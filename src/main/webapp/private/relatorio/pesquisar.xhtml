@@ -9,36 +9,39 @@
 		<h:form id="form">
 			<fieldset>
 				<legend>Pesquisar Membro</legend>
-				<div class="row">
-					<div class="form-group col-lg-6">
-						<p:outputLabel for="nome-membro" value="Membro" />
-						<p:inputText id="nome-membro"
-									 value="#{relatorioController.funcionarioPesquisa.nome}" styleClass="form-control" />
+				<div class="container">
+					<div class="row">
+						<div class="form-group col-lg-6">
+							<p:outputLabel for="nome-membro" value="Membro" />
+							<p:inputText id="nome-membro"
+										 value="#{relatorioController.membroEquipePesquisa.nome}" styleClass="form-control" />
+						</div>
 					</div>
 				</div>
 				<div class="form-group">
 					<input type="reset" value="Limpar Campos" class="btn btn-default" />
 					<h:outputText value=" " />
-					<h:commandButton value="Pequisar" styleClass="btn btn-primary"
-									 action="#{relatorioController.pesquisarUsuarioRelatorio()}" />
+					<p:commandButton value="Pequisar" styleClass="btn btn-primary"
+									 action="#{relatorioController.pesquisarUsuarioRelatorio}"
+									 update="datatable" />
 				</div>
 				<br /><br />
-				<p:dataTable id="datatable" value="#{relatorioController.listaFuncionaros}"
-							 var="funcionario" paginator="true" rows="10" lazy="true"
+				<p:dataTable id="datatable" value="#{relatorioController.listaMembros}"
+							 var="membro" paginator="true" rows="10" lazy="true"
 							 paginatorPosition="bottom" paginatorAlwaysVisible="false"
 							 emptyMessage="Nenhum resultado encontrado.">
 					<p:column>
 						<f:facet name="header"><h:outputText value="Nome" /></f:facet>
-						<h:outputText value="#{funcionario.nome}" />
+						<h:outputText value="#{membro.nome}" />
 					</p:column>
 					<p:column>
 						<f:facet name="header"><h:outputText value="Tipo" /></f:facet>
-						<h:outputText value="Médico" rendered="#{funcionario.medico}" />
-						<h:outputText value="Enfermeiro" rendered="#{funcionario.enfermeiro}" />
+						<h:outputText value="Médico" rendered="#{membro.medico}" />
+						<h:outputText value="Enfermeiro" rendered="#{membro.enfermeiro}" />
 					</p:column>
 					<p:column>
 						<f:facet name="header"><h:outputText value="Ações" /></f:facet>
-						<h:commandLink value="Gerar Relatório" action="#{relatorioController.gerarRelatorio(funcionario)}" />
+						<h:commandLink value="Gerar Relatório" action="#{relatorioController.gerarRelatorio(membro)}" />
 					</p:column>
 				</p:dataTable>
 			</fieldset>

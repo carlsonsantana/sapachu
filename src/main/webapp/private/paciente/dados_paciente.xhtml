@@ -1,0 +1,50 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:ui="http://java.sun.com/jsf/facelets">
+	<div class="table-responsive">
+		<table class="table table-bordered table-hover table-middle">
+			<tbody>
+				<tr>
+					<th>Nome</th>
+					<td><h:outputText value="#{pacienteController.paciente.nome}" /></td>
+					<th>Prontuário</th>
+					<td><h:outputText value="#{pacienteController.paciente.prontuario}" /></td>
+				</tr>
+				<tr>
+					<th>Gênero</th>
+					<td><h:outputText value="#{pacienteController.paciente.sexo}" /></td>
+					<th>Telefone</th>
+					<td><h:outputText value="#{pacienteController.paciente.telefone}" /></td>
+				</tr>
+				<tr>
+					<th>Endereço</th>
+					<td><h:outputText value="#{pacienteController.paciente.endereco}" /></td>
+					<th>Cidade</th>
+					<td><h:outputText value="#{pacienteController.paciente.cidade}" /></td>
+				</tr>
+				<tr>
+					<th>Estado</th>
+					<td><h:outputText value="#{pacienteController.paciente.estado}" /></td>
+					<th>Estado Civil</th>
+					<td><h:outputText value="#{pacienteController.paciente.estadoCivil}" /></td>
+				</tr>
+				<tr>
+					<th>Grau de Instrução</th>
+					<td><h:outputText value="#{pacienteController.paciente.grauInstrucao}" /></td>
+					<th>Profissão</th>
+					<td><h:outputText value="#{pacienteController.paciente.profissao}" /></td>
+				</tr>
+				<tr>
+					<th>Data de Nascimento</th>
+					<td>
+						<h:outputText value="#{pacienteController.paciente.dataNascimento}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</td>
+					<td colspan="2"></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</ui:composition>

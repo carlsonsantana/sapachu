@@ -20,9 +20,6 @@
 .imagem_upload_controls {
 	display: inline-block;
 }
-#canvasDiv {
-	float: left;
-}
 .controle {
 	text-align: left;
 }
@@ -82,4 +79,20 @@
 }
 .ui-growl-icon-close {
 	display: block !important;
+}
+img.img-responsive {
+	width: 100%;
+}
+label {
+	font-size: 14px !important;
+}
+.table-middle th {
+	width: 30%;
+}
+.table-middle td,
+.table-middle th {
+	vertical-align: middle !important;
+}
+.ui-growl-item-container {
+	opacity: 1 !important;
 }

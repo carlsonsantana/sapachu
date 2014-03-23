@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.sapac.models.hibernate;
 
 import java.util.ArrayList;
@@ -13,19 +9,16 @@ import javax.inject.Inject;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.sapac.adapters.SistemaPacienteAdapter;
 import org.sapac.annotations.DAOQualifier;
 import org.sapac.entities.Consulta;
 import org.sapac.entities.DiagnosticoEnfermagem;
+import org.sapac.entities.MedicamentoUso;
 import org.sapac.entities.Paciente;
 import org.sapac.entities.SituacaoUlceraConsulta;
+import org.sapac.entities.Ulcera;
 import org.sapac.models.ConsultaDAO;
 
-/**
- *
- * @author carlson
- */
 @ApplicationScoped
 @DAOQualifier(DAOQualifier.DAOType.HIBERNATE)
 public class ConsultaDAOHibernate extends GenericDAOHibernate implements ConsultaDAO {
@@ -38,12 +31,10 @@ public class ConsultaDAOHibernate extends GenericDAOHibernate implements Consult
 		consulta.setSituacao(Consulta.CONSULTA_MARCADA);
 
 		Session session = getSession();
-		
-		Transaction transaction = session.beginTransaction();
 
 		session.save(consulta);
-
-		transaction.commit();
+		
+		closeSession();
 		
 		return consulta;
 	}
@@ -51,8 +42,6 @@ public class ConsultaDAOHibernate extends GenericDAOHibernate implements Consult
 	@Override
 	public Collection<Consulta> remarcarConsultas(Collection<Consulta> consultas) {
 		Session session = getSession();
-		
-		Transaction transaction = session.beginTransaction();
 		
 		for (Consulta consulta : consultas) {
 			consulta.setSituacao(Consulta.CONSULTA_REMARCADA);
@@ -68,7 +57,7 @@ public class ConsultaDAOHibernate extends GenericDAOHibernate implements Consult
 			session.update(consulta);
 		}
 		
-		transaction.commit();
+		closeSession();
 		
 		return consultas;
 	}
@@ -77,15 +66,13 @@ public class ConsultaDAOHibernate extends GenericDAOHibernate implements Consult
 	public Collection<Consulta> cancelarConsultas(Collection<Consulta> consultas) {
 		Session session = getSession();
 		
-		Transaction transaction = session.beginTransaction();
-		
 		for (Consulta consulta : consultas) {
 			consulta.setSituacao(Consulta.CONSULTA_CANCELADA);
 			
 			session.update(consulta);
 		}
 		
-		transaction.commit();
+		closeSession();
 		
 		return consultas;
 	}
@@ -94,10 +81,9 @@ public class ConsultaDAOHibernate extends GenericDAOHibernate implements Consult
 	public Collection<Consulta> procurarConsultasMes(Date data, Paciente paciente) {
 		Session session = getSession();
 		
-		Transaction transaction = session.beginTransaction();
-		
 		StringBuilder hql = new StringBuilder();
 		hql.append("SELECT consulta FROM Consulta AS consulta ")
+				.append(" INNER JOIN FETCH consulta.paciente AS paciente ")
 				.append(" WHERE 1 = 1 ")
 				.append(" AND consulta.situacao IN (:situacoes) ");
 		if (data != null) {
@@ -133,7 +119,7 @@ public class ConsultaDAOHibernate extends GenericDAOHibernate implements Consult
 		
 		Collection<Consulta> consultas = query.list();
 		
-		transaction.commit();
+		closeSession();
 		
 		return consultas;
 	}
@@ -142,10 +128,9 @@ public class ConsultaDAOHibernate extends GenericDAOHibernate implements Consult
 	public Collection<Consulta> procurarConsultasDia(Date data, Paciente paciente) {
 		Session session = getSession();
 		
-		Transaction transaction = session.beginTransaction();
-		
 		StringBuilder hql = new StringBuilder();
 		hql.append("SELECT consulta FROM Consulta AS consulta ")
+				.append(" INNER JOIN FETCH consulta.paciente ")
 				.append(" WHERE 1 = 1 ")
 				.append(" AND consulta.situacao IN (:situacoes) ")
 				.append(" AND consulta.data = current_date() ");
@@ -171,7 +156,7 @@ public class ConsultaDAOHibernate extends GenericDAOHibernate implements Consult
 		
 		Collection<Consulta> consultas = query.list();
 		
-		transaction.commit();
+		closeSession();
 		
 		return consultas;
 	}
@@ -181,14 +166,13 @@ public class ConsultaDAOHibernate extends GenericDAOHibernate implements Consult
 		Collection<Consulta> consultas = new ArrayList<Consulta>();
 		Session session = getSession();
 		
-		Transaction transaction = session.beginTransaction();
-		
 		StringBuilder hql = new StringBuilder();
 		hql.append("SELECT consulta FROM Consulta AS consulta ")
 				.append(" LEFT JOIN consulta.paciente AS paciente ")
 				.append(" WHERE 1 = 1 ")
 				.append(" AND paciente.id = :idPaciente ")
-				.append(" AND consulta.situacao IN (:situacoes) ");
+				.append(" AND consulta.situacao IN (:situacoes) ")
+				.append(" ORDER BY consulta.data ASC ");
 		
 		Query query = session.createQuery(hql.toString());
 		query.setInteger("idPaciente", paciente.getId());
@@ -196,7 +180,7 @@ public class ConsultaDAOHibernate extends GenericDAOHibernate implements Consult
 		
 		consultas = query.list();
 		
-		transaction.commit();
+		closeSession();
 		
 		return consultas;
 	}
@@ -205,8 +189,6 @@ public class ConsultaDAOHibernate extends GenericDAOHibernate implements Consult
 	@Override
 	public Collection<Paciente> procurarPacientes(Paciente paciente) {
 		Session session = getSession();
-		
-		Transaction transaction = session.beginTransaction();
 		
 		StringBuilder hql = new StringBuilder();
 		hql.append("SELECT paciente FROM Paciente AS paciente ")
@@ -228,24 +210,38 @@ public class ConsultaDAOHibernate extends GenericDAOHibernate implements Consult
 		
 		Collection<Paciente> pacientes = query.list();
 		
-		transaction.commit();
+		closeSession();
 		
 		return pacientes;
 	}
 	
 	@Override
 	public Paciente cadastrarPaciente(Paciente paciente) {
-		paciente.setDiagnosticoEnfermagem(new DiagnosticoEnfermagem());
-		paciente.getDiagnosticoEnfermagem().setPaciente(paciente);
+		DiagnosticoEnfermagem diagnosticoEnfermagem = new DiagnosticoEnfermagem();
+		diagnosticoEnfermagem.setPaciente(paciente);
+		diagnosticoEnfermagem.setRiscoGlicemiaInstavel("");
+		diagnosticoEnfermagem.setRiscoNutricaoDesequilibrada("");
+		diagnosticoEnfermagem.setRiscoNutricaoAcimaNecessidadesCorporais(null);
+		diagnosticoEnfermagem.setSonoPrejudicado("");
+		diagnosticoEnfermagem.setMobilidadeFisicaPrejudicada("");
+		diagnosticoEnfermagem.setPerfusaoTissularPerifericaIneficaz("");
+		diagnosticoEnfermagem.setInteracaoSocialPrejudicada("");
+		diagnosticoEnfermagem.setFaltaAdesao("");
+		diagnosticoEnfermagem.setRiscoInfeccao("");
+		diagnosticoEnfermagem.setIntegridadePelePrejudicada("");
+		diagnosticoEnfermagem.setDor("");
+		diagnosticoEnfermagem.setTipoDor(null);
+		diagnosticoEnfermagem.setOutrosDiagnosticos("");
+		diagnosticoEnfermagem.setAtivo(true);
+		paciente.setDiagnosticoEnfermagem(diagnosticoEnfermagem);
+		
 		
 		Session session = getSession();
-		
-		Transaction transaction = session.beginTransaction();
 		
 		session.save(paciente);
 		session.save(paciente.getDiagnosticoEnfermagem());
 		
-		transaction.commit();
+		closeSession();
 
 		return paciente;
 	}
@@ -253,8 +249,6 @@ public class ConsultaDAOHibernate extends GenericDAOHibernate implements Consult
 	@Override
 	public boolean temConsultaDia(Paciente paciente, Date data) {
 		Session session = getSession();
-		
-		Transaction transaction = session.beginTransaction();
 		
 		StringBuilder hql = new StringBuilder();
 		hql.append(" SELECT 1 FROM Consulta AS consulta ")
@@ -268,9 +262,9 @@ public class ConsultaDAOHibernate extends GenericDAOHibernate implements Consult
 		query.setDate("dataConsulta", data);
 		query.setParameterList("situacoes", new Object[] {Consulta.CONSULTA_MARCADA, Consulta.CONSULTA_REALIZADA});
 		
-		boolean resultado = query.list().size() > 0;
+		boolean resultado = !query.list().isEmpty();
 		
-		transaction.commit();
+		closeSession();
 		
 		return resultado;
 	}
@@ -278,8 +272,6 @@ public class ConsultaDAOHibernate extends GenericDAOHibernate implements Consult
 	@Override
 	public Consulta carregarConsulta(Consulta consulta) {
 		Session session = getSession();
-		
-		Transaction transaction = session.beginTransaction();
 		
 		StringBuilder sql = new StringBuilder();
 		sql.append("SELECT consulta FROM Consulta AS consulta ")
@@ -296,11 +288,19 @@ public class ConsultaDAOHibernate extends GenericDAOHibernate implements Consult
 		
 		consulta = (Consulta) query.uniqueResult();
 		
+		
 		Hibernate.initialize(consulta.getPaciente().getUlceras());
 		
 		Hibernate.initialize(consulta.getMembrosEquipe());
+		if (consulta.getVariaveisClinicas() != null) {
+			Hibernate.initialize(consulta.getVariaveisClinicas().getMedicamentosUso());
+		}
+		Collection<Ulcera> ulceras = consulta.getPaciente().getUlceras();
+		for (Ulcera ulcera : ulceras) {
+			Hibernate.initialize(ulcera.getUlcerasResultado());
+		}
 		
-		transaction.commit();
+		closeSession();
 		
 		return consulta;
 	}
@@ -309,51 +309,50 @@ public class ConsultaDAOHibernate extends GenericDAOHibernate implements Consult
 	public Consulta editarConsulta(Consulta consulta) {
 		Session session = getSession();
 		
-		Transaction transaction = session.beginTransaction();
-		
 		consulta.setSituacao(Consulta.CONSULTA_REALIZADA);
 		consulta.getVariaveisClinicas().setConsulta(consulta);
 		
 		session.update(consulta);
-		if (consulta.getVariaveisClinicas().getId() == 0) {
-			session.save(consulta.getVariaveisClinicas());
-		} else {
-			session.update(consulta.getVariaveisClinicas());
+		session.saveOrUpdate(consulta.getVariaveisClinicas());
+
+		Collection<MedicamentoUso> medicamentos = consulta.getVariaveisClinicas().getMedicamentosUso();
+		for (MedicamentoUso medicamento : medicamentos) {
+			medicamento.setVariaveisClinicas(consulta.getVariaveisClinicas());
+			
+			session.saveOrUpdate(medicamento);
 		}
 		
 		consulta.getIntervencaoEnfermagem().setConsulta(consulta);
-		if (consulta.getIntervencaoEnfermagem().getId() == 0) {
-			session.save(consulta.getIntervencaoEnfermagem());
-		} else {
-			session.update(consulta.getIntervencaoEnfermagem());
-		}
+		session.saveOrUpdate(consulta.getIntervencaoEnfermagem());
+		
 		for (SituacaoUlceraConsulta situacaoUlceraConsulta : consulta.getSituacoesUlcera()) {
 			situacaoUlceraConsulta.setConsulta(consulta);
 			situacaoUlceraConsulta.getUlcera().setPaciente(consulta.getPaciente());
 			situacaoUlceraConsulta.getUlcera().setSituacao(situacaoUlceraConsulta.getEstadoUlcera());
-			situacaoUlceraConsulta.getFotoUlcera().setSituacaoUlceraConsulta(situacaoUlceraConsulta);
+			if (situacaoUlceraConsulta.getFotoUlcera() != null) {
+				situacaoUlceraConsulta.getFotoUlcera().setSituacaoUlceraConsulta(situacaoUlceraConsulta);
+			}
 			
-			if (situacaoUlceraConsulta.getUlcera().getId() == 0) {
-				session.save(situacaoUlceraConsulta.getUlcera());
-			} else {
-				session.update(situacaoUlceraConsulta.getUlcera());
+			if ((situacaoUlceraConsulta.getUlcera().getSituacao() == Ulcera.ULCERA_JUNTADA)
+					|| (situacaoUlceraConsulta.getUlcera().getSituacao() == Ulcera.ULCERA_SEPARADA)) {
+				Collection<Ulcera> ulceras = situacaoUlceraConsulta.getUlcera().getUlcerasResultado();
+				if (ulceras != null) {
+					for (Ulcera ulcera : ulceras) {
+						session.saveOrUpdate(ulcera);
+					}
+				}
 			}
-			if (situacaoUlceraConsulta.getId() == 0) {
-				session.save(situacaoUlceraConsulta);
-			} else {
-				session.update(situacaoUlceraConsulta);
-			}
-			if (situacaoUlceraConsulta.getFotoUlcera().getId() == 0) {
-				session.save(situacaoUlceraConsulta.getFotoUlcera());
-			} else {
-				session.update(situacaoUlceraConsulta.getFotoUlcera());
+			
+			session.saveOrUpdate(situacaoUlceraConsulta.getUlcera());
+			session.saveOrUpdate(situacaoUlceraConsulta);
+			if (situacaoUlceraConsulta.getFotoUlcera() != null) {
+				session.saveOrUpdate(situacaoUlceraConsulta.getFotoUlcera());
 			}
 		}
-		//session.saveOrUpdate(consulta.get);
-		
-		transaction.commit();
 		
 		sistemaPacienteAdapter.salvarInformacoesProntuario(consulta);
+		
+		closeSession();
 		
 		return consulta;
 	}

@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.sapac.controllers.enfermagem;
 
 import java.util.ArrayList;
@@ -20,10 +16,6 @@ import org.sapac.entities.IntervencaoEnfermagem;
 import org.sapac.entities.Paciente;
 import org.sapac.models.EnfermagemDAO;
 
-/**
- *
- * @author carlson
- */
 @Named
 @SessionScoped
 public class EnfermagemController extends GenericController {
@@ -38,58 +30,34 @@ public class EnfermagemController extends GenericController {
 	@DAOQualifier(DAOQualifier.DAOType.HIBERNATE)
 	private EnfermagemDAO enfermagemDAO;
 
-	/**
-	 * @return the paciente
-	 */
 	public Paciente getPaciente() {
 		return paciente;
 	}
 
-	/**
-	 * @param paciente the paciente to set
-	 */
 	public void setPaciente(Paciente paciente) {
 		this.paciente = paciente;
 	}
 
-	/**
-	 * @return the intervencaoEnfermagem
-	 */
 	public IntervencaoEnfermagem getIntervencaoEnfermagem() {
 		return intervencaoEnfermagem;
 	}
 
-	/**
-	 * @param intervencaoEnfermagem the intervencaoEnfermagem to set
-	 */
 	public void setIntervencaoEnfermagem(IntervencaoEnfermagem intervencaoEnfermagem) {
 		this.intervencaoEnfermagem = intervencaoEnfermagem;
 	}
 
-	/**
-	 * @return the pacientePesquisa
-	 */
 	public Paciente getPacientePesquisa() {
 		return pacientePesquisa;
 	}
 
-	/**
-	 * @param pacientePesquisa the pacientePesquisa to set
-	 */
 	public void setPacientePesquisa(Paciente pacientePesquisa) {
 		this.pacientePesquisa = pacientePesquisa;
 	}
 
-	/**
-	 * @return the intervencoesEnfermagem
-	 */
 	public Collection<IntervencaoEnfermagem> getIntervencoesEnfermagem() {
 		return intervencoesEnfermagem;
 	}
 
-	/**
-	 * @param intervencoesEnfermagem the intervencoesEnfermagem to set
-	 */
 	public void setIntervencoesEnfermagem(Collection<IntervencaoEnfermagem> intervencoesEnfermagem) {
 		this.intervencoesEnfermagem = intervencoesEnfermagem;
 	}
@@ -97,6 +65,7 @@ public class EnfermagemController extends GenericController {
 	@PostConstruct
 	public void init() {
 		pacientePesquisa = new Paciente();
+		intervencoesEnfermagem = new ArrayList<IntervencaoEnfermagem>();
 	}
 
 	public String telaDianosticarEnfermagem(Paciente paciente) {
@@ -118,9 +87,9 @@ public class EnfermagemController extends GenericController {
 		paciente.setDiagnosticoEnfermagem(enfermagemDAO.procurarDiagnosticoEnfermagem(paciente));
 		paciente.setConsultas(new ArrayList<Consulta>());
 
-		Collection<IntervencaoEnfermagem> intervencoesEnfermagem = enfermagemDAO.procurarIntervencoesEnfermagem(paciente);
-		for (IntervencaoEnfermagem intervencaoEnfermagem : intervencoesEnfermagem) {
-			paciente.getConsultas().add(intervencaoEnfermagem.getConsulta());
+		Collection<IntervencaoEnfermagem> intervencoes = enfermagemDAO.procurarIntervencoesEnfermagem(paciente);
+		for (IntervencaoEnfermagem intervencao : intervencoes) {
+			paciente.getConsultas().add(intervencao.getConsulta());
 		}
 
 		setPaciente(paciente);
@@ -136,16 +105,22 @@ public class EnfermagemController extends GenericController {
 	}
 
 	public String salvarDiagnosticoEnfermagem() {
+		paciente.getDiagnosticoEnfermagem().setEnfermeiro((Enfermeiro) perfilController.getUsuario().getMembroEquipe());
 		enfermagemDAO.alterarDiagnosticoEnfermagem(paciente.getDiagnosticoEnfermagem());
+		
+		adicionarMensagemAviso("", "Diagnóstico alterado com sucesso.");
 
 		return PaginasNavegacao.PAGINA_INICIAL;
 	}
+	
+	public String telaPesquisarPacientes() {
+		intervencoesEnfermagem.clear();
+		
+		return PaginasNavegacao.ENFERMAGEM_PESQUISAR_INTERVENCAO;
+	}
 
-	public String pesquisarIntervencoes() {
-		Collection<IntervencaoEnfermagem> intervencoes = enfermagemDAO.procurarIntervencoesEnfermagemDia(pacientePesquisa, getDataAtual());
-		setIntervencoesEnfermagem(intervencoes);
-
-		return "/private/enfermagem/pesquisar_paciente";
+	public void pesquisarIntervencoes() {
+		setIntervencoesEnfermagem(enfermagemDAO.procurarIntervencoesEnfermagemDia(pacientePesquisa, getDataAtual()));
 	}
 
 	public String salvarIntervencaoEnfermagem() {
@@ -155,7 +130,9 @@ public class EnfermagemController extends GenericController {
 		enfermagemDAO.alterarIntervencaoEnfermagem(intervencaoEnfermagem);
 
 		init();
+		
+		adicionarMensagemAviso("", "Intervenção alterada com sucesso.");
 
-		return pesquisarIntervencoes();
+		return telaPesquisarPacientes();
 	}
 }

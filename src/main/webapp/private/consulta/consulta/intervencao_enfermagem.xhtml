@@ -4,8 +4,18 @@
 				xmlns:p="http://primefaces.org/ui">
 	<p:tab id="intervencaoenfermagem" title="Intervenção da Enfermagem">
 		<p:panel header="Intervenção da Enfermagem">
-			<h:inputTextarea styleClass="form-control"
-							 value="#{consultaController.consulta.intervencaoEnfermagem.descricao}" />
+			<div class="container">
+				<div class="row">
+					<p:growl showDetail="true" sticky="true" />
+					<div class="form-group">
+						<p:outputLabel for="intervencao-enfermagem"
+									   value="Intervenção da Enfermagem" />
+						<h:inputTextarea styleClass="form-control" id="intervencao-enfermagem"
+										 value="#{consultaController.consulta.intervencaoEnfermagem.descricao}"
+										 required="true" />
+					</div>
+				</div>
+			</div>
 		</p:panel>
 	</p:tab>
 </ui:composition>

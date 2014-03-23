@@ -24,17 +24,20 @@
 				</p:column>
 			</p:dataTable>
 			<br /><br /><br />
-			<div class="row">
-				<div class="form-group col-lg-6">
-					<p:outputLabel for="nome-membro" value="Membro" />
-					<p:inputText id="nome-membro" value="#{usuarioController.membroEquipePesquisa.nome}" styleClass="form-control" />
+			<div class="container">
+				<div class="row">
+					<div class="form-group col-lg-6">
+						<p:outputLabel for="nome-membro" value="Membro" />
+						<p:inputText id="nome-membro" value="#{usuarioController.membroEquipePesquisa.nome}" styleClass="form-control" />
+					</div>
 				</div>
 			</div>
 			<div class="form-group">
 				<input type="reset" value="Limpar Campos" class="btn btn-default" />
 				<h:outputText value=" " />
-				<h:commandButton value="Pequisar" styleClass="btn btn-primary"
-								 action="#{usuarioController.pesquisarUsuario()}" />
+				<p:commandButton value="Pequisar" styleClass="btn btn-primary"
+								 action="#{usuarioController.pesquisarUsuario}"
+								 update="datatable" />
 			</div>
 			<br /><br />
 			<p:dataTable id="datatable" value="#{usuarioController.listaMembros}"
@@ -52,7 +55,8 @@
 				</p:column>
 				<p:column>
 					<f:facet name="header"><h:outputText value="Ações" /></f:facet>
-					<h:commandLink value="Adicionar" action="#{consultaController.adicionarMembroEquipe(membroEquipe)}" />
+					<h:commandLink value="Adicionar"
+								   action="#{consultaController.adicionarMembroEquipe(membroEquipe)}" />
 				</p:column>
 			</p:dataTable>
 		</p:panel>

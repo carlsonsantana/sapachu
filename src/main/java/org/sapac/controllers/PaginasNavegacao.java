@@ -1,13 +1,5 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.sapac.controllers;
 
-/**
- *
- * @author carlson
- */
 public abstract class PaginasNavegacao {
 	
 	public final static String PAGINA_INICIAL;
@@ -27,15 +19,18 @@ public abstract class PaginasNavegacao {
 	public final static String PACIENTE_CADASTRAR;
 	public final static String PACIENTE_VISUALIZAR_CONSULTA;
 	
+	public final static String ENFERMAGEM_PESQUISAR_INTERVENCAO;
 	public final static String ENFERMAGEM_EDITAR_INTERVENCAO;
 	public final static String ENFERMAGEM_EDITAR_DIAGNOSTICO;
 	public final static String ENFERMAGEM_VISUALIZAR_INTERVENCAO;
 	public final static String ENFERMAGEM_VISUALIZAR_DIAGNOSTICO;
 	
+	public final static String CONSULTA_PESQUISAR_PACIENTE_MARCAR;
 	public final static String CONSULTA_PESQUISAR_PACIENTE;
 	public final static String CONSULTA_MARCAR;
 	public final static String CONSULTA_REMARCAR;
 	public final static String CONSULTA_CONSULTAR_PACIENTE;
+	
 	static {
 		PAGINA_INICIAL = "/private/apresentacao";
 		LOGIN = "/public/login";
@@ -53,11 +48,13 @@ public abstract class PaginasNavegacao {
 		PACIENTE_CADASTRAR = "/private/paciente/cadastrar";
 		PACIENTE_VISUALIZAR_CONSULTA = "/private/paciente/visualizar_consulta";
 		
+		ENFERMAGEM_PESQUISAR_INTERVENCAO = "/private/enfermagem/pesquisar_paciente";
 		ENFERMAGEM_EDITAR_INTERVENCAO = "/private/enfermagem/intervencao";
 		ENFERMAGEM_EDITAR_DIAGNOSTICO = "/private/enfermagem/diagnosticar";
 		ENFERMAGEM_VISUALIZAR_INTERVENCAO = "/private/enfermagem/visualizar_intervencao";
 		ENFERMAGEM_VISUALIZAR_DIAGNOSTICO = "/private/enfermagem/visualizar_diagnostico";
 		
+		CONSULTA_PESQUISAR_PACIENTE_MARCAR = "/private/consulta/marcar";
 		CONSULTA_PESQUISAR_PACIENTE = "/private/consulta/pesquisar_paciente";
 		CONSULTA_MARCAR = "/private/consulta/marcar_consulta";
 		CONSULTA_REMARCAR = "/private/consulta/remarcar";

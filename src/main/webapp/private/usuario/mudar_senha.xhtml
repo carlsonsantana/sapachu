@@ -9,29 +9,29 @@
 		<h:form id="formulario">
 			<fieldset>
 				<legend>Mudar senha</legend>
-			<div class="form-group">
-				<p:outputLabel for="senha-atual" value="Senha Atual" />
-				<h:inputSecret id="senha-atual" required="true"
-						value="#{perfilController.senhaAtual}"
-						styleClass="form-control" />
-			</div>
-			<div class="form-group">
-				<p:outputLabel for="nova-senha" value="Nova Senha" />
-				<h:inputSecret id="nova-senha" required="true"
-						value="#{perfilController.novaSenha}"
-						styleClass="form-control" />
-			</div>
-			<div class="form-group">
-				<p:outputLabel for="confirmacao" value="Confirmar Senha Atual" />
-				<h:inputSecret id="confirmacao" required="true"
-						value="#{perfilController.confirmacaoNovaSenha}"
-						styleClass="form-control" />
-			</div>
-			<h:commandButton value="Cancelar" styleClass="btn btn-danger"
-					action="#{perfilController.cancelar()}" />
-			<h:outputText value=" " />
-			<h:commandButton value="Confirmar" styleClass="btn btn-primary"
-					action="#{perfilController.mudarSenha()}" />
+				<div class="form-group">
+					<p:outputLabel for="senha-atual" value="Senha Atual" />
+					<h:inputSecret id="senha-atual" required="true"
+								   value="#{perfilController.senhaAtual}"
+								   styleClass="form-control" />
+				</div>
+				<div class="form-group">
+					<p:outputLabel for="nova-senha" value="Nova Senha" />
+					<h:inputSecret id="nova-senha" required="true"
+								   value="#{perfilController.novaSenha}"
+								   styleClass="form-control" />
+				</div>
+				<div class="form-group">
+					<p:outputLabel for="confirmacao" value="Confirmar Senha Atual" />
+					<h:inputSecret id="confirmacao" required="true"
+								   value="#{perfilController.confirmacaoNovaSenha}"
+								   styleClass="form-control" />
+				</div>
+				<h:commandButton value="Cancelar" styleClass="btn btn-danger"
+								 action="#{perfilController.cancelar()}" />
+				<h:outputText value=" " />
+				<h:commandButton value="Confirmar" styleClass="btn btn-primary"
+								 action="#{perfilController.mudarSenha()}" />
 			</fieldset>
 		</h:form>
 	</ui:define>

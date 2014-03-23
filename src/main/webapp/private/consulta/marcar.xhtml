@@ -9,23 +9,27 @@
 		<h:form id="form">
 			<fieldset>
 				<legend>Marcar Consulta</legend>
-				<div class="row">
-					<div class="form-group col-lg-6">
-						<p:outputLabel for="nome-paciente" value="Paciente" />
-						<h:inputText id="nome-paciente" styleClass="form-control"
-									 value="#{agendaController.pacientePesquisa.nome}" />
-					</div>
-					<div class="form-group col-lg-6">
-						<p:outputLabel for="prontuario" value="Prontuário" />
-						<p:inputText id="prontuario" styleClass="form-control"
-									 value="#{agendaController.pacientePesquisa.prontuario}" />
+				<div class="container">
+					<div class="row">
+						<div class="form-group col-lg-6">
+							<p:outputLabel for="nome-paciente" value="Paciente" />
+							<h:inputText id="nome-paciente" styleClass="form-control"
+										 value="#{agendaController.pacientePesquisa.nome}" />
+						</div>
+						<div class="form-group col-lg-6">
+							<p:outputLabel for="prontuario" value="Prontuário" />
+							<p:inputText id="prontuario" styleClass="form-control"
+										 value="#{agendaController.pacientePesquisa.prontuario}" />
+						</div>
 					</div>
 				</div>
 				<div class="form-group">
 					<h:commandButton type="reset" value="Limpar Campos"
-							styleClass="btn btn-default" />
+									 styleClass="btn btn-default" />
 					<h:outputText value=" " />
-					<h:commandButton value="Pequisar" styleClass="btn btn-primary" action="#{agendaController.telaMarcarConsulta()}" />
+					<p:commandButton value="Pequisar" styleClass="btn btn-primary"
+									 action="#{agendaController.pesquisarPaciente}"
+									 update="datatable" />
 				</div>
 				<br /><br />
 				<p:dataTable id="datatable" value="#{agendaController.listaPacientes}"

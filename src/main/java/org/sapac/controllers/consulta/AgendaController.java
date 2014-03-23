@@ -1,14 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.sapac.controllers.consulta;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
@@ -26,10 +21,6 @@ import org.sapac.entities.Consulta;
 import org.sapac.entities.Paciente;
 import org.sapac.models.ConsultaDAO;
 
-/**
- *
- * @author carlson
- */
 @Named
 @SessionScoped
 public class AgendaController extends GenericController {
@@ -38,7 +29,7 @@ public class AgendaController extends GenericController {
 	private Paciente pacientePesquisa;
 	private Collection<Paciente> listaPacientes;
 	private ScheduleModel calendario;
-	private ScheduleEvent eventoCalendario;
+	private DefaultScheduleEvent eventoCalendario;
 	private Date data;
 	private boolean consultaMarcada;
 	private Collection<Consulta> remarcados;
@@ -48,108 +39,75 @@ public class AgendaController extends GenericController {
 	@DAOQualifier(DAOQualifier.DAOType.HIBERNATE)
 	private ConsultaDAO consultaDAO;
 
-	/**
-	 * @return the paciente
-	 */
 	public Paciente getPaciente() {
 		return paciente;
 	}
 
-	/**
-	 * @param paciente the paciente to set
-	 */
 	public void setPaciente(Paciente paciente) {
 		this.paciente = paciente;
 	}
 
-	/**
-	 * @return the pacientePesquisa
-	 */
 	public Paciente getPacientePesquisa() {
 		return pacientePesquisa;
 	}
 
-	/**
-	 * @param pacientePesquisa the pacientePesquisa to set
-	 */
 	public void setPacientePesquisa(Paciente pacientePesquisa) {
 		this.pacientePesquisa = pacientePesquisa;
 	}
 
-	/**
-	 * @return the listaPacientes
-	 */
 	public Collection<Paciente> getListaPacientes() {
 		return listaPacientes;
 	}
 
-	/**
-	 * @param listaPacientes the listaPacientes to set
-	 */
 	public void setListaPacientes(Collection<Paciente> listaPacientes) {
 		this.listaPacientes = listaPacientes;
 	}
 
-	/**
-	 * @return the calendario
-	 */
 	public ScheduleModel getCalendario() {
 		return calendario;
 	}
 
-	/**
-	 * @param calendario the calendario to set
-	 */
 	public void setCalendario(ScheduleModel calendario) {
 		this.calendario = calendario;
 	}
 
-	/**
-	 * @return the eventoCalendario
-	 */
 	public ScheduleEvent getEventoCalendario() {
 		return eventoCalendario;
 	}
 
-	/**
-	 * @param eventoCalendario the eventoCalendario to set
-	 */
-	public void setEventoCalendario(ScheduleEvent eventoCalendario) {
+	public void setEventoCalendario(DefaultScheduleEvent eventoCalendario) {
 		this.eventoCalendario = eventoCalendario;
 	}
 
-	/**
-	 * @return the data
-	 */
 	public Date getData() {
 		return data;
 	}
 
-	/**
-	 * @param data the data to set
-	 */
 	public void setData(Date data) {
 		this.data = data;
 	}
 
-	/**
-	 * @return the consultaMarcada
-	 */
 	public boolean isConsultaMarcada() {
 		return consultaMarcada;
 	}
 
-	/**
-	 * @param consultaMarcada the consultaMarcada to set
-	 */
 	public void setConsultaMarcada(boolean consultaMarcada) {
 		this.consultaMarcada = consultaMarcada;
+	}
+	
+	public boolean isPodeMarcar() {
+		return podeMarcar;
+	}
+
+	public void setPodeMarcar(boolean podeMarcar) {
+		this.podeMarcar = podeMarcar;
 	}
 
 	@PostConstruct
 	public void init() {
 		pacientePesquisa = new Paciente();
 		calendario = new DefaultScheduleModel();
+		listaPacientes = new ArrayList<Paciente>();
 		clear();
 	}
 
@@ -165,6 +123,7 @@ public class AgendaController extends GenericController {
 		} else {
 			cancelados.clear();
 		}
+		listaPacientes.clear();
 		eventoCalendario = new DefaultScheduleEvent();
 
 		setPodeMarcar(false);
@@ -172,13 +131,14 @@ public class AgendaController extends GenericController {
 	}
 
 	public String telaMarcarConsulta() {
-		List<Paciente> pacientes = new ArrayList<Paciente>();
-		pacientes.addAll(consultaDAO.procurarPacientes(pacientePesquisa));
-		listaPacientes = pacientes;
-
 		clear();
 
-		return "/private/consulta/marcar";
+		return PaginasNavegacao.CONSULTA_PESQUISAR_PACIENTE_MARCAR;
+	}
+	
+	public void pesquisarPaciente() {
+		listaPacientes.clear();
+		listaPacientes.addAll(consultaDAO.procurarPacientes(pacientePesquisa));
 	}
 
 	public String telaRemarcarConsulta() {
@@ -207,7 +167,7 @@ public class AgendaController extends GenericController {
 
 				adicionarMensagemAviso("Consulta Marcada", "A consulta do paciente \""
 						+ paciente.getNome() + "\", para o dia "
-						+ getDataFormatada(data) + ", foi marcada com sucesso" + ".");
+						+ getDataFormatada(data) + ", foi marcada com sucesso.");
 
 				return PaginasNavegacao.PAGINA_INICIAL;
 			} else {
@@ -235,12 +195,11 @@ public class AgendaController extends GenericController {
 				eventoCalendario = new DefaultScheduleEvent("Consultar Paciente: "
 						+ paciente.getNome(), dataInicio, dataFim);
 
-				((DefaultScheduleEvent) eventoCalendario).setStyleClass("marcada");
+				eventoCalendario.setStyleClass("marcada");
 			} else {
 				setPodeMarcar(false);
 			}
 		} else {
-			//TODO Escolher mensagem
 			adicionarMensagemAlerta("", "Uma consulta já foi marcada");
 		}
 	}
@@ -258,7 +217,7 @@ public class AgendaController extends GenericController {
 				setPodeMarcar(false);
 
 				consulta.setSituacao(Consulta.CONSULTA_MARCADA);
-				((DefaultScheduleEvent) eventoCalendario).setData(consulta);
+				eventoCalendario.setData(consulta);
 			}
 		}
 	}
@@ -269,17 +228,17 @@ public class AgendaController extends GenericController {
 		
 		Date dataAntiga = consultaRemarcada.getData();
 		if (!consultaRemarcada.isRealizada()) {
-			Consulta consultaMarcada = consultaRemarcada.clone();
+			Consulta novaConsulta = consultaRemarcada.clone();
 
-			consultaMarcada.setId(0);
-			consultaMarcada.setData(new Date(scheduleEvent.getStartDate().getTime()));
-			consultaMarcada.setConsultaMarcada(null);
-			consultaMarcada.setSituacao(Consulta.CONSULTA_MARCADA);
+			novaConsulta.setId(0);
+			novaConsulta.setData(new Date(scheduleEvent.getStartDate().getTime()));
+			novaConsulta.setConsultaMarcada(null);
+			novaConsulta.setSituacao(Consulta.CONSULTA_MARCADA);
 
-			if (validaConsulta(consultaMarcada)) {
+			if (validaConsulta(novaConsulta)) {
 				scheduleEvent.setStyleClass("remarcado");
 
-				consultaRemarcada.setConsultaMarcada(consultaMarcada);
+				consultaRemarcada.setConsultaMarcada(novaConsulta);
 				consultaRemarcada.setSituacao(Consulta.CONSULTA_REMARCADA);
 
 				cancelados.remove(consultaRemarcada);
@@ -299,14 +258,13 @@ public class AgendaController extends GenericController {
 	}
 
 	public void onConsultaSelecionada(SelectEvent selectEvent) {
-		eventoCalendario = (ScheduleEvent) selectEvent.getObject();
+		eventoCalendario = (DefaultScheduleEvent) selectEvent.getObject();
 	}
 
 	public void cancelarConsulta() {
-		DefaultScheduleEvent defaultScheduleEvent = (DefaultScheduleEvent) eventoCalendario;
-		Consulta consulta = (Consulta) defaultScheduleEvent.getData();
+		Consulta consulta = (Consulta) eventoCalendario.getData();
 		if (!consulta.isRealizada()) {
-			defaultScheduleEvent.setStyleClass("removido");
+			eventoCalendario.setStyleClass("removido");
 			consulta.setSituacao(Consulta.CONSULTA_CANCELADA);
 
 			remarcados.remove(consulta);
@@ -337,16 +295,16 @@ public class AgendaController extends GenericController {
 			Date dataInicio = new Date(consulta.getData().getTime());
 			Date dataFim = new Date(consulta.getData().getTime());
 
-			ScheduleEvent evento = new DefaultScheduleEvent(mensagem, dataInicio, dataFim);
-			((DefaultScheduleEvent) evento).setData(consulta);
+			DefaultScheduleEvent evento = new DefaultScheduleEvent(mensagem, dataInicio, dataFim);
+			evento.setData(consulta);
 
+			Date hoje = new Date();
+			
 			if (consulta.isRealizada()) {
-				((DefaultScheduleEvent) evento).setStyleClass("realizada");
-			} else if ((consulta.getData().before(new Date()))
-					&& (!((consulta.getData().getDate() == (new Date()).getDate())
-					&& (consulta.getData().getMonth() == (new Date()).getMonth())
-					&& (consulta.getData().getYear() == (new Date()).getYear())))) {
-				((DefaultScheduleEvent) evento).setStyleClass("nao-realizada");
+				evento.setStyleClass("realizada");
+			} else if ((consulta.getData().before(hoje))
+					&& (!isMesmaData(consulta.getData(), hoje))) {
+				evento.setStyleClass("nao-realizada");
 			}
 
 			calendario.addEvent(evento);
@@ -355,16 +313,12 @@ public class AgendaController extends GenericController {
 
 	private boolean validaConsulta(Consulta consulta) {
 		Date hoje = new Date();
-		if ((consulta.getData().before(hoje)) && (!getDataFormatada(consulta.getData()).equals(getDataFormatada(hoje)))) {
+		if ((consulta.getData().before(hoje))
+				&& (!getDataFormatada(consulta.getData()).equals(getDataFormatada(hoje)))) {
 			adicionarMensagemAlerta("Consulta Não marcada", "A data escolhida para a consulta não pode ser inferior a data atual.");
 			return false;
 		} else {
-			Calendar calen = Calendar.getInstance();
-			calen.setTime(consulta.getData());
-			Calendar hojeCalendar = Calendar.getInstance();
-			hojeCalendar.setTime(hoje);
-			if ((calen.get(Calendar.YEAR) == hojeCalendar.get(Calendar.YEAR))
-					&& (calen.get(Calendar.MONTH) == hojeCalendar.get(Calendar.MONTH))) {
+			if (isMesmoMes(consulta.getData(), hoje)) {
 				if (hasConsultaMarcadaMesmoDiaMes(consulta)) {
 					adicionarMensagemAlerta("Consulta Não marcada", "O paciente \"" + consulta.getPaciente().getNome() + "\""
 							+ " já possuí uma consulta marcada para o dia " + getDataFormatada(consulta.getData()));
@@ -381,28 +335,13 @@ public class AgendaController extends GenericController {
 		return true;
 	}
 
-	/**
-	 * @return the podeMarcar
-	 */
-	public boolean isPodeMarcar() {
-		return podeMarcar;
-	}
-
-	/**
-	 * @param podeMarcar the podeMarcar to set
-	 */
-	public void setPodeMarcar(boolean podeMarcar) {
-		this.podeMarcar = podeMarcar;
-	}
-
 	private boolean hasConsultaMarcadaMesmoDiaMes(Consulta consulta) {
-		Calendar consultaCalendar = Calendar.getInstance();
 		if (consulta.isRemarcada()) {
 			consulta = consulta.getConsultaMarcada();
 		}
-		consultaCalendar.setTime(consulta.getData());
+		Date dataConsulta = consulta.getData();
 
-		List<ScheduleEvent> eventos = calendario.getEvents();
+		Collection<ScheduleEvent> eventos = calendario.getEvents();
 		for (ScheduleEvent scheduleEvent : eventos) {
 			DefaultScheduleEvent evento = (DefaultScheduleEvent) scheduleEvent;
 			Consulta c = (Consulta) evento.getData();
@@ -410,17 +349,34 @@ public class AgendaController extends GenericController {
 				c = c.getConsultaMarcada();
 			}
 			if (!consulta.equals(c)) {
-				Calendar eventoCalendar = Calendar.getInstance();
-				eventoCalendar.setTime(c.getData());
-
-				if ((eventoCalendar.get(Calendar.YEAR) == consultaCalendar.get(Calendar.YEAR))
-						&& (eventoCalendar.get(Calendar.MONTH) == consultaCalendar.get(Calendar.MONTH))
-						&& (eventoCalendar.get(Calendar.DAY_OF_MONTH) == consultaCalendar.get(Calendar.DAY_OF_MONTH))
+				if ((isMesmaData(dataConsulta, c.getData()))
 						&& (consulta.getPaciente().equals(c.getPaciente()))) {
 					return true;
 				}
 			}
 		}
 		return false;
+	}
+	
+	private boolean isMesmaData(Date data1, Date data2) {
+		Calendar calendar1 = Calendar.getInstance();
+		calendar1.setTime(data1);
+		
+		Calendar calendar2 = Calendar.getInstance();
+		calendar2.setTime(data2);
+		
+		return ((calendar1.get(Calendar.DAY_OF_MONTH) == calendar2.get(Calendar.DAY_OF_MONTH))
+				&& isMesmoMes(data1, data2));
+	}
+	
+	private boolean isMesmoMes(Date data1, Date data2) {
+		Calendar calendar1 = Calendar.getInstance();
+		calendar1.setTime(data1);
+		
+		Calendar calendar2 = Calendar.getInstance();
+		calendar2.setTime(data2);
+		
+		return ((calendar1.get(Calendar.YEAR) == calendar2.get(Calendar.YEAR))
+			&& (calendar1.get(Calendar.MONTH) == calendar2.get(Calendar.MONTH)));
 	}
 }

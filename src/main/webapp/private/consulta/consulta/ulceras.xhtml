@@ -5,33 +5,83 @@
 				xmlns:f="http://java.sun.com/jsf/core">
 	<p:tab id="ulceras" title="Úlceras">
 		<p:panel header="Úlceras" id="ulcera">
+			<p:growl showDetail="true" sticky="true" />
 			<div class="text-center">
+				<div>
+					As áreas em vermelho são as úlceras que não foram cicatrizadas e as úlceras que não foram conferidas.
+					As áreas em verde são as úlceras que foram cicatrizadas ou que já foram conferidas.
+				</div>
+				<h:panelGroup>
+					<h:panelGroup rendered="#{consultaController.modoEditarSituacaoUlcera}">
+						Modo de Edição de Úlceras
+						Ao clicar em uma úlcera será possível informar a situação da úlcera.
+					</h:panelGroup>
+					<h:panelGroup rendered="#{consultaController.modoRemoverUlcera}">
+						Modo de Remoção de Úlceras
+						Ao clicar em uma úlcera que não foi salva é possível removê-la.
+					</h:panelGroup>
+					<h:panelGroup rendered="#{consultaController.modoJuntarUlceras}">
+						Modo de Junção de Úlceras
+						Ao clicar em uma úlcera ela será ocultada e irá para uma lista onde indica que as próximas úlceras, 
+						clicadas também irão para informar que todas elas se juntaram.
+					</h:panelGroup>
+					<h:panelGroup rendered="#{consultaController.modoDividirUlcera}">
+						Modo de Divisão de Úlceras
+						Ao clicar em uma úlcera ela será ocultada, todas as úlceras criadas serão como se fossem dessa úlcera.
+					</h:panelGroup>
+				</h:panelGroup>
 				<h:graphicImage url="/resources/default/img/pernas.jpg"
 								styleClass="img-responsive" id="pernas">
 					<f:passThroughAttribute name="usemap" value="#mapaImagem" />
 				</h:graphicImage>
 				<h:outputScript library="default" name="js/ulceras.js" />
 				<br /><br />
-				<p:commandButton value="Adicionar" styleClass="btn btn-info"
-								 actionListener="#{consultaController.adicionarUlcera}"
-								 update="mapaimagem" id="adicionarulcera" />
+				<h:panelGroup id="cancelar">
+					<h:commandButton value="Adicionar Úlcera" styleClass="btn btn-info"
+							actionListener="#{consultaController.adicionarUlcera}"
+							onclick="substituirArea(coordenadas.x1, coordenadas.y1, coordenadas.x2, coordenadas.y2);"
+							rendered="#{(consultaController.modoEditarSituacaoUlcera) or (consultaController.modoJuntarUlceras) or (consultaController.modoDividirUlcera)}" />
+					<h:outputText value=" " />
+					<h:commandButton value="Remover Úlcera" styleClass="btn btn-warning"
+							actionListener="#{consultaController.mudarModoRemoverUlcera}"
+							rendered="#{consultaController.modoEditarSituacaoUlcera}" />
+					<h:outputText value=" " />
+					<h:commandButton value="Juntar Úlceras" styleClass="btn btn-warning"
+							actionListener="#{consultaController.mudarModoJuntarUlceras}"
+							rendered="#{consultaController.modoEditarSituacaoUlcera}" />
+					<h:outputText value=" " />
+					<h:commandButton value="Dividir Úlcera" styleClass="btn btn-warning"
+							actionListener="#{consultaController.mudarModoDividirUlcera}"
+							rendered="#{consultaController.modoEditarSituacaoUlcera}" />
+					<h:outputText value=" " />
+					<h:commandButton value="Confirmar" styleClass="btn btn-warning"
+							actionListener="#{consultaController.confirmarDivisaoJuncao}"
+							rendered="#{consultaController.modoDividirUlcera}" />
+					<h:outputText value=" " />
+					<h:commandButton value="Cancelar" styleClass="btn btn-warning"
+							actionListener="#{consultaController.finalizarDivisaoJuncao}"
+							rendered="#{(consultaController.modoRemoverUlcera) or (consultaController.modoJuntarUlceras) or (consultaController.modoDividirUlcera)}" />
+				</h:panelGroup>
 				<h:inputHidden id="pontos" value="#{consultaController.area}" />
 				<br /><br />
 				<h:panelGroup id="mapaimagem">
 					<map name="mapaImagem" id="mapaImagemId">
-						<ui:repeat value="#{consultaController.consulta.situacoesUlcera}" var="situacaoUlcera">
-							<h:commandLink id="situacaoUlcera" value="" action="#{consultaController.editarSituacaoUlcera(situacaoUlcera)}">
+						<ui:repeat value="#{consultaController.situacoesUlcera}" var="situacaoUlcera">
+							<h:commandLink id="situacaoUlcera" value="" action="#{consultaController.selecionarSituacaoUlcera(situacaoUlcera)}">
 								<f:passThroughAttribute name="coords" value="#{situacaoUlcera.ulcera.pontos}" />
+								<f:passThroughAttribute name="data-avaliado" value="#{(empty situacaoUlcera.fotoUlcera) ? '0' : '1'}" />
 							</h:commandLink>
 						</ui:repeat>
 					</map>
 				</h:panelGroup>
+			</div>
+			<div>
 				<h:panelGroup id="informacoesulcera" rendered="#{not empty consultaController.situacaoUlceraConsulta}">
 					<hr />
 					<h:panelGroup id="imagemupload" styleClass="imagem_upload">
 						<p:fileUpload allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
 									  update="imagemupload" mode="advanced"
-									  fileUploadListener="#{consultaController.handleFileUpload}"
+									  fileUploadListener="#{consultaController.uploadFotoUlcera}"
 									  id="fileupload" uploadLabel="Carregar Arquivo" label="Escolher Arquivo..."
 									  cancelLabel="Cancelar" />
 						<br /><br />
@@ -43,15 +93,18 @@
 										style="border:2px solid #000000;background: url('#{consultaController.imagem}') no-repeat; background-size: 100% 100%;"></canvas>
 							</div>
 							<div class="controle col-lg-3">
-								<input type="button" value="Cancelar" id="canc" onclick="close()" class="btn btn-default" />
-								<br />
 								<input type="button" id="remove" value="Limpar" class="btn btn-default" />
 								<br />
 								<input type="button" value="Completar" id="complete" class="btn btn-default" />
-								<br />
-								<div class="input-group">
-									<h:inputText id="valorarea" styleClass="form-control" value="#{consultaController.situacaoUlceraConsulta.area}" />
-									<span class="input-group-addon">cm²</span>
+								<br /><br />
+								<div>
+									<p:outputLabel for="valorarea" value="Área" />
+									<div class="input-group">
+										<h:inputText id="valorarea" styleClass="form-control"
+													 value="#{consultaController.situacaoUlceraConsulta.area}"
+													 required="true" />
+										<span class="input-group-addon">cm²</span>
+									</div>
 								</div>
 								<h:inputHidden id="pontosulcera" value="#{consultaController.poligonoUlcera}" />
 								<p id="numero"></p>
@@ -62,13 +115,20 @@
 								initialize();
 							});
 						</script>
+						<h:panelGroup rendered="#{not empty consultaController.situacaoUlceraConsulta.fotoUlcera}">
+							<h:outputScript rendered="#{not empty consultaController.situacaoUlceraConsulta.fotoUlcera.pontos}">
+								var poligonoUlcera = "<h:outputText value="#{consultaController.situacaoUlceraConsulta.fotoUlcera.pontos}" />";
+							</h:outputScript>
+						</h:panelGroup>
 					</h:panelGroup>
+					<br /><br />
 					<div class="container">
 						<div class="row">
 							<div class="form-group col-lg-3">
 								<p:outputLabel for="prurido" value="Prurido" />
 								<h:selectOneMenu id="prurido" styleClass="form-control"
-												 value="#{consultaController.situacaoUlceraConsulta.prurido}">
+												 value="#{consultaController.situacaoUlceraConsulta.prurido}"
+												 required="true">
 									<f:selectItem itemLabel="Sim" itemValue="#{true}" />
 									<f:selectItem itemLabel="Não" itemValue="#{false}" />
 								</h:selectOneMenu>
@@ -76,7 +136,8 @@
 							<div class="form-group col-lg-3">
 								<p:outputLabel for="ecsema" value="Ecsema" />
 								<h:selectOneMenu id="ecsema" styleClass="form-control"
-												 value="#{consultaController.situacaoUlceraConsulta.ecsema}">
+												 value="#{consultaController.situacaoUlceraConsulta.ecsema}"
+												 required="true">
 									<f:selectItem itemLabel="Sim" itemValue="#{true}" />
 									<f:selectItem itemLabel="Não" itemValue="#{false}" />
 								</h:selectOneMenu>
@@ -84,7 +145,8 @@
 							<div class="form-group col-lg-3">
 								<p:outputLabel for="odor" value="Odor" />
 								<h:selectOneMenu id="odor" styleClass="form-control"
-												 value="#{consultaController.situacaoUlceraConsulta.odor}">
+												 value="#{consultaController.situacaoUlceraConsulta.odor}"
+												 required="true">
 									<f:selectItem itemLabel="Sim" itemValue="#{true}" />
 									<f:selectItem itemLabel="Não" itemValue="#{false}" />
 								</h:selectOneMenu>
@@ -92,7 +154,8 @@
 							<div class="form-group col-lg-3">
 								<p:outputLabel for="profundidade" value="Profundidade" />
 								<h:selectOneMenu id="profundidade" styleClass="form-control"
-												 value="#{consultaController.situacaoUlceraConsulta.profundidade}">
+												 value="#{consultaController.situacaoUlceraConsulta.profundidade}"
+												 required="true">
 									<f:selectItem itemLabel="Rasa" itemValue="#{0}" />
 									<f:selectItem itemLabel="Profundidade" itemValue="#{1}" />
 								</h:selectOneMenu>
@@ -100,7 +163,8 @@
 							<div class="form-group col-lg-3">
 								<p:outputLabel for="fibrina" value="Fibrina" />
 								<h:selectOneMenu id="fibrina" styleClass="form-control"
-												 value="#{consultaController.situacaoUlceraConsulta.fibrina}">
+												 value="#{consultaController.situacaoUlceraConsulta.fibrina}"
+												 required="true">
 									<f:selectItem itemLabel="Sim" itemValue="#{true}" />
 									<f:selectItem itemLabel="Não" itemValue="#{false}" />
 								</h:selectOneMenu>
@@ -108,7 +172,8 @@
 							<div class="form-group col-lg-3">
 								<p:outputLabel for="granula" value="Granula" />
 								<h:selectOneMenu id="granula" styleClass="form-control"
-												 value="#{consultaController.situacaoUlceraConsulta.granula}">
+												 value="#{consultaController.situacaoUlceraConsulta.granula}"
+												 required="true">
 									<f:selectItem itemLabel="Sim" itemValue="#{true}" />
 									<f:selectItem itemLabel="Não" itemValue="#{false}" />
 								</h:selectOneMenu>
@@ -116,7 +181,8 @@
 							<div class="form-group col-lg-3">
 								<p:outputLabel for="edema" value="Edema" />
 								<h:selectOneMenu id="edema" styleClass="form-control"
-												 value="#{consultaController.situacaoUlceraConsulta.edema}">
+												 value="#{consultaController.situacaoUlceraConsulta.edema}"
+												 required="true">
 									<f:selectItem itemLabel="Sem" itemValue="#{0}" />
 									<f:selectItem itemLabel="Leve" itemValue="#{1}" />
 									<f:selectItem itemLabel="Razoável Leve" itemValue="#{2}" />
@@ -124,20 +190,29 @@
 									<f:selectItem itemLabel="Grave" itemValue="#{4}" />
 								</h:selectOneMenu>
 							</div>
-							<!--
 							<div class="form-group col-lg-3">
 								<p:outputLabel for="nivelDor" value="Nível de Dor" />
-								<h:inputText id="nivelDor" value="#{consultaController.situacaoUlceraConsulta.nivelDor}">
-									<f:passThroughAttribute name="type" value="range" />
-									<f:passThroughAttribute name="min" value="0" />
-									<f:passThroughAttribute name="max" value="10" />
-								</h:inputText>
+								<h:selectOneMenu id="nivelDor" styleClass="form-control"
+												 value="#{consultaController.situacaoUlceraConsulta.nivelDor}"
+												 required="true">
+									<f:selectItem itemLabel="0" itemValue="#{0}" />
+									<f:selectItem itemLabel="1" itemValue="#{1}" />
+									<f:selectItem itemLabel="2" itemValue="#{2}" />
+									<f:selectItem itemLabel="3" itemValue="#{3}" />
+									<f:selectItem itemLabel="4" itemValue="#{4}" />
+									<f:selectItem itemLabel="5" itemValue="#{5}" />
+									<f:selectItem itemLabel="6" itemValue="#{6}" />
+									<f:selectItem itemLabel="7" itemValue="#{7}" />
+									<f:selectItem itemLabel="8" itemValue="#{8}" />
+									<f:selectItem itemLabel="9" itemValue="#{9}" />
+									<f:selectItem itemLabel="10" itemValue="#{10}" />
+								</h:selectOneMenu>
 							</div>
-							-->
 							<div class="form-group col-lg-3">
 								<p:outputLabel for="secrecao" value="Secreção" />
 								<h:selectOneMenu id="secrecao" styleClass="form-control"
-												 value="#{consultaController.situacaoUlceraConsulta.secrecao}">
+												 value="#{consultaController.situacaoUlceraConsulta.secrecao}"
+												 required="true">
 									<f:selectItem itemLabel="Sem" itemValue="#{0}" />
 									<f:selectItem itemLabel="Serosa" itemValue="#{1}" />
 									<f:selectItem itemLabel="Mucu-purulenta" itemValue="#{2}" />
@@ -147,20 +222,20 @@
 									<f:selectItem itemLabel="Sanguinolenta" itemValue="#{6}" />
 								</h:selectOneMenu>
 							</div>
-							<!--
 							<div class="form-group col-lg-3">
-								<p:outputLabel for="ciclo_litico" value="Ciclo Lítico" />
-								<h:selectOneMenu id="ciclo_litico" styleClass="form-control"
-												 value="#{consultaController.situacaoUlceraConsulta.cicloLitico}">
-									<f:selectItem itemLabel="Sim" itemValue="#{true}" />
-									<f:selectItem itemLabel="Não" itemValue="#{false}" />
+								<p:outputLabel for="ciclo-litico" value="Ciclo Lítico" />
+								<h:selectOneMenu id="ciclo-litico" styleClass="form-control"
+												 value="#{consultaController.situacaoUlceraConsulta.cicloLitico}"
+												 required="true">
+									<f:selectItem itemLabel="Sim" itemValue="#{1}" />
+									<f:selectItem itemLabel="Não" itemValue="#{0}" />
 								</h:selectOneMenu>
 							</div>
-							-->
 							<div class="form-group col-lg-3">
 								<p:outputLabel for="estado" value="Estado" />
 								<h:selectOneMenu id="estado" styleClass="form-control"
-												 value="#{consultaController.situacaoUlceraConsulta.estadoUlcera}">
+												 value="#{consultaController.situacaoUlceraConsulta.estadoUlcera}"
+												 required="true">
 									<f:selectItem itemLabel="Limpa" itemValue="#{1}" />
 									<f:selectItem itemLabel="Limpa Contaminada" itemValue="#{2}"  />
 									<f:selectItem itemLabel="Contaminada" itemValue="#{3}" />
@@ -172,8 +247,11 @@
 						</div>
 					</div>
 					<br /><br />
-					<h:commandButton value="Finalizar Ulcera" styleClass="btn btn-default"
-									 action="#{consultaController.finalizarSituacaoUlcera()}" />
+					<div class="text-center">
+						<h:commandButton value="Finalizar Ulcera" styleClass="btn btn-default"
+									 action="#{consultaController.confirmarSituacaoUlcera()}" />
+					</div>
+					<br /><br />
 				</h:panelGroup>
 			</div>
 		</p:panel>

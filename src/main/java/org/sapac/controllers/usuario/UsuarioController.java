@@ -1,10 +1,8 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.sapac.controllers.usuario;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.regex.Pattern;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
@@ -18,10 +16,6 @@ import org.sapac.entities.MembroEquipe;
 import org.sapac.entities.Usuario;
 import org.sapac.models.UsuarioDAO;
 
-/**
- *
- * @author carlson
- */
 @Named
 @SessionScoped
 public class UsuarioController extends GenericController {
@@ -35,72 +29,42 @@ public class UsuarioController extends GenericController {
 	@DAOQualifier(DAOQualifier.DAOType.HIBERNATE)
 	private UsuarioDAO usuarioDAO;
 
-	/**
-	 * @return the confirmacaoSenha
-	 */
 	public String getConfirmacaoSenha() {
 		return confirmacaoSenha;
 	}
 
-	/**
-	 * @param confirmacaoSenha the confirmacaoSenha to set
-	 */
 	public void setConfirmacaoSenha(String confirmacaoSenha) {
 		this.confirmacaoSenha = confirmacaoSenha;
 	}
 
-	/**
-	 * @return the membroEquipe
-	 */
 	public MembroEquipe getMembroEquipe() {
 		return membroEquipe;
 	}
 
-	/**
-	 * @param membroEquipe the membroEquipe to set
-	 */
 	public void setMembroEquipe(MembroEquipe membroEquipe) {
 		this.membroEquipe = membroEquipe;
 	}
 
-	/**
-	 * @return the membroEquipePesquisa
-	 */
 	public MembroEquipe getMembroEquipePesquisa() {
 		return membroEquipePesquisa;
 	}
 
-	/**
-	 * @param membroEquipePesquisa the membroEquipePesquisa to set
-	 */
 	public void setMembroEquipePesquisa(MembroEquipe membroEquipePesquisa) {
 		this.membroEquipePesquisa = membroEquipePesquisa;
 	}
 
-	/**
-	 * @return the listaMembros
-	 */
 	public Collection<MembroEquipe> getListaMembros() {
 		return listaMembros;
 	}
 
-	/**
-	 * @param listaMembros the listaMembros to set
-	 */
 	public void setListaMembros(Collection<MembroEquipe> listaMembros) {
 		this.listaMembros = listaMembros;
 	}
 
-	/**
-	 * @return the tipo
-	 */
 	public int getTipo() {
 		return tipo;
 	}
 
-	/**
-	 * @param tipo the tipo to set
-	 */
 	public void setTipo(int tipo) {
 		this.tipo = tipo;
 	}
@@ -108,11 +72,12 @@ public class UsuarioController extends GenericController {
 	@PostConstruct
 	public void init() {
 		membroEquipePesquisa = new MembroEquipe();
+		listaMembros = new ArrayList<MembroEquipe>();
 	}
 
 	public String telaPesquisaUsuario() {
-		pesquisarUsuario();
-
+		listaMembros.clear();
+		
 		return PaginasNavegacao.USUARIO_PESQUISAR;
 	}
 
@@ -124,7 +89,7 @@ public class UsuarioController extends GenericController {
 		return PaginasNavegacao.USUARIO_CADASTRAR;
 	}
 
-	public String editarUsuario(MembroEquipe membroEquipe) {
+	public String telaEditarUsuario(MembroEquipe membroEquipe) {
 		setMembroEquipe(membroEquipe);
 		if (membroEquipe.isEnfermeiro()) {
 			tipo = 1;
@@ -169,7 +134,7 @@ public class UsuarioController extends GenericController {
 
 			adicionarMensagemAviso("Membro cadastrado", "Membro cadastrado com Sucesso.");
 
-			return PaginasNavegacao.USUARIO_PESQUISAR;
+			return PaginasNavegacao.PAGINA_INICIAL;
 		} else {
 			return PaginasNavegacao.USUARIO_CADASTRAR;
 		}
@@ -219,7 +184,58 @@ public class UsuarioController extends GenericController {
 	}
 
 	private boolean isCPFValido(String cpf) {
-		//TODO Validação do CPF
-		return true;
+		if (cpf.isEmpty()) {
+			return false;
+		}
+		if (!Pattern.matches("[0-9][0-9][0-9]\\.[0-9][0-9][0-9]\\.[0-9][0-9][0-9]-[0-9][0-9]", cpf)) {
+			return false;
+		}
+		cpf = cpf.replace(".", "").replace(".", "").replace("-", "");
+		if ((cpf.equals("00000000000"))
+				|| (cpf.equals("11111111111"))
+				|| (cpf.equals("22222222222"))
+				|| (cpf.equals("33333333333"))
+				|| (cpf.equals("44444444444"))
+				|| (cpf.equals("55555555555"))
+				|| (cpf.equals("66666666666"))
+				|| (cpf.equals("77777777777"))
+				|| (cpf.equals("88888888888"))
+				|| (cpf.equals("99999999999"))
+				|| (cpf.length() != 11)) {
+			return false;
+		}
+		int digitoVerificador1;
+		int digitoVerificador2;
+		int resto1 = 0;
+		int resto2 = 0;
+		
+		String digitos = cpf.substring(0, cpf.length() - 2);
+		String digitosVerificadores = cpf.substring(cpf.length() - 2, cpf.length());
+		for (int i = 0, length = digitos.length(); i < length; i++) {
+			int digito = Integer.parseInt(digitos.substring(i, i + 1));
+			
+			resto1 += (10 - i) * digito;
+			resto2 += (11 - i) * digito;
+		}
+		
+		resto1 = resto1 % 11;
+		
+		if (resto1 < 2) {
+			resto1 = 0;
+		} else {
+			resto1 = 11 - resto1;
+		}
+		
+		resto2 += resto1 * 2;
+		
+		resto2 = resto2 % 11;
+		
+		if (resto2 < 2) {
+			resto2 = 0;
+		} else {
+			resto2 = 11 - resto2;
+		}
+		
+		return digitosVerificadores.equals(String.valueOf(resto1) + String.valueOf(resto2));
 	}
 }

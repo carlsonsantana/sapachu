@@ -7,10 +7,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author carlson
- */
 public class HashGenerator {
 
 	private static MessageDigest messageDigest;

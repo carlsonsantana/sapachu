@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.sapac.adapters;
 
 import java.io.Serializable;
@@ -14,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import org.sapac.annotations.DAOQualifier;
@@ -22,20 +17,15 @@ import org.sapac.entities.Consulta;
 import org.sapac.entities.Paciente;
 import org.sapac.models.ConsultaDAO;
 
-/**
- *
- * @author carlson
- */
 @ApplicationScoped
 public class PEPAdapter implements SistemaPacienteAdapter, Serializable {
 
 	private Connection connection;
-	
+
 	@Inject
 	@DAOQualifier(DAOQualifier.DAOType.HIBERNATE)
 	private ConsultaDAO consultaDAO;
-	
-	
+
 	@Override
 	public Collection<Paciente> procurarPaciente(Paciente paciente) {
 		Collection<Paciente> pacientes = new ArrayList<Paciente>();
@@ -97,21 +87,20 @@ public class PEPAdapter implements SistemaPacienteAdapter, Serializable {
 				Logger.getLogger(PEPAdapter.class.getName()).log(Level.SEVERE, null, ex);
 			}
 		}
-		
+
 		removerPacientesCadastrados(pacientes, paciente);
-		
+
 		connection = null;
-		
+
 		return pacientes;
 	}
 
 	@Override
 	public boolean salvarInformacoesProntuario(Consulta consulta) {
-		
-		
+
 		return true;
 	}
-	
+
 	@Override
 	public void carregarInformacoesPaciente(Paciente paciente) {
 		if (connection == null) {
@@ -131,7 +120,7 @@ public class PEPAdapter implements SistemaPacienteAdapter, Serializable {
 			try {
 				PreparedStatement preparedStatement = connection.prepareStatement(sql.toString());
 				preparedStatement.setString(1, paciente.getProntuario());
-				
+
 				ResultSet results = preparedStatement.executeQuery();
 				if (results.next()) {
 					paciente.setNome(results.getString("nome"));
@@ -159,14 +148,14 @@ public class PEPAdapter implements SistemaPacienteAdapter, Serializable {
 				Logger.getLogger(PEPAdapter.class.getName()).log(Level.SEVERE, null, ex);
 			}
 		}
-		
+
 		connection = null;
 	}
-	
+
 	private Collection<Paciente> getPacientesCadastrado(Paciente paciente) {
 		return consultaDAO.procurarPacientes(paciente);
 	}
-	
+
 	private void removerPacientesCadastrados(Collection<Paciente> pacientesPEP, Paciente paciente) {
 		Collection<Paciente> pacientesCadastrados = getPacientesCadastrado(paciente);
 		pacientesPEP.removeAll(pacientesCadastrados);

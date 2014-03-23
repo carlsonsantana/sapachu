@@ -9,88 +9,90 @@
 		<h:form id="form">
 			<fieldset>
 				<legend>Cadastrar Membro</legend>
-				<div class="row">
-					<div class="form-group">
-						<p:outputLabel for="nome" value="Nome" />
-						<h:inputText id="nome" styleClass="form-control"
-									 value="#{usuarioController.membroEquipe.nome}"
-									 required="true" />
-					</div>
-					<div class="form-group col-lg-3">
-						<p:outputLabel for="tipo" value="Tipo" />
-						<h:selectOneMenu id="tipo" value="#{usuarioController.tipo}"
-										 styleClass="form-control" required="true">
-							<f:selectItem itemLabel="Enfermeiro" itemValue="1" />
-							<f:selectItem itemLabel="Médico" itemValue="2" />
-						</h:selectOneMenu>
-					</div>
-					<div class="form-group col-lg-3">
-						<p:outputLabel for="login" value="Login" />
-						<h:inputText id="login" styleClass="form-control"
-									 value="#{usuarioController.membroEquipe.usuario.nomeUsuario}"
-									 required="true" />
-					</div>
-					<div class="form-group col-lg-3">
-						<p:outputLabel for="email" value="E-mail" />
-						<h:inputText id="email" styleClass="form-control"
-									 value="#{usuarioController.membroEquipe.email}"
-									 required="true" validatorMessage="E-mail inválido">
-							<f:passThroughAttribute name="type" value="email" />
-							<f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
-						</h:inputText>
-					</div>
-					<div class="form-group col-lg-3">
-						<p:outputLabel for="rg" value="RG" />
-						<h:inputText id="rg" styleClass="form-control"
-									 value="#{usuarioController.membroEquipe.rg}"
-									 required="true">
-							<f:passThroughAttribute name="placeholder" value="Com pontos e traços" />
-						</h:inputText>
-					</div>
-					<div class="form-group col-lg-3">
-						<p:outputLabel for="cpf" value="CPF" />
-						<h:inputText id="cpf" styleClass="form-control"
-									 value="#{usuarioController.membroEquipe.cpf}"
-									 required="true" validatorMessage="CPF inválido.">
-							<f:passThroughAttribute name="placeholder" value="000.000.000-00" />
-							<f:validateRegex pattern="[0-9][0-9][0-9]\.[0-9][0-9][0-9]\.[0-9][0-9][0-9]-[0-9][0-9]" />
-						</h:inputText>
-					</div>
-					<div class="form-group col-lg-3">
-						<p:outputLabel for="vinculo" value="Vínculo" />
-						<h:selectOneMenu id="vinculo" styleClass="form-control"
-									value="#{usuarioController.membroEquipe.vinculo}"
-									required="true">
-							<f:selectItem itemLabel="Aluno" itemValue="1" />
-							<f:selectItem itemLabel="Funcionário" itemValue="2" />
-						</h:selectOneMenu>
-					</div>
-					<div class="form-group col-lg-3">
-						<p:outputLabel for="matricula" value="Matrícula ou SIAPI" />
-						<h:inputText id="matricula" styleClass="form-control"
-									 value="#{usuarioController.membroEquipe.matricula}"
-									 required="true" />
-					</div>
-					<div class="form-group col-lg-3">
-						<p:outputLabel for="coordenador" value="Coordenador" />
-						<h:selectOneMenu id="coordenador" styleClass="form-control"
-										 value="#{usuarioController.membroEquipe.usuario.coordenador}"
+				<div class="container">
+					<div class="row">
+						<div class="form-group col-lg-12">
+							<p:outputLabel for="nome" value="Nome" />
+							<h:inputText id="nome" styleClass="form-control"
+										 value="#{usuarioController.membroEquipe.nome}"
+										 required="true" />
+						</div>
+						<div class="form-group col-lg-3">
+							<p:outputLabel for="tipo" value="Tipo" />
+							<h:selectOneMenu id="tipo" value="#{usuarioController.tipo}"
+											 styleClass="form-control" required="true">
+								<f:selectItem itemLabel="Enfermeiro" itemValue="1" />
+								<f:selectItem itemLabel="Médico" itemValue="2" />
+							</h:selectOneMenu>
+						</div>
+						<div class="form-group col-lg-3">
+							<p:outputLabel for="login" value="Login" />
+							<h:inputText id="login" styleClass="form-control"
+										 value="#{usuarioController.membroEquipe.usuario.nomeUsuario}"
+										 required="true" />
+						</div>
+						<div class="form-group col-lg-3">
+							<p:outputLabel for="email" value="E-mail" />
+							<h:inputText id="email" styleClass="form-control"
+										 value="#{usuarioController.membroEquipe.email}"
+										 required="true" validatorMessage="E-mail inválido">
+								<f:passThroughAttribute name="type" value="email" />
+								<f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+							</h:inputText>
+						</div>
+						<div class="form-group col-lg-3">
+							<p:outputLabel for="rg" value="RG" />
+							<h:inputText id="rg" styleClass="form-control"
+										 value="#{usuarioController.membroEquipe.rg}"
 										 required="true">
-							<f:selectItem itemLabel="Sim" itemValue="#{true}" />
-							<f:selectItem itemLabel="Não" itemValue="#{false}" />
-						</h:selectOneMenu>
-					</div>
-					<div class="form-group col-lg-6">
-						<p:outputLabel for="senha" value="Senha" />
-						<h:inputSecret id="senha" styleClass="form-control"
-									   value="#{usuarioController.membroEquipe.usuario.senha}"
-									   required="true" />
-					</div>
-					<div class="form-group col-lg-6">
-						<p:outputLabel for="confirmacao-senha" value="Confirmação de Senha" />
-						<h:inputSecret id="confirmacao-senha" styleClass="form-control"
-									   value="#{usuarioController.confirmacaoSenha}"
-									   required="true" />
+								<f:passThroughAttribute name="placeholder" value="Com pontos e traços" />
+							</h:inputText>
+						</div>
+						<div class="form-group col-lg-3">
+							<p:outputLabel for="cpf" value="CPF" />
+							<h:inputText id="cpf" styleClass="form-control"
+										 value="#{usuarioController.membroEquipe.cpf}"
+										 required="true" validatorMessage="CPF inválido.">
+								<f:passThroughAttribute name="placeholder" value="000.000.000-00" />
+								<f:validateRegex pattern="[0-9][0-9][0-9]\.[0-9][0-9][0-9]\.[0-9][0-9][0-9]-[0-9][0-9]" />
+							</h:inputText>
+						</div>
+						<div class="form-group col-lg-3">
+							<p:outputLabel for="vinculo" value="Vínculo" />
+							<h:selectOneMenu id="vinculo" styleClass="form-control"
+											 value="#{usuarioController.membroEquipe.vinculo}"
+											 required="true">
+								<f:selectItem itemLabel="Aluno" itemValue="1" />
+								<f:selectItem itemLabel="Funcionário" itemValue="2" />
+							</h:selectOneMenu>
+						</div>
+						<div class="form-group col-lg-3">
+							<p:outputLabel for="matricula" value="Matrícula ou SIAPI" />
+							<h:inputText id="matricula" styleClass="form-control"
+										 value="#{usuarioController.membroEquipe.matricula}"
+										 required="true" />
+						</div>
+						<div class="form-group col-lg-3">
+							<p:outputLabel for="coordenador" value="Coordenador" />
+							<h:selectOneMenu id="coordenador" styleClass="form-control"
+											 value="#{usuarioController.membroEquipe.usuario.coordenador}"
+											 required="true">
+								<f:selectItem itemLabel="Sim" itemValue="#{true}" />
+								<f:selectItem itemLabel="Não" itemValue="#{false}" />
+							</h:selectOneMenu>
+						</div>
+						<div class="form-group col-lg-6">
+							<p:outputLabel for="senha" value="Senha" />
+							<h:inputSecret id="senha" styleClass="form-control"
+										   value="#{usuarioController.membroEquipe.usuario.senha}"
+										   required="true" />
+						</div>
+						<div class="form-group col-lg-6">
+							<p:outputLabel for="confirmacao-senha" value="Confirmação de Senha" />
+							<h:inputSecret id="confirmacao-senha" styleClass="form-control"
+										   value="#{usuarioController.confirmacaoSenha}"
+										   required="true" />
+						</div>
 					</div>
 				</div>
 				<br />
@@ -98,7 +100,7 @@
 								 action="#{usuarioController.cancelar()}"
 								 onclick="return cancelar();" />
 				<h:outputText value=" " />
-				<h:commandButton value="Cadastrar" styleClass="btn btn-primary"
+				<h:commandButton value="Confirmar" styleClass="btn btn-primary"
 								 action="#{usuarioController.cadastrar()}" />
 			</fieldset>
 		</h:form>

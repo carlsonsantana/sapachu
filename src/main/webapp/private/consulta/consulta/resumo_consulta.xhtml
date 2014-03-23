@@ -1,0 +1,400 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:h="http://java.sun.com/jsf/html"
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:ui="http://java.sun.com/jsf/facelets">
+	<div class="container">
+		<div class="row">
+			<div class="form-group col-lg-3">
+				<h:outputText value="Pressão Arterial" />
+				<h:inputText styleClass="form-control disabled" readonly="true"
+							 value="#{consultaController.consulta.variaveisClinicas.pressaoArterial}" />
+			</div>
+			<div class="form-group col-lg-3">
+				<h:outputText value="Índice de massa corporal" />
+				<h:inputText styleClass="form-control disabled" readonly="true"
+							 value="#{consultaController.consulta.variaveisClinicas.indiceMassaCorporal}" />
+			</div>
+			<div class="form-group col-lg-3">
+				<h:outputText value="Cintura" />
+				<h:inputText styleClass="form-control disabled" readonly="true"
+							 value="#{consultaController.consulta.variaveisClinicas.cintura}" />
+			</div>
+			<div class="form-group col-lg-3">
+				<h:outputText value="Quadril" />
+				<h:inputText styleClass="form-control disabled" readonly="true"
+							 value="#{consultaController.consulta.variaveisClinicas.quadril}" />
+			</div>
+			<div class="form-group col-lg-3">
+				<h:outputText value="Índice Tornozelo Braço" />
+				<h:inputText styleClass="form-control disabled" readonly="true"
+							 value="#{consultaController.consulta.variaveisClinicas.indiceTornozeloBraco}" />
+			</div>
+			<div class="form-group col-lg-3">
+				<h:outputText value="Glicemia" />
+				<h:inputText styleClass="form-control disabled" readonly="true"
+							 value="#{consultaController.consulta.variaveisClinicas.nivelGlicemia}" />
+			</div>
+			<div class="form-group col-lg-3">
+				<h:outputText value="Creatina" />
+				<h:inputText styleClass="form-control disabled" readonly="true"
+							 value="#{consultaController.consulta.variaveisClinicas.nivelCreatina}" />
+			</div>
+			<div class="form-group col-lg-3">
+				<h:outputText value="HDL" />
+				<h:inputText styleClass="form-control disabled" readonly="true"
+							 value="#{consultaController.consulta.variaveisClinicas.colesterolHDL}" />
+			</div>
+			<div class="form-group col-lg-3">
+				<h:outputText value="VHS" />
+				<h:inputText styleClass="form-control disabled" readonly="true"
+							 value="#{consultaController.consulta.variaveisClinicas.velocidadeHemossedimentacao}" />
+			</div>
+			<div class="form-group col-lg-3">
+				<h:outputText value="CEAP" />
+				<h:inputText styleClass="form-control disabled" readonly="true"
+							 value="#{consultaController.consulta.variaveisClinicas.ceap}">
+					<f:passThroughAttribute name="type" value="number" />
+					<f:passThroughAttribute name="min" value="0" />
+				</h:inputText>
+			</div>
+			<div class="form-group col-lg-3">
+				<h:outputText value="Diabetes" />
+				<h:selectOneMenu styleClass="form-control disabled" readonly="true" value="#{consultaController.consulta.variaveisClinicas.diabetes}">
+					<f:selectItem itemLabel="Sim" itemValue="#{true}" />
+					<f:selectItem itemLabel="Não" itemValue="#{false}" />
+				</h:selectOneMenu>
+			</div>
+			<div class="form-group col-lg-3">
+				<h:outputText value="Cardiopatia Isquemica" />
+				<h:selectOneMenu styleClass="form-control disabled" readonly="true"
+								 value="#{consultaController.consulta.variaveisClinicas.cardiopatiaIsquemica}">
+					<f:selectItem itemLabel="Sim" itemValue="#{true}" />
+					<f:selectItem itemLabel="Não" itemValue="#{false}" />
+				</h:selectOneMenu>
+			</div>
+		</div>
+		<div class="row">
+			<div class="form-group col-lg-3">
+				<h:outputText value="Doença Renal" />
+				<h:selectOneMenu styleClass="form-control disabled" readonly="true"
+								 value="#{consultaController.consulta.variaveisClinicas.doencaRenal}">
+					<f:selectItem itemLabel="Sim" itemValue="#{true}" />
+					<f:selectItem itemLabel="Não" itemValue="#{false}" />
+				</h:selectOneMenu>
+			</div>
+			<div class="form-group col-lg-3">
+				<h:outputText value="Acid. Vascular Cerebral" />
+				<h:selectOneMenu styleClass="form-control disabled" readonly="true"
+								 value="#{consultaController.consulta.variaveisClinicas.acidenteVascularCerebral}">
+					<f:selectItem itemLabel="Sim" itemValue="#{true}" />
+					<f:selectItem itemLabel="Não" itemValue="#{false}" />
+				</h:selectOneMenu>
+			</div>
+			<div class="form-group col-lg-3">
+				<h:outputText value="Artrite" />
+				<h:selectOneMenu styleClass="form-control disabled" readonly="true"
+								 value="#{consultaController.consulta.variaveisClinicas.artrite}">
+					<f:selectItem itemLabel="Sim" itemValue="#{true}" />
+					<f:selectItem itemLabel="Não" itemValue="#{false}" />
+				</h:selectOneMenu>
+			</div>
+			<div class="form-group col-lg-3">
+				<h:outputText value="Alterações Visão" />
+				<h:selectOneMenu styleClass="form-control disabled" readonly="true"
+								 value="#{consultaController.consulta.variaveisClinicas.alteracoesVisao}">
+					<f:selectItem itemLabel="Sim" itemValue="#{true}" />
+					<f:selectItem itemLabel="Não" itemValue="#{false}" />
+				</h:selectOneMenu>
+			</div>
+			<div class="form-group col-lg-3">
+				<h:outputText value="Trom. Vasc. Profunda" />
+				<h:selectOneMenu styleClass="form-control disabled" readonly="true"
+								 value="#{consultaController.consulta.variaveisClinicas.tromboseVascularProfunda}">
+					<f:selectItem itemLabel="Sim" itemValue="#{true}" />
+					<f:selectItem itemLabel="Não" itemValue="#{false}" />
+				</h:selectOneMenu>
+			</div>
+			<div class="form-group col-lg-3">
+				<h:outputText value="Fratura" />
+				<h:selectOneMenu styleClass="form-control disabled" readonly="true"
+								 value="#{consultaController.consulta.variaveisClinicas.fratura}">
+					<f:selectItem itemLabel="Sim" itemValue="#{true}" />
+					<f:selectItem itemLabel="Não" itemValue="#{false}" />
+				</h:selectOneMenu>
+			</div>
+			<div class="form-group col-lg-3">
+				<h:outputText value="Doença Arterial Periférica" />
+				<h:selectOneMenu styleClass="form-control disabled" readonly="true"
+								 value="#{consultaController.consulta.variaveisClinicas.doencaArterialPeriferica}">
+					<f:selectItem itemLabel="Sim" itemValue="#{true}" />
+					<f:selectItem itemLabel="Não" itemValue="#{false}" />
+				</h:selectOneMenu>
+			</div>
+			<div class="form-group col-lg-3">
+				<h:outputText value="Dermatite Ocre" />
+				<h:selectOneMenu styleClass="form-control disabled" readonly="true"
+								 value="#{consultaController.consulta.variaveisClinicas.dermatiteOcre}">
+					<f:selectItem itemLabel="Sim" itemValue="#{true}" />
+					<f:selectItem itemLabel="Não" itemValue="#{false}" />
+				</h:selectOneMenu>
+			</div>
+			<div class="form-group col-lg-3">
+				<h:outputText value="Asma" />
+				<h:selectOneMenu styleClass="form-control disabled" readonly="true"
+								 value="#{consultaController.consulta.variaveisClinicas.asma}">
+					<f:selectItem itemLabel="Sim" itemValue="#{true}" />
+					<f:selectItem itemLabel="Não" itemValue="#{false}" />
+				</h:selectOneMenu>
+			</div>
+			<div class="form-group col-lg-3">
+				<h:outputText value="Anemia Falciforme" />
+				<h:selectOneMenu styleClass="form-control disabled" readonly="true"
+								 value="#{consultaController.consulta.variaveisClinicas.anemiaFalciforme}">
+					<f:selectItem itemLabel="Sim" itemValue="#{true}" />
+					<f:selectItem itemLabel="Não" itemValue="#{false}" />
+				</h:selectOneMenu>
+			</div>
+			<div class="form-group col-lg-3">
+				<h:outputText value="Mobilidade" />
+				<h:selectOneMenu styleClass="form-control disabled" readonly="true"
+								 value="#{consultaController.consulta.variaveisClinicas.mobilidade}">
+					<f:selectItem itemLabel="Não informada" itemValue="#{'S'}" />
+					<f:selectItem itemLabel="Presente" itemValue="#{'P'}" />
+					<f:selectItem itemLabel="Com Ajuda" itemValue="#{'C'}" />
+					<f:selectItem itemLabel="Baixa" itemValue="#{'B'}" />
+					<f:selectItem itemLabel="Ausente" itemValue="#{'A'}" />
+				</h:selectOneMenu>
+			</div>
+			<div class="form-group col-lg-3">
+				<h:outputText value="Compressão" />
+				<h:selectOneMenu styleClass="form-control disabled" readonly="true"
+								 value="#{consultaController.consulta.variaveisClinicas.compressao}">
+					<f:selectItem itemLabel="Sim" itemValue="#{true}" />
+					<f:selectItem itemLabel="Não" itemValue="#{false}" />
+				</h:selectOneMenu>
+			</div>
+			<div class="form-group col-lg-3">
+				<h:outputText value="Lipodermatoesclerose" />
+				<h:selectOneMenu styleClass="form-control disabled" readonly="true"
+								 value="#{consultaController.consulta.variaveisClinicas.lipodermatoesclerose}">
+					<f:selectItem itemLabel="Sim" itemValue="#{true}" />
+					<f:selectItem itemLabel="Não" itemValue="#{false}" />
+				</h:selectOneMenu>
+			</div>
+			<div class="form-group col-lg-3">
+				<h:outputText value="Cirurgia" />
+				<h:selectOneMenu styleClass="form-control disabled" readonly="true"
+								 value="#{consultaController.consulta.variaveisClinicas.cirurgia}">
+					<f:selectItem itemLabel="Sim" itemValue="#{true}" />
+					<f:selectItem itemLabel="Não" itemValue="#{false}" />
+				</h:selectOneMenu>
+			</div>
+			<div class="form-group col-lg-3">
+				<h:outputText value="Desdibramento Cirúrgico" />
+				<h:selectOneMenu styleClass="form-control disabled" readonly="true"
+								 value="#{consultaController.consulta.variaveisClinicas.desbridamentoCirurgico}">
+					<f:selectItem itemLabel="Sim" itemValue="#{true}" />
+					<f:selectItem itemLabel="Não" itemValue="#{false}" />
+				</h:selectOneMenu>
+			</div>
+			<div class="form-group col-lg-3">
+				<h:outputText value="Coopera" />
+				<h:selectOneMenu styleClass="form-control disabled" readonly="true" value="#{consultaController.consulta.variaveisClinicas.coopera}">
+					<f:selectItem itemLabel="Sim" itemValue="#{true}" />
+					<f:selectItem itemLabel="Não" itemValue="#{false}" />
+				</h:selectOneMenu>
+			</div>
+			<div class="form-group col-lg-3">
+				<h:outputText value="Repousa" />
+				<h:selectOneMenu styleClass="form-control disabled" readonly="true"
+								 value="#{consultaController.consulta.variaveisClinicas.repouso}">
+					<f:selectItem itemLabel="Sim" itemValue="#{true}" />
+					<f:selectItem itemLabel="Não" itemValue="#{false}" />
+				</h:selectOneMenu>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-12">
+				<span style="text-align: center;display: block;">Vícios</span>
+			</div>
+			<div class="form-group col-lg-6">
+				<h:outputText value="Maços de Cigarro Diários" />
+				<h:inputText styleClass="form-control disabled" readonly="true"
+							 value="#{consultaController.consulta.variaveisClinicas.macosCigarroDiarios}">
+					<f:passThroughAttribute name="type" value="number" />
+					<f:passThroughAttribute name="min" value="0" />
+				</h:inputText>
+			</div>
+			<div class="form-group col-lg-6">
+				<h:outputText value="Alcoolista" />
+				<h:selectOneMenu styleClass="form-control disabled" readonly="true" value="#{consultaController.consulta.variaveisClinicas.alcoolista}">
+					<f:selectItem itemLabel="Sim" itemValue="#{true}" />
+					<f:selectItem itemLabel="Não" itemValue="#{false}" />
+				</h:selectOneMenu>
+			</div>
+			<div class="form-group col-lg-12">
+				<h:outputText value="Outras drogas" />
+				<h:inputTextarea styleClass="form-control disabled" readonly="true"
+								 value="#{consultaController.consulta.variaveisClinicas.outrasDrogas}" />
+			</div>
+		</div>
+	</div>
+	<hr />
+	<div>
+		<ul class="list-group">
+			<li class="list-group-item active">Medicamentos em Uso</li>
+			<ui:repeat value="#{consultaController.consulta.variaveisClinicas.medicamentosUso}"
+					   var="medicamento">
+				<li class="list-group-item">
+					<h:outputText value="#{medicamento.nome}" />
+				</li>
+			</ui:repeat>
+		</ul>
+	</div>
+	<hr />
+	<h:graphicImage url="/resources/default/img/pernas.jpg"
+					styleClass="img-responsive" id="pernas2">
+		<f:passThroughAttribute name="usemap" value="#mapaImagem2" />
+	</h:graphicImage>
+	<h:outputScript library="default" name="js/ulceras.js" />
+	<br /><br />
+	<h:panelGroup id="mapaimagem2">
+		<map name="mapaImagem2" id="mapaImagem2Id">
+			<ui:repeat value="#{consultaController.situacoesUlcera}" var="situacaoUlcera">
+				<h:commandLink id="situacaoUlcera2" value="" action="#{consultaController.selecionarSituacaoUlcera(situacaoUlcera)}">
+					<f:passThroughAttribute name="coords" value="#{situacaoUlcera.ulcera.pontos}" />
+				</h:commandLink>
+			</ui:repeat>
+		</map>
+	</h:panelGroup>
+	<h:panelGroup id="informacoesulcera2" rendered="#{not empty consultaController.situacaoUlceraConsulta}">
+		<canvas id="canvasSignature" width="500px"
+				height="500px"
+				style="border:2px solid #000000;background: url('#{consultaController.situacaoUlceraConsulta.fotoUlcera.enderecoImagem}') no-repeat; background-size: 100% 100%;"></canvas>
+		<h:outputScript>
+			var poligonoUlcera = "<h:outputText value="#{consultaController.situacaoUlceraConsulta.fotoUlcera.pontos}" />";
+		</h:outputScript>
+		<hr />
+		<div class="container">
+			<div class="row">
+				<div class="form-group col-lg-3">
+					<h:outputText value="Prurido" />
+					<h:selectOneMenu styleClass="form-control disabled" readonly="true"
+									 value="#{consultaController.situacaoUlceraConsulta.prurido}">
+						<f:selectItem itemLabel="Sim" itemValue="#{true}" />
+						<f:selectItem itemLabel="Não" itemValue="#{false}" />
+					</h:selectOneMenu>
+				</div>
+				<div class="form-group col-lg-3">
+					<h:outputText value="Ecsema" />
+					<h:selectOneMenu styleClass="form-control disabled" readonly="true"
+									 value="#{consultaController.situacaoUlceraConsulta.ecsema}">
+						<f:selectItem itemLabel="Sim" itemValue="#{true}" />
+						<f:selectItem itemLabel="Não" itemValue="#{false}" />
+					</h:selectOneMenu>
+				</div>
+				<div class="form-group col-lg-3">
+					<h:outputText value="Odor" />
+					<h:selectOneMenu styleClass="form-control disabled" readonly="true"
+									 value="#{consultaController.situacaoUlceraConsulta.odor}">
+						<f:selectItem itemLabel="Sim" itemValue="#{true}" />
+						<f:selectItem itemLabel="Não" itemValue="#{false}" />
+					</h:selectOneMenu>
+				</div>
+				<div class="form-group col-lg-3">
+					<h:outputText value="Profundidade" />
+					<h:selectOneMenu styleClass="form-control disabled" readonly="true"
+									 value="#{consultaController.situacaoUlceraConsulta.profundidade}">
+						<f:selectItem itemLabel="Rasa" itemValue="#{0}" />
+						<f:selectItem itemLabel="Profundidade" itemValue="#{1}" />
+					</h:selectOneMenu>
+				</div>
+				<div class="form-group col-lg-3">
+					<h:outputText value="Fibrina" />
+					<h:selectOneMenu styleClass="form-control disabled" readonly="true"
+									 value="#{consultaController.situacaoUlceraConsulta.fibrina}">
+						<f:selectItem itemLabel="Sim" itemValue="#{true}" />
+						<f:selectItem itemLabel="Não" itemValue="#{false}" />
+					</h:selectOneMenu>
+				</div>
+				<div class="form-group col-lg-3">
+					<h:outputText value="Granula" />
+					<h:selectOneMenu styleClass="form-control disabled" readonly="true"
+									 value="#{consultaController.situacaoUlceraConsulta.granula}">
+						<f:selectItem itemLabel="Sim" itemValue="#{true}" />
+						<f:selectItem itemLabel="Não" itemValue="#{false}" />
+					</h:selectOneMenu>
+				</div>
+				<div class="form-group col-lg-3">
+					<h:outputText value="Edema" />
+					<h:selectOneMenu styleClass="form-control disabled" readonly="true"
+									 value="#{consultaController.situacaoUlceraConsulta.edema}">
+						<f:selectItem itemLabel="Sem" itemValue="#{0}" />
+						<f:selectItem itemLabel="Leve" itemValue="#{1}" />
+						<f:selectItem itemLabel="Razoável Leve" itemValue="#{2}" />
+						<f:selectItem itemLabel="Razoável Grave" itemValue="#{3}" />
+						<f:selectItem itemLabel="Grave" itemValue="#{4}" />
+					</h:selectOneMenu>
+				</div>
+				<div class="form-group col-lg-3">
+					<h:outputText value="Nível de Dor" />
+					<h:selectOneMenu styleClass="form-control disabled"
+									 value="#{consultaController.situacaoUlceraConsulta.nivelDor}"
+									 readonly="true">
+						<f:selectItem itemLabel="0" itemValue="#{0}" />
+						<f:selectItem itemLabel="1" itemValue="#{1}" />
+						<f:selectItem itemLabel="2" itemValue="#{2}" />
+						<f:selectItem itemLabel="3" itemValue="#{3}" />
+						<f:selectItem itemLabel="4" itemValue="#{4}" />
+						<f:selectItem itemLabel="5" itemValue="#{5}" />
+						<f:selectItem itemLabel="6" itemValue="#{6}" />
+						<f:selectItem itemLabel="7" itemValue="#{7}" />
+						<f:selectItem itemLabel="8" itemValue="#{8}" />
+						<f:selectItem itemLabel="9" itemValue="#{9}" />
+						<f:selectItem itemLabel="10" itemValue="#{10}" />
+					</h:selectOneMenu>
+				</div>
+				<div class="form-group col-lg-3">
+					<h:outputText value="Secreção" />
+					<h:selectOneMenu styleClass="form-control disabled" readonly="true"
+									 value="#{consultaController.situacaoUlceraConsulta.secrecao}">
+						<f:selectItem itemLabel="Sem" itemValue="#{0}" />
+						<f:selectItem itemLabel="Serosa" itemValue="#{1}" />
+						<f:selectItem itemLabel="Mucu-purulenta" itemValue="#{2}" />
+						<f:selectItem itemLabel="Purulenta" itemValue="#{3}" />
+						<f:selectItem itemLabel="Sero-sanguinolenta" itemValue="#{4}" />
+						<f:selectItem itemLabel="Mucóide" itemValue="#{5}" />
+						<f:selectItem itemLabel="Sanguinolenta" itemValue="#{6}" />
+					</h:selectOneMenu>
+				</div>
+				<div class="form-group col-lg-3">
+					<h:outputText value="Ciclo Lítico" />
+					<h:selectOneMenu styleClass="form-control disabled"
+									 value="#{consultaController.situacaoUlceraConsulta.cicloLitico}"
+									 readonly="true">
+						<f:selectItem itemLabel="Sim" itemValue="#{1}" />
+						<f:selectItem itemLabel="Não" itemValue="#{0}" />
+					</h:selectOneMenu>
+				</div>
+				<div class="form-group col-lg-3">
+					<h:outputText value="Estado" />
+					<h:selectOneMenu styleClass="form-control disabled" readonly="true"
+									 value="#{consultaController.situacaoUlceraConsulta.estadoUlcera}">
+						<f:selectItem itemLabel="Limpa" itemValue="#{0}" />
+						<f:selectItem itemLabel="Limpa Contaminada" itemValue="#{1}"  />
+						<f:selectItem itemLabel="Contaminada" itemValue="#{2}" />
+						<f:selectItem itemLabel="Infectada" itemValue="#{3}" />
+						<f:selectItem itemLabel="Necrosada" itemValue="#{4}" />
+						<f:selectItem itemLabel="Cicatrizada" itemValue="#{5}" />
+					</h:selectOneMenu>
+				</div>
+				<div class="form-group col-lg-3">
+					<h:outputText value="Área" />
+					<h:inputText styleClass="form-control disabled" readonly="true"
+								 value="#{consultaController.situacaoUlceraConsulta.area}" />
+				</div>
+			</div>
+		</div>
+		<br /><br />
+	</h:panelGroup>
+</ui:composition>

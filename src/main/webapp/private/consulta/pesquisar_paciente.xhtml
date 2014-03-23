@@ -4,26 +4,29 @@
 				xmlns:ui="http://java.sun.com/jsf/facelets"
 				xmlns:p="http://primefaces.org/ui"
 				template="/templates/defaulttemplate.xhtml">
-	<ui:define name="title">Consulta Paciente</ui:define>
+	<ui:define name="title">Consultar Paciente</ui:define>
 	<ui:define name="content">
 		<h:form id="form">
 			<fieldset>
-				<legend>Consulta Paciente</legend>
-				<div class="row">
-					<div class="form-group col-lg-6">
-						<p:outputLabel for="nome-paciente" value="Paciente" />
-						<p:inputText id="nome-paciente" value="#{consultaController.pacientePesquisa.nome}" styleClass="form-control" />
-					</div>
-					<div class="form-group col-lg-6">
-						<p:outputLabel for="prontuario" value="Prontuário" />
-						<p:inputText id="prontuario" value="#{consultaController.pacientePesquisa.prontuario}" styleClass="form-control" />
+				<legend>Consultar Paciente</legend>
+				<div class="container">
+					<div class="row">
+						<div class="form-group col-lg-6">
+							<p:outputLabel for="nome-paciente" value="Paciente" />
+							<p:inputText id="nome-paciente" value="#{consultaController.pacientePesquisa.nome}" styleClass="form-control" />
+						</div>
+						<div class="form-group col-lg-6">
+							<p:outputLabel for="prontuario" value="Prontuário" />
+							<p:inputText id="prontuario" value="#{consultaController.pacientePesquisa.prontuario}" styleClass="form-control" />
+						</div>
 					</div>
 				</div>
 				<div class="form-group">
 					<input type="reset" value="Limpar Campos" class="btn btn-default" />
 					<h:outputText value=" " />
-					<h:commandButton value="Pequisar" styleClass="btn btn-primary"
-							action="#{consultaController.pesquisarPacienteConsulta()}" />
+					<p:commandButton value="Pequisar" styleClass="btn btn-primary"
+									 action="#{consultaController.pesquisarPacienteConsulta}"
+									 update="datatable" />
 				</div>
 				<br /><br />
 				<p:dataTable id="datatable" value="#{consultaController.listaConsultas}"
@@ -40,7 +43,8 @@
 					</p:column>
 					<p:column>
 						<f:facet name="header"><h:outputText value="Ações" /></f:facet>
-						<h:commandLink value="Consultar" action="#{consultaController.consultarPaciente(consulta)}" />
+						<h:commandLink value="Consultar"
+									   action="#{consultaController.consultarPaciente(consulta)}" />
 					</p:column>
 				</p:dataTable>
 			</fieldset>

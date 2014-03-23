@@ -15,13 +15,30 @@ function generateAreas() {
 	
 	var areas = jQuery(usemap).children('area, a');
 	
+	var place = jQuery("#after").eq(0);
+	place.html('');
+	
 	var length = areas.length;
 	for (var i = 0; i < length; i++) {
 		var area = areas.eq(i);
 		
 		var coordenadas = area.attr('coords').split(',');
-		var div = '<a href="#" style="display:block;" class="mapareas" onclick="document.getElementById(\'' + area.attr('id') + '\').onclick();"><div style="border:1px solid black; height:' + (coordenadas[3] - coordenadas[1]) + 'px; width:' + (coordenadas[2] - coordenadas[0]) + 'px;position:absolute;top:' + (top + parseInt(coordenadas[1])) + 'px;left:' + (left + parseInt(coordenadas[0])) + 'px;z-index: 10"> </div></a>';
-		jQuery(div).insertBefore(jQuery("#after").eq(0));
+		var avaliado = parseInt(area.attr('data-avaliado'));
+		var div = '<a href="#" style="display:block;';
+		if (avaliado == 0) {
+			div += 'background-color: rgb(240, 0, 0);background-color: rgba(240, 0, 0, 0.2);';
+		} else if (avaliado == 1) {
+			div += 'background-color: rgb(0, 240, 0);background-color: rgba(0, 240, 0, 0.2);';
+		}
+		
+		div += '" class="mapareas" onclick="document.getElementById(\'' + area.attr('id') + '\').onclick();"><div style="border:1px solid black; height:' + (coordenadas[3] - coordenadas[1]) + 'px; width:' + (coordenadas[2] - coordenadas[0]) + 'px;position:absolute;top:' + (top + parseInt(coordenadas[1])) + 'px;left:' + (left + parseInt(coordenadas[0])) + 'px;z-index: 10;';
+		if (avaliado == 0) {
+			div += 'background-color: rgb(240, 0, 0);background-color: rgba(240, 0, 0, 0.2);';
+		} else if (avaliado == 1) {
+			div += 'background-color: rgb(0, 240, 0);background-color: rgba(0, 240, 0, 0.2);';
+		}
+		div += '"> </div></a>';
+		place.html(place.html() + div);
 	}
 }
 function sumirAreas() {
@@ -69,7 +86,8 @@ function convertPointsToArray(polygon) {
 
 function convertArrayToPoints(array) {
 	var polygon = '(';
-	for (var i = 0, length = array.length; i < length; i++) {
+	var length = array.length;
+	for (var i = 0; i < length; i++) {
 		var point = array[i];
 		polygon += '(' + point.x + ',' + point.y + ')';
 		if ((i + 1) != length) {

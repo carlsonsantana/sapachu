@@ -1,12 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.sapac.controllers.consulta;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.primefaces.model.chart.CartesianChartModel;
@@ -18,12 +15,8 @@ import org.sapac.entities.Consulta;
 import org.sapac.entities.Paciente;
 import org.sapac.models.ConsultaDAO;
 
-/**
- *
- * @author carlson
- */
 @Named
-@javax.enterprise.context.SessionScoped
+@SessionScoped
 public class PacienteController extends GenericController {
 
 	private static final long serialVersionUID = 1L;
@@ -42,58 +35,34 @@ public class PacienteController extends GenericController {
 	@DAOQualifier(DAOQualifier.DAOType.HIBERNATE)
 	private ConsultaDAO consultaDAO;
 
-	/**
-	 * @return the paciente
-	 */
 	public Paciente getPaciente() {
 		return paciente;
 	}
 
-	/**
-	 * @param paciente the paciente to set
-	 */
 	public void setPaciente(Paciente paciente) {
 		this.paciente = paciente;
 	}
 
-	/**
-	 * @return the pacientePesquisa
-	 */
 	public Paciente getPacientePesquisa() {
 		return pacientePesquisa;
 	}
 
-	/**
-	 * @param pacientePesquisa the pacientePesquisa to set
-	 */
 	public void setPacientePesquisa(Paciente pacientePesquisa) {
 		this.pacientePesquisa = pacientePesquisa;
 	}
 
-	/**
-	 * @return the graficos
-	 */
 	public Collection<CartesianChartModel> getGraficos() {
 		return graficos;
 	}
 
-	/**
-	 * @param graficos the graficos to set
-	 */
 	public void setGraficos(Collection<CartesianChartModel> graficos) {
 		this.graficos = graficos;
 	}
 
-	/**
-	 * @return the listaPacientes
-	 */
 	public Collection<Paciente> getListaPacientes() {
 		return listaPacientes;
 	}
 
-	/**
-	 * @param listaPacientes the listaPacientes to set
-	 */
 	public void setListaPacientes(Collection<Paciente> listaPacientes) {
 		this.listaPacientes = listaPacientes;
 	}
@@ -117,47 +86,40 @@ public class PacienteController extends GenericController {
 
 		listaPacientes = new ArrayList<Paciente>();
 	}
-
-	/**
-	 * Retorna a tela para pesquisar pacientes.
-	 *
-	 * @return A tela para pesquisar pacientes.
-	 */
-	public String pesquisarPaciente() {
+	
+	public String telaPesquisarPaciente() {
 		operacao = Operacao.PESQUISAR;
-
-		listaPacientes = consultaDAO.procurarPacientes(pacientePesquisa);
-
+		
+		listaPacientes.clear();
+		
 		return PaginasNavegacao.PACIENTE_PESQUISAR;
 	}
 
-	/**
-	 * Retorna a tela para cadastrar pacientes.
-	 *
-	 * @return A tela para cadastrar pacientes.
-	 */
+	public void pesquisarPaciente() {
+		if ((operacao.equals(Operacao.PESQUISAR))
+				|| (operacao.equals(Operacao.PESQUISAR_ENFERMAGEM))) {
+			listaPacientes = consultaDAO.procurarPacientes(pacientePesquisa);
+		} else if (operacao.equals(Operacao.ADICIONAR)) {
+			listaPacientes = consultaDAO.procurarPacientesNaoCadastrados(pacientePesquisa);
+		}
+	}
+
 	public String cadastrarPaciente() {
 		operacao = Operacao.ADICIONAR;
-
-		listaPacientes = consultaDAO.procurarPacientesNaoCadastrados(pacientePesquisa);
+		
+		listaPacientes.clear();
 
 		return PaginasNavegacao.PACIENTE_PESQUISAR;
 	}
 
 	public String pesquisarPacienteEnfermagem() {
 		operacao = Operacao.PESQUISAR_ENFERMAGEM;
-
-		listaPacientes = consultaDAO.procurarPacientes(pacientePesquisa);
+		
+		listaPacientes.clear();
 
 		return PaginasNavegacao.PACIENTE_PESQUISAR;
 	}
 
-	/**
-	 * Retorna a tela para visualizar um paciente.
-	 *
-	 * @param paciente O paciente a ser visualizado.
-	 * @return A tela para visualizar um paciente.
-	 */
 	public String visualizarPaciente(Paciente paciente) {
 		consultaDAO.carregarPaciente(paciente);
 		setPaciente(paciente);
@@ -178,6 +140,7 @@ public class PacienteController extends GenericController {
 		for (Consulta consulta : consultas) {
 			String data = getDataFormatada(consulta.getData());
 			consulta = consultaDAO.carregarConsulta(consulta);
+			
 			seriesAreaTotalUlceras.set(data, consulta.getTotalAreasUlceras());
 			
 			seriesNumeroTotalUlceras.set(data, consulta.getSituacoesUlcera().size());
@@ -195,24 +158,17 @@ public class PacienteController extends GenericController {
 		return PaginasNavegacao.PACIENTE_VISUALIZAR;
 	}
 
-	/**
-	 * Retorna a tela para visualizar um paciente.
-	 *
-	 * @param paciente O paciente a ser visualizado.
-	 * @return A tela para visualizar um paciente.
-	 */
 	public String adicionarPaciente(Paciente paciente) {
 		setPaciente(paciente);
+		
 		return PaginasNavegacao.PACIENTE_CADASTRAR;
 	}
 
-	/**
-	 *
-	 * @return
-	 */
 	public String cadastrar() {
 		paciente = consultaDAO.cadastrarPaciente(paciente);
 
+		adicionarMensagemAviso("", "Paciente cadastrado com sucesso.");
+		
 		return visualizarPaciente(paciente);
 	}
 }

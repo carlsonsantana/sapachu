@@ -24,14 +24,14 @@
 							<ul class="dropdown-menu">
 								<li><h:commandLink id="marca_consulta" value="Marcar Consulta" action="#{agendaController.telaMarcarConsulta()}" /></li>
 								<li><h:commandLink id="remarcar_consulta" value="Remarcar ou Cancelar Consultas" action="#{agendaController.telaRemarcarConsulta()}" /></li>
-								<li><h:commandLink id="consultar_paciente" value="Consultar Paciente" action="#{consultaController.pesquisarPacienteConsulta()}" /></li>
+								<li><h:commandLink id="consultar_paciente" value="Consultar Paciente" action="#{consultaController.telaPesquisarPaciente()}" /></li>
 							</ul>
 						</li>
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Paciente <span class="caret"></span></a>
 							<ul class="dropdown-menu">
-								<li><h:commandLink id="pesquisar_paciente" value="Visualizar Dados" action="#{pacienteController.pesquisarPaciente()}" /></li>
-								<li><h:commandLink id="adicionar_paciente" value="Adicionar" action="#{pacienteController.cadastrarPaciente()}" /></li>
+								<li><h:commandLink id="pesquisar_paciente" value="Visualizar Dados" action="#{pacienteController.telaPesquisarPaciente()}" /></li>
+								<li><h:commandLink id="adicionar_paciente" value="Cadastrar" action="#{pacienteController.cadastrarPaciente()}" /></li>
 							</ul>
 						</li>
 						<c:if test="#{perfilController.coordenador}">
@@ -39,19 +39,19 @@
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown">Membro Equipe <span class="caret"></span></a>
 								<ul class="dropdown-menu">
 									<li><h:commandLink id="pesquisar_usuario" value="Editar" action="#{usuarioController.telaPesquisaUsuario()}" /></li>
-									<li><h:commandLink id="adicionar_usuario" value="Adicionar" action="#{usuarioController.telaCadastrarUsuario()}" /></li>
+									<li><h:commandLink id="adicionar_usuario" value="Cadastrar" action="#{usuarioController.telaCadastrarUsuario()}" /></li>
 								</ul>
 							</li>
 						</c:if>
 						<li>
-							<h:commandLink id="relatorio" value="Gerar Relatório de Desempenho" action="#{relatorioController.pesquisarUsuarioRelatorio()}" />
+							<h:commandLink id="relatorio" value="Gerar Relatório de Desempenho" action="#{relatorioController.telaPesquisarMembro()}" />
 						</li>
 						<c:if test="#{perfilController.enfermeiro}">
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown">SAE <span class="caret"></span></a>
 								<ul class="dropdown-menu">
 									<li><h:commandLink id="pesquisarsae" value="Pesquisar" action="#{pacienteController.pesquisarPacienteEnfermagem()}" /></li>
-									<li><h:commandLink value="Editar" action="#{enfermagemController.pesquisarIntervencoes()}" /></li>
+									<li><h:commandLink value="Editar" action="#{enfermagemController.telaPesquisarPacientes()}" /></li>
 								</ul>
 							</li>
 						</c:if>

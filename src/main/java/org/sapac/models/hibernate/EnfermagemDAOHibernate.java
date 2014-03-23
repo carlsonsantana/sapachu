@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.sapac.models.hibernate;
 
 import java.util.Collection;
@@ -9,7 +5,6 @@ import java.util.Date;
 import javax.enterprise.context.ApplicationScoped;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.sapac.annotations.DAOQualifier;
 import org.sapac.entities.Consulta;
 import org.sapac.entities.DiagnosticoEnfermagem;
@@ -17,10 +12,6 @@ import org.sapac.entities.IntervencaoEnfermagem;
 import org.sapac.entities.Paciente;
 import org.sapac.models.EnfermagemDAO;
 
-/**
- *
- * @author carlson
- */
 @ApplicationScoped
 @DAOQualifier(DAOQualifier.DAOType.HIBERNATE)
 public class EnfermagemDAOHibernate extends GenericDAOHibernate implements EnfermagemDAO {
@@ -29,11 +20,31 @@ public class EnfermagemDAOHibernate extends GenericDAOHibernate implements Enfer
 	public DiagnosticoEnfermagem alterarDiagnosticoEnfermagem(DiagnosticoEnfermagem diagnosticoEnfermagem) {
 		Session session = getSession();
 		
-		Transaction transaction = session.beginTransaction();
+		int idDiagnostico = diagnosticoEnfermagem.getId();
+		DiagnosticoEnfermagem diagnosticoEnfermagemAntigo = (DiagnosticoEnfermagem) session.get(DiagnosticoEnfermagem.class, idDiagnostico);
+			
+		closeSession();
 		
-		session.update(diagnosticoEnfermagem);
 		
-		transaction.commit();
+		session = getSession();
+		
+		diagnosticoEnfermagem.setAtivo(true);
+		
+		if (diagnosticoEnfermagem.getData() == null) {
+			diagnosticoEnfermagem.setData(new Date());
+			session.update(diagnosticoEnfermagem);
+		} else {
+			DiagnosticoEnfermagem novoDiagnostico = diagnosticoEnfermagem;
+			novoDiagnostico.setId(0);
+			novoDiagnostico.setData(new Date());
+			
+			session.save(novoDiagnostico);
+			
+			diagnosticoEnfermagemAntigo.setAtivo(false);
+			session.update(diagnosticoEnfermagemAntigo);
+		}
+		
+		closeSession();
 		
 		return diagnosticoEnfermagem;
 	}
@@ -42,11 +53,9 @@ public class EnfermagemDAOHibernate extends GenericDAOHibernate implements Enfer
 	public IntervencaoEnfermagem alterarIntervencaoEnfermagem(IntervencaoEnfermagem intervencaoEnfermagem) {
 		Session session = getSession();
 		
-		Transaction transaction = session.beginTransaction();
-		
 		session.update(intervencaoEnfermagem);
 		
-		transaction.commit();
+		closeSession();
 		
 		return intervencaoEnfermagem;
 	}
@@ -55,20 +64,19 @@ public class EnfermagemDAOHibernate extends GenericDAOHibernate implements Enfer
 	public DiagnosticoEnfermagem procurarDiagnosticoEnfermagem(Paciente paciente) {
 		Session session = getSession();
 		
-		Transaction transaction = session.beginTransaction();
-		
 		StringBuilder hql = new StringBuilder();
 		hql.append("SELECT diagnosticoEnfermagem FROM DiagnosticoEnfermagem AS diagnosticoEnfermagem ")
-				.append(" INNER JOIN diagnosticoEnfermagem.paciente AS paciente ")
+				.append(" INNER JOIN FETCH diagnosticoEnfermagem.paciente AS paciente ")
 				.append(" WHERE 1 = 1 ")
-				.append(" AND paciente.id = :idPaciente ");
+				.append(" AND paciente.id = :idPaciente ")
+				.append(" AND diagnosticoEnfermagem.ativo IS TRUE ");
 		
 		Query query = session.createQuery(hql.toString());
 		query.setInteger("idPaciente", paciente.getId());
 		
 		DiagnosticoEnfermagem diagnosticoEnfermagem = (DiagnosticoEnfermagem) query.uniqueResult();
 		
-		transaction.commit();
+		closeSession();
 		
 		return diagnosticoEnfermagem;
 	}
@@ -77,12 +85,10 @@ public class EnfermagemDAOHibernate extends GenericDAOHibernate implements Enfer
 	public Collection<IntervencaoEnfermagem> procurarIntervencoesEnfermagem(Paciente paciente) {
 		Session session = getSession();
 		
-		Transaction transaction = session.beginTransaction();
-		
 		StringBuilder hql = new StringBuilder();
 		hql.append("SELECT intervencaoEnfermagem FROM IntervencaoEnfermagem AS intervencaoEnfermagem ")
 				.append(" INNER JOIN FETCH intervencaoEnfermagem.consulta AS consulta ")
-				.append(" INNER JOIN consulta.paciente AS paciente ")
+				.append(" INNER JOIN FETCH consulta.paciente AS paciente ")
 				.append(" WHERE 1 = 1 ")
 				.append(" AND paciente.id = :idPaciente ");
 		
@@ -91,7 +97,7 @@ public class EnfermagemDAOHibernate extends GenericDAOHibernate implements Enfer
 		
 		Collection<IntervencaoEnfermagem> intervencoesEnfermagem = query.list();
 		
-		transaction.commit();
+		closeSession();
 		
 		return intervencoesEnfermagem;
 	}
@@ -105,12 +111,10 @@ public class EnfermagemDAOHibernate extends GenericDAOHibernate implements Enfer
 	public Collection<IntervencaoEnfermagem> procurarIntervencoesEnfermagemDia(Paciente paciente, Date data) {
 		Session session = getSession();
 		
-		Transaction transaction = session.beginTransaction();
-		
 		StringBuilder hql = new StringBuilder();
 		hql.append("SELECT intervencaoEnfermagem FROM IntervencaoEnfermagem AS intervencaoEnfermagem ")
-				.append(" INNER JOIN intervencaoEnfermagem.consulta AS consulta ")
-				.append(" INNER JOIN consulta.paciente AS paciente ")
+				.append(" INNER JOIN FETCH intervencaoEnfermagem.consulta AS consulta ")
+				.append(" INNER JOIN FETCH consulta.paciente AS paciente ")
 				.append(" WHERE 1 = 1 ")
 				.append(" AND consulta.data = :data ")
 				.append(" AND consulta.situacao IN (:situacoes) ");
@@ -133,7 +137,7 @@ public class EnfermagemDAOHibernate extends GenericDAOHibernate implements Enfer
 		
 		Collection<IntervencaoEnfermagem> intervencoesEnfermagem = query.list();
 		
-		transaction.commit();
+		closeSession();
 		
 		return intervencoesEnfermagem;
 	}

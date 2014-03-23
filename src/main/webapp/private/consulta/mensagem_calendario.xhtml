@@ -1,0 +1,17 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+				xmlns:ui="http://java.sun.com/jsf/facelets">
+	<div class="alert alert-info">
+		Status atual da consulta:
+		<ul>
+			<li>As <span style="color: #000000;">consultas em preto</span>, são consultas que não foram realizadas e já passaram da data.</li>
+			<li>As <span style="color: #3a87ad;">consultas em azul</span>, são consultas marcadas.</li>
+			<li>As <span style="color: #07b607;">consultas em verde</span>, são consultas já realizadas.</li>
+		</ul>
+		Status a partir de uma ação, isso significa que o status não foi salvo:
+		<ul>
+			<li>As <span style="color: #ff7a00;">consultas em laranja</span>, são consultas que ainda não foram marcadas.</li>
+			<li>As <span style="color: #ff0000;">consultas em vermerlho</span>, são consultas que ainda não foram canceladas.</li>
+			<li>As <span style="color: #c529e2;">consultas em roxo</span>, são consultas que ainda não foram remarcadas.</li>
+		</ul>
+	</div>
+</ui:composition>

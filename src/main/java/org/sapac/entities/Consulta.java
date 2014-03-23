@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.sapac.entities;
 
 import java.io.Serializable;
@@ -9,6 +5,7 @@ import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,10 +20,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
-/**
- *
- * @author carlson
- */
 @Entity
 @Table(name = "consulta")
 public class Consulta implements Serializable {
@@ -35,23 +28,24 @@ public class Consulta implements Serializable {
 	@Column(name = "id_consulta")
 	private int id;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_paciente")
 	@NotNull
 	private Paciente paciente;
 	
-	@OneToOne(mappedBy = "consulta")
+	@OneToOne(mappedBy = "consulta", fetch = FetchType.LAZY)
 	private VariaveisClinicas variaveisClinicas;
 	
-	@OneToMany(mappedBy = "consulta")
+	@OneToMany(mappedBy = "consulta", fetch = FetchType.LAZY)
 	private Collection<SituacaoUlceraConsulta> situacoesUlcera;
 	
-	@ManyToMany
-	@JoinTable(joinColumns = {@JoinColumn(name = "id_consulta")},
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "membro_participa_consulta",
+			joinColumns = {@JoinColumn(name = "id_consulta")},
 			inverseJoinColumns = {@JoinColumn(name = "id_membro_equipe")})
 	private Collection<MembroEquipe> membrosEquipe;
 	
-	@OneToOne(mappedBy = "consulta")
+	@OneToOne(mappedBy = "consulta", fetch = FetchType.LAZY)
 	private IntervencaoEnfermagem intervencaoEnfermagem;
 	
 	@Temporal(TemporalType.DATE)
@@ -62,7 +56,7 @@ public class Consulta implements Serializable {
 	@NotNull
 	private int situacao;
 	
-	@OneToOne
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_consulta_marcada")
 	private Consulta consultaMarcada;
 	
@@ -71,121 +65,70 @@ public class Consulta implements Serializable {
 	public final static int CONSULTA_REMARCADA = 2;
 	public final static int CONSULTA_CANCELADA = 3;
 
-	/**
-	 * @return the id
-	 */
 	public int getId() {
 		return id;
 	}
 
-	/**
-	 * @param id the id to set
-	 */
 	public void setId(int id) {
 		this.id = id;
 	}
 
-	/**
-	 * @return the variaveisClinicas
-	 */
 	public VariaveisClinicas getVariaveisClinicas() {
 		return variaveisClinicas;
 	}
 
-	/**
-	 * @param variaveisClinicas the variaveisClinicas to set
-	 */
 	public void setVariaveisClinicas(VariaveisClinicas variaveisClinicas) {
 		this.variaveisClinicas = variaveisClinicas;
 	}
 
-	/**
-	 * @return the situacoesUlcera
-	 */
 	public Collection<SituacaoUlceraConsulta> getSituacoesUlcera() {
 		return situacoesUlcera;
 	}
 
-	/**
-	 * @param situacoesUlcera the situacoesUlcera to set
-	 */
 	public void setSituacoesUlcera(Collection<SituacaoUlceraConsulta> situacoesUlcera) {
 		this.situacoesUlcera = situacoesUlcera;
 	}
 
-	/**
-	 * @return the membrosEquipe
-	 */
 	public Collection<MembroEquipe> getMembrosEquipe() {
 		return membrosEquipe;
 	}
 
-	/**
-	 * @param membrosEquipe the membrosEquipe to set
-	 */
 	public void setMembrosEquipe(Collection<MembroEquipe> membrosEquipe) {
 		this.membrosEquipe = membrosEquipe;
 	}
 
-	/**
-	 * @return the data
-	 */
 	public Date getData() {
 		return data;
 	}
 
-	/**
-	 * @param data the data to set
-	 */
 	public void setData(Date data) {
 		this.data = data;
 	}
 
-	/**
-	 * @return the situacao
-	 */
 	public int getSituacao() {
 		return situacao;
 	}
 
-	/**
-	 * @param situacao the situacao to set
-	 */
 	public void setSituacao(int situacao) {
 		this.situacao = situacao;
 	}
 
-	/**
-	 * @return the paciente
-	 */
 	public Paciente getPaciente() {
 		return paciente;
 	}
 
-	/**
-	 * @param paciente the paciente to set
-	 */
 	public void setPaciente(Paciente paciente) {
 		this.paciente = paciente;
 	}
 
-	/**
-	 * @return the intervencaoEnfermagem
-	 */
 	public IntervencaoEnfermagem getIntervencaoEnfermagem() {
 		return intervencaoEnfermagem;
 	}
 
-	/**
-	 * @param intervencaoEnfermagem the intervencaoEnfermagem to set
-	 */
 	public void setIntervencaoEnfermagem(IntervencaoEnfermagem intervencaoEnfermagem) {
 		this.intervencaoEnfermagem = intervencaoEnfermagem;
 	}
 	
-	/**
-	 * @return the consultaMarcada
-	 */
 	public Consulta getConsultaMarcada() {
 		if (consultaMarcada != null) {
 			Consulta consulta = consultaMarcada.getConsultaMarcada();
@@ -198,9 +141,6 @@ public class Consulta implements Serializable {
 		return consultaMarcada;
 	}
 
-	/**
-	 * @param consultaMarcada the consultaMarcada to set
-	 */
 	public void setConsultaMarcada(Consulta consultaMarcada) {
 		this.consultaMarcada = consultaMarcada;
 	}
@@ -219,6 +159,14 @@ public class Consulta implements Serializable {
 	
 	public boolean isRealizada() {
 		return this.getSituacao() == Consulta.CONSULTA_REALIZADA;
+	}
+	
+	public float getTotalAreasUlceras() {
+		float areaTotal = 0;
+		for (SituacaoUlceraConsulta situacaoUlceraConsulta : situacoesUlcera) {
+			areaTotal += situacaoUlceraConsulta.getArea();
+		}
+		return areaTotal;
 	}
 	
 	@Override
@@ -254,13 +202,5 @@ public class Consulta implements Serializable {
 		consulta.setVariaveisClinicas(getVariaveisClinicas());
 		
 		return consulta;
-	}
-	
-	public float getTotalAreasUlceras() {
-		float areaTotal = 0;
-		for (SituacaoUlceraConsulta situacaoUlceraConsulta : situacoesUlcera) {
-			areaTotal += situacaoUlceraConsulta.getArea();
-		}
-		return areaTotal;
 	}
 }

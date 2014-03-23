@@ -1,13 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.sapac.controllers.relatorio;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import org.sapac.annotations.DAOQualifier;
@@ -18,18 +15,14 @@ import org.sapac.entities.MembroEquipe;
 import org.sapac.models.RelatorioDAO;
 import org.sapac.models.UsuarioDAO;
 
-/**
- *
- * @author carlson
- */
 @Named
-@javax.enterprise.context.SessionScoped
+@SessionScoped
 public class RelatorioController extends GenericController {
 
-	private MembroEquipe funcionario;
-	private MembroEquipe funcionarioPesquisa;
+	private MembroEquipe membroEquipe;
+	private MembroEquipe membroEquipePesquisa;
 	private transient Collection<Map<String, String>> dados;
-	private Collection<MembroEquipe> listaFuncionaros;
+	private Collection<MembroEquipe> listaMembros;
 	
 	@Inject
 	@DAOQualifier(DAOQualifier.DAOType.HIBERNATE)
@@ -39,82 +32,60 @@ public class RelatorioController extends GenericController {
 	@DAOQualifier(DAOQualifier.DAOType.HIBERNATE)
 	private UsuarioDAO usuarioDAO;
 
-	@PostConstruct
-	public void init() {
-		listaFuncionaros = new ArrayList<MembroEquipe>();
-		funcionario = new Medico();
-		funcionarioPesquisa = new Medico();
+	public MembroEquipe getMembroEquipe() {
+		return membroEquipe;
 	}
 
-	/**
-	 * @return the funcionario
-	 */
-	public MembroEquipe getFuncionario() {
-		return funcionario;
+	public void setMembroEquipe(MembroEquipe membroEquipe) {
+		this.membroEquipe = membroEquipe;
+	}
+	
+	public MembroEquipe getMembroEquipePesquisa() {
+		return membroEquipePesquisa;
 	}
 
-	/**
-	 * @param funcionario the funcionario to set
-	 */
-	public void setFuncionario(MembroEquipe funcionario) {
-		this.funcionario = funcionario;
+	public void setMembroEquipePesquisa(MembroEquipe membroEquipePesquisa) {
+		this.membroEquipePesquisa = membroEquipePesquisa;
+	}
+	
+	public Collection<MembroEquipe> getListaMembros() {
+		return listaMembros;
 	}
 
-	public String gerarRelatorio(MembroEquipe funcionario) {
-		this.funcionario = funcionario;
-
-		dados = relatorioDAO.gerarRelatorio(funcionario);
-
-		return PaginasNavegacao.RELATORIO_VISUALIZAR;
+	public void setListaMembros(Collection<MembroEquipe> listaMembros) {
+		this.listaMembros = listaMembros;
 	}
-
-	/**
-	 * @return the graficos
-	 */
+	
 	public Collection<Map<String, String>> getDados() {
 		return dados;
 	}
 
-	/**
-	 * @param graficos the graficos to set
-	 */
-	public void setGraficos(Collection<Map<String, String>> dados) {
+	public void setDados(Collection<Map<String, String>> dados) {
 		this.dados = dados;
 	}
-
-	/**
-	 * @return the listaFuncionaros
-	 */
-	public Collection<MembroEquipe> getListaFuncionaros() {
-		return listaFuncionaros;
+	
+	@PostConstruct
+	public void init() {
+		listaMembros = new ArrayList<MembroEquipe>();
+		membroEquipe = new Medico();
+		membroEquipePesquisa = new Medico();
 	}
 
-	/**
-	 * @param listaFuncionaros the listaFuncionaros to set
-	 */
-	public void setListaFuncionaros(Collection<MembroEquipe> listaFuncionaros) {
-		this.listaFuncionaros = listaFuncionaros;
-	}
+	public String gerarRelatorio(MembroEquipe membroEquipe) {
+		this.membroEquipe = membroEquipe;
 
-	/**
-	 * @return the funcionarioPesquisa
-	 */
-	public MembroEquipe getFuncionarioPesquisa() {
-		return funcionarioPesquisa;
-	}
+		dados = relatorioDAO.gerarRelatorio(membroEquipe);
 
-	/**
-	 * @param funcionarioPesquisa the funcionarioPesquisa to set
-	 */
-	public void setFuncionarioPesquisa(MembroEquipe funcionarioPesquisa) {
-		this.funcionarioPesquisa = funcionarioPesquisa;
+		return PaginasNavegacao.RELATORIO_VISUALIZAR;
 	}
-
-	public String pesquisarUsuarioRelatorio() {
-		listaFuncionaros.clear();
-		
-		listaFuncionaros = usuarioDAO.pesquisarUsuario(funcionarioPesquisa);
+	
+	public String telaPesquisarMembro() {
+		listaMembros.clear();
 		
 		return PaginasNavegacao.RELATORIO_PESQUISAR_USUARIO;
+	}
+
+	public void pesquisarUsuarioRelatorio() {
+		listaMembros = usuarioDAO.pesquisarUsuario(membroEquipePesquisa);
 	}
 }

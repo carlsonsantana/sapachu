@@ -3,162 +3,79 @@
 				xmlns:ui="http://java.sun.com/jsf/facelets"
 				xmlns:p="http://primefaces.org/ui"
 				xmlns:f="http://java.sun.com/jsf/core">
-	<p:tab id="dadosulcera" title="Acompanhamento Paciente">
-		<p:panel header="Acompanhamento Paciente">
+	<p:tab id="dadosulcera" title="Variáveis Clínicas">
+		<p:panel header="Variáveis Clínicas">
+			<p:growl showDetail="true" sticky="true" />
 			<div class="container">
 				<div class="row">
 					<div class="form-group col-lg-3">
 						<p:outputLabel for="pressao-arterial" value="Pressão Arterial" />
 						<h:inputText id="pressao-arterial" styleClass="form-control"
-									 value="#{consultaController.consulta.variaveisClinicas.pressaoArterial}" />
+									 value="#{consultaController.consulta.variaveisClinicas.pressaoArterial}"
+									 required="true" />
 					</div>
 					<div class="form-group col-lg-3">
 						<p:outputLabel for="imc" value="Índice de massa corporal" />
 						<h:inputText id="imc" styleClass="form-control"
-									 value="#{consultaController.consulta.variaveisClinicas.indiceMassaCorporal}" />
+									 value="#{consultaController.consulta.variaveisClinicas.indiceMassaCorporal}"
+									 required="true" />
 					</div>
 					<div class="form-group col-lg-3">
 						<p:outputLabel for="cintura" value="Cintura" />
 						<h:inputText id="cintura" styleClass="form-control"
-									 value="#{consultaController.consulta.variaveisClinicas.cintura}" />
+									 value="#{consultaController.consulta.variaveisClinicas.cintura}"
+									 required="true" />
 					</div>
 					<div class="form-group col-lg-3">
 						<p:outputLabel for="quadril" value="Quadril" />
 						<h:inputText id="quadril" styleClass="form-control"
-									 value="#{consultaController.consulta.variaveisClinicas.quadril}" />
+									 value="#{consultaController.consulta.variaveisClinicas.quadril}"
+									 required="true" />
 					</div>
 					<div class="form-group col-lg-3">
 						<p:outputLabel for="indice-tornozelo-braco" value="Índice Tornozelo Braço" />
 						<h:inputText id="indice-tornozelo-braco" styleClass="form-control"
-									 value="#{consultaController.consulta.variaveisClinicas.indiceTornozeloBraco}" />
+									 value="#{consultaController.consulta.variaveisClinicas.indiceTornozeloBraco}"
+									 required="true" />
 					</div>
 					<div class="form-group col-lg-3">
 						<p:outputLabel for="glicemia" value="Glicemia" />
 						<h:inputText id="glicemia" styleClass="form-control"
-									 value="#{consultaController.consulta.variaveisClinicas.nivelGlicemia}" />
+									 value="#{consultaController.consulta.variaveisClinicas.nivelGlicemia}"
+									 required="true" />
 					</div>
 					<div class="form-group col-lg-3">
 						<p:outputLabel for="creatina" value="Creatina" />
 						<h:inputText id="creatina" styleClass="form-control"
-									 value="#{consultaController.consulta.variaveisClinicas.nivelCreatina}" />
+									 value="#{consultaController.consulta.variaveisClinicas.nivelCreatina}"
+									 required="true" />
 					</div>
 					<div class="form-group col-lg-3">
 						<p:outputLabel for="hdl" value="HDL" />
 						<h:inputText id="hdl" styleClass="form-control"
-									 value="#{consultaController.consulta.variaveisClinicas.colesterolHDL}" />
+									 value="#{consultaController.consulta.variaveisClinicas.colesterolHDL}"
+									 required="true" />
 					</div>
 					<div class="form-group col-lg-3">
 						<p:outputLabel for="vhs" value="VHS" />
 						<h:inputText id="vhs" styleClass="form-control"
-									 value="#{consultaController.consulta.variaveisClinicas.velocidadeHemossedimentacao}" />
+									 value="#{consultaController.consulta.variaveisClinicas.velocidadeHemossedimentacao}"
+									 required="true" />
 					</div>
 					<div class="form-group col-lg-3">
 						<p:outputLabel for="ceap" value="CEAP" />
 						<h:inputText id="ceap" styleClass="form-control"
-									 value="#{consultaController.consulta.variaveisClinicas.ceap}">
+									 value="#{consultaController.consulta.variaveisClinicas.ceap}"
+									 required="true">
 							<f:passThroughAttribute name="type" value="number" />
 							<f:passThroughAttribute name="min" value="0" />
 						</h:inputText>
 					</div>
 					<div class="form-group col-lg-3">
-						<p:outputLabel for="diabetes" value="Diabetes" />
-						<h:selectOneMenu id="diabetes" styleClass="form-control" value="#{consultaController.consulta.variaveisClinicas.diabetes}">
-							<f:selectItem itemLabel="Sim" itemValue="#{true}" />
-							<f:selectItem itemLabel="Não" itemValue="#{false}" />
-						</h:selectOneMenu>
-					</div>
-					<div class="form-group col-lg-3">
-						<p:outputLabel for="cardiopatia-isquemica" value="Cardiopatia Isquemica" />
-						<h:selectOneMenu id="cardiopatia-isquemica" styleClass="form-control"
-										 value="#{consultaController.consulta.variaveisClinicas.cardiopatiaIsquemica}">
-							<f:selectItem itemLabel="Sim" itemValue="#{true}" />
-							<f:selectItem itemLabel="Não" itemValue="#{false}" />
-						</h:selectOneMenu>
-					</div>
-					<div class="form-group col-lg-3">
-						<p:outputLabel for="doenca-renal" value="Doença Renal" />
-						<h:selectOneMenu id="doenca-renal" styleClass="form-control"
-										 value="#{consultaController.consulta.variaveisClinicas.doencaRenal}">
-							<f:selectItem itemLabel="Sim" itemValue="#{true}" />
-							<f:selectItem itemLabel="Não" itemValue="#{false}" />
-						</h:selectOneMenu>
-					</div>
-					<div class="form-group col-lg-3">
-						<p:outputLabel for="avc" value="Acid. Vascular Cerebral" />
-						<h:selectOneMenu id="avc" styleClass="form-control"
-										 value="#{consultaController.consulta.variaveisClinicas.acidenteVascularCerebral}">
-							<f:selectItem itemLabel="Sim" itemValue="#{true}" />
-							<f:selectItem itemLabel="Não" itemValue="#{false}" />
-						</h:selectOneMenu>
-					</div>
-					<div class="form-group col-lg-3">
-						<p:outputLabel for="artrite" value="Artrite" />
-						<h:selectOneMenu id="artrite" styleClass="form-control"
-										 value="#{consultaController.consulta.variaveisClinicas.artrite}">
-							<f:selectItem itemLabel="Sim" itemValue="#{true}" />
-							<f:selectItem itemLabel="Não" itemValue="#{false}" />
-						</h:selectOneMenu>
-					</div>
-					<div class="form-group col-lg-3">
-						<p:outputLabel for="alteracoes-visao" value="Alterações Visão" />
-						<h:selectOneMenu id="alteracoes-visao" styleClass="form-control"
-										 value="#{consultaController.consulta.variaveisClinicas.alteracoesVisao}">
-							<f:selectItem itemLabel="Sim" itemValue="#{true}" />
-							<f:selectItem itemLabel="Não" itemValue="#{false}" />
-						</h:selectOneMenu>
-					</div>
-					<div class="form-group col-lg-3">
-						<p:outputLabel for="trombose-vascular-profunda" value="Trom. Vasc. Profunda" />
-						<h:selectOneMenu id="trombose-vascular-profunda" styleClass="form-control"
-										 value="#{consultaController.consulta.variaveisClinicas.tromboseVascularProfunda}">
-							<f:selectItem itemLabel="Sim" itemValue="#{true}" />
-							<f:selectItem itemLabel="Não" itemValue="#{false}" />
-						</h:selectOneMenu>
-					</div>
-					<div class="form-group col-lg-3">
-						<p:outputLabel for="fratura" value="Fratura" />
-						<h:selectOneMenu id="fratura" styleClass="form-control"
-										 value="#{consultaController.consulta.variaveisClinicas.fratura}">
-							<f:selectItem itemLabel="Sim" itemValue="#{true}" />
-							<f:selectItem itemLabel="Não" itemValue="#{false}" />
-						</h:selectOneMenu>
-					</div>
-					<div class="form-group col-lg-3">
-						<p:outputLabel for="doenca-arterial-periferica" value="Doença Arterial Periférica" />
-						<h:selectOneMenu id="doenca-arterial-periferica" styleClass="form-control"
-										 value="#{consultaController.consulta.variaveisClinicas.doencaArterialPeriferica}">
-							<f:selectItem itemLabel="Sim" itemValue="#{true}" />
-							<f:selectItem itemLabel="Não" itemValue="#{false}" />
-						</h:selectOneMenu>
-					</div>
-					<div class="form-group col-lg-3">
-						<p:outputLabel for="dermatite-ocre" value="Dermatite Ocre" />
-						<h:selectOneMenu id="dermatite-ocre" styleClass="form-control"
-										 value="#{consultaController.consulta.variaveisClinicas.dermatiteOcre}">
-							<f:selectItem itemLabel="Sim" itemValue="#{true}" />
-							<f:selectItem itemLabel="Não" itemValue="#{false}" />
-						</h:selectOneMenu>
-					</div>
-					<div class="form-group col-lg-3">
-						<p:outputLabel for="asma" value="Asma" />
-						<h:selectOneMenu id="asma" styleClass="form-control"
-										 value="#{consultaController.consulta.variaveisClinicas.asma}">
-							<f:selectItem itemLabel="Sim" itemValue="#{true}" />
-							<f:selectItem itemLabel="Não" itemValue="#{false}" />
-						</h:selectOneMenu>
-					</div>
-					<div class="form-group col-lg-3">
-						<p:outputLabel for="anemia-falciforme" value="Anemia Falciforme" />
-						<h:selectOneMenu id="anemia-falciforme" styleClass="form-control"
-										 value="#{consultaController.consulta.variaveisClinicas.anemiaFalciforme}">
-							<f:selectItem itemLabel="Sim" itemValue="#{true}" />
-							<f:selectItem itemLabel="Não" itemValue="#{false}" />
-						</h:selectOneMenu>
-					</div>
-					<div class="form-group col-lg-3">
 						<p:outputLabel for="mobilidade" value="Mobilidade" />
 						<h:selectOneMenu id="mobilidade" styleClass="form-control"
-										 value="#{consultaController.consulta.variaveisClinicas.mobilidade}">
+										 value="#{consultaController.consulta.variaveisClinicas.mobilidade}"
+										 required="true">
 							<f:selectItem itemLabel="Não informada" itemValue="#{'S'}" />
 							<f:selectItem itemLabel="Presente" itemValue="#{'P'}" />
 							<f:selectItem itemLabel="Com Ajuda" itemValue="#{'C'}" />
@@ -167,9 +84,120 @@
 						</h:selectOneMenu>
 					</div>
 					<div class="form-group col-lg-3">
+						<p:outputLabel for="diabetes" value="Diabetes" />
+						<h:selectOneMenu id="diabetes" styleClass="form-control"
+										 value="#{consultaController.consulta.variaveisClinicas.diabetes}"
+										 required="true">
+							<f:selectItem itemLabel="Sim" itemValue="#{true}" />
+							<f:selectItem itemLabel="Não" itemValue="#{false}" />
+						</h:selectOneMenu>
+					</div>
+				</div>
+				<div class="row">
+					<div class="form-group col-lg-3">
+						<p:outputLabel for="cardiopatia-isquemica" value="Cardiopatia Isquemica" />
+						<h:selectOneMenu id="cardiopatia-isquemica" styleClass="form-control"
+										 value="#{consultaController.consulta.variaveisClinicas.cardiopatiaIsquemica}"
+										 required="true">
+							<f:selectItem itemLabel="Sim" itemValue="#{true}" />
+							<f:selectItem itemLabel="Não" itemValue="#{false}" />
+						</h:selectOneMenu>
+					</div>
+					<div class="form-group col-lg-3">
+						<p:outputLabel for="doenca-renal" value="Doença Renal" />
+						<h:selectOneMenu id="doenca-renal" styleClass="form-control"
+										 value="#{consultaController.consulta.variaveisClinicas.doencaRenal}"
+										 required="true">
+							<f:selectItem itemLabel="Sim" itemValue="#{true}" />
+							<f:selectItem itemLabel="Não" itemValue="#{false}" />
+						</h:selectOneMenu>
+					</div>
+					<div class="form-group col-lg-3">
+						<p:outputLabel for="avc" value="Acid. Vascular Cerebral" />
+						<h:selectOneMenu id="avc" styleClass="form-control"
+										 value="#{consultaController.consulta.variaveisClinicas.acidenteVascularCerebral}"
+										 required="true">
+							<f:selectItem itemLabel="Sim" itemValue="#{true}" />
+							<f:selectItem itemLabel="Não" itemValue="#{false}" />
+						</h:selectOneMenu>
+					</div>
+					<div class="form-group col-lg-3">
+						<p:outputLabel for="artrite" value="Artrite" />
+						<h:selectOneMenu id="artrite" styleClass="form-control"
+										 value="#{consultaController.consulta.variaveisClinicas.artrite}"
+										 required="true">
+							<f:selectItem itemLabel="Sim" itemValue="#{true}" />
+							<f:selectItem itemLabel="Não" itemValue="#{false}" />
+						</h:selectOneMenu>
+					</div>
+					<div class="form-group col-lg-3">
+						<p:outputLabel for="alteracoes-visao" value="Alterações Visão" />
+						<h:selectOneMenu id="alteracoes-visao" styleClass="form-control"
+										 value="#{consultaController.consulta.variaveisClinicas.alteracoesVisao}"
+										 required="true">
+							<f:selectItem itemLabel="Sim" itemValue="#{true}" />
+							<f:selectItem itemLabel="Não" itemValue="#{false}" />
+						</h:selectOneMenu>
+					</div>
+					<div class="form-group col-lg-3">
+						<p:outputLabel for="trombose-vascular-profunda" value="Trom. Vasc. Profunda" />
+						<h:selectOneMenu id="trombose-vascular-profunda" styleClass="form-control"
+										 value="#{consultaController.consulta.variaveisClinicas.tromboseVascularProfunda}"
+										 required="true">
+							<f:selectItem itemLabel="Sim" itemValue="#{true}" />
+							<f:selectItem itemLabel="Não" itemValue="#{false}" />
+						</h:selectOneMenu>
+					</div>
+					<div class="form-group col-lg-3">
+						<p:outputLabel for="fratura" value="Fratura" />
+						<h:selectOneMenu id="fratura" styleClass="form-control"
+										 value="#{consultaController.consulta.variaveisClinicas.fratura}"
+										 required="true">
+							<f:selectItem itemLabel="Sim" itemValue="#{true}" />
+							<f:selectItem itemLabel="Não" itemValue="#{false}" />
+						</h:selectOneMenu>
+					</div>
+					<div class="form-group col-lg-3">
+						<p:outputLabel for="doenca-arterial-periferica" value="Doença Arterial Periférica" />
+						<h:selectOneMenu id="doenca-arterial-periferica" styleClass="form-control"
+										 value="#{consultaController.consulta.variaveisClinicas.doencaArterialPeriferica}"
+										 required="true">
+							<f:selectItem itemLabel="Sim" itemValue="#{true}" />
+							<f:selectItem itemLabel="Não" itemValue="#{false}" />
+						</h:selectOneMenu>
+					</div>
+					<div class="form-group col-lg-3">
+						<p:outputLabel for="dermatite-ocre" value="Dermatite Ocre" />
+						<h:selectOneMenu id="dermatite-ocre" styleClass="form-control"
+										 value="#{consultaController.consulta.variaveisClinicas.dermatiteOcre}"
+										 required="true">
+							<f:selectItem itemLabel="Sim" itemValue="#{true}" />
+							<f:selectItem itemLabel="Não" itemValue="#{false}" />
+						</h:selectOneMenu>
+					</div>
+					<div class="form-group col-lg-3">
+						<p:outputLabel for="asma" value="Asma" />
+						<h:selectOneMenu id="asma" styleClass="form-control"
+										 value="#{consultaController.consulta.variaveisClinicas.asma}"
+										 required="true">
+							<f:selectItem itemLabel="Sim" itemValue="#{true}" />
+							<f:selectItem itemLabel="Não" itemValue="#{false}" />
+						</h:selectOneMenu>
+					</div>
+					<div class="form-group col-lg-3">
+						<p:outputLabel for="anemia-falciforme" value="Anemia Falciforme" />
+						<h:selectOneMenu id="anemia-falciforme" styleClass="form-control"
+										 value="#{consultaController.consulta.variaveisClinicas.anemiaFalciforme}"
+										 required="true">
+							<f:selectItem itemLabel="Sim" itemValue="#{true}" />
+							<f:selectItem itemLabel="Não" itemValue="#{false}" />
+						</h:selectOneMenu>
+					</div>
+					<div class="form-group col-lg-3">
 						<p:outputLabel for="compressao" value="Compressão" />
 						<h:selectOneMenu id="compressao" styleClass="form-control"
-										 value="#{consultaController.consulta.variaveisClinicas.compressao}">
+										 value="#{consultaController.consulta.variaveisClinicas.compressao}"
+										 required="true">
 							<f:selectItem itemLabel="Sim" itemValue="#{true}" />
 							<f:selectItem itemLabel="Não" itemValue="#{false}" />
 						</h:selectOneMenu>
@@ -177,7 +205,8 @@
 					<div class="form-group col-lg-3">
 						<p:outputLabel for="lipodermatoesclerose" value="Lipodermatoesclerose" />
 						<h:selectOneMenu id="lipodermatoesclerose" styleClass="form-control"
-										 value="#{consultaController.consulta.variaveisClinicas.lipodermatoesclerose}">
+										 value="#{consultaController.consulta.variaveisClinicas.lipodermatoesclerose}"
+										 required="true">
 							<f:selectItem itemLabel="Sim" itemValue="#{true}" />
 							<f:selectItem itemLabel="Não" itemValue="#{false}" />
 						</h:selectOneMenu>
@@ -185,7 +214,8 @@
 					<div class="form-group col-lg-3">
 						<p:outputLabel for="cirurgia" value="Cirurgia" />
 						<h:selectOneMenu id="cirurgia" styleClass="form-control"
-										 value="#{consultaController.consulta.variaveisClinicas.cirurgia}">
+										 value="#{consultaController.consulta.variaveisClinicas.cirurgia}"
+										 required="true">
 							<f:selectItem itemLabel="Sim" itemValue="#{true}" />
 							<f:selectItem itemLabel="Não" itemValue="#{false}" />
 						</h:selectOneMenu>
@@ -193,14 +223,17 @@
 					<div class="form-group col-lg-3">
 						<p:outputLabel for="desdibramento-cirurgico" value="Desdibramento Cirúrgico" />
 						<h:selectOneMenu id="desdibramento-cirurgico" styleClass="form-control"
-										 value="#{consultaController.consulta.variaveisClinicas.desbridamentoCirurgico}">
+										 value="#{consultaController.consulta.variaveisClinicas.desbridamentoCirurgico}"
+										 required="true">
 							<f:selectItem itemLabel="Sim" itemValue="#{true}" />
 							<f:selectItem itemLabel="Não" itemValue="#{false}" />
 						</h:selectOneMenu>
 					</div>
 					<div class="form-group col-lg-3">
 						<p:outputLabel for="coopera" value="Coopera" />
-						<h:selectOneMenu id="coopera" styleClass="form-control" value="#{consultaController.consulta.variaveisClinicas.coopera}">
+						<h:selectOneMenu id="coopera" styleClass="form-control"
+										 value="#{consultaController.consulta.variaveisClinicas.coopera}"
+										 required="true">
 							<f:selectItem itemLabel="Sim" itemValue="#{true}" />
 							<f:selectItem itemLabel="Não" itemValue="#{false}" />
 						</h:selectOneMenu>
@@ -208,7 +241,8 @@
 					<div class="form-group col-lg-3">
 						<p:outputLabel for="repouso" value="Repousa" />
 						<h:selectOneMenu id="repouso" styleClass="form-control"
-										 value="#{consultaController.consulta.variaveisClinicas.repouso}">
+										 value="#{consultaController.consulta.variaveisClinicas.repouso}"
+										 required="true">
 							<f:selectItem itemLabel="Sim" itemValue="#{true}" />
 							<f:selectItem itemLabel="Não" itemValue="#{false}" />
 						</h:selectOneMenu>
@@ -221,19 +255,22 @@
 					<div class="form-group col-lg-6">
 						<p:outputLabel for="macos-cigarro-diario" value="Maços de Cigarro Diários" />
 						<h:inputText id="macos-cigarro-diario" styleClass="form-control"
-									 value="#{consultaController.consulta.variaveisClinicas.macosCigarroDiarios}">
+									 value="#{consultaController.consulta.variaveisClinicas.macosCigarroDiarios}"
+									 required="true">
 							<f:passThroughAttribute name="type" value="number" />
 							<f:passThroughAttribute name="min" value="0" />
 						</h:inputText>
 					</div>
 					<div class="form-group col-lg-6">
 						<p:outputLabel for="alcoolista" value="Alcoolista" />
-						<h:selectOneMenu id="alcoolista" styleClass="form-control" value="#{consultaController.consulta.variaveisClinicas.alcoolista}">
+						<h:selectOneMenu id="alcoolista" styleClass="form-control"
+										 value="#{consultaController.consulta.variaveisClinicas.alcoolista}"
+										 required="true">
 							<f:selectItem itemLabel="Sim" itemValue="#{true}" />
 							<f:selectItem itemLabel="Não" itemValue="#{false}" />
 						</h:selectOneMenu>
 					</div>
-					<div class="form-group col-lg-11">
+					<div class="form-group col-lg-12">
 						<p:outputLabel for="outras-drogas" value="Outras drogas" />
 						<h:inputTextarea id="outras-drogas" styleClass="form-control"
 										 value="#{consultaController.consulta.variaveisClinicas.outrasDrogas}" />

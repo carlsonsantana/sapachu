@@ -10,14 +10,9 @@
 			<fieldset>
 				<legend>Remarcar Consulta</legend>
 				<p:growl id="mensagensWarn" showDetail="true" sticky="true" severity="warn" />
-				<div class="alert alert-info">
-					As <span style="color: #000000;">consultas em preto</span>, são consultas que não foram realizadas e já passaram da data.<br />
-					As <span style="color: #3a87ad;">consultas em azul</span>, são consultas marcadas.<br />
-					As <span style="color: #07b607;">consultas em verde</span>, são consultas já realizadas.<br />
-					As <span style="color: #ff7a00;">consultas em laranja</span>, são consultas que ainda não foram marcadas.<br />
-					As <span style="color: #ff0000;">consultas em vermerlho</span>, são consultas que ainda não foram canceladas.<br />
-					As <span style="color: #c529e2;">consultas em roxo</span>, são consultas que ainda não foram remarcadas.<br />
-				</div>
+				<ui:insert name="mensagem">
+					<ui:include src="/private/consulta/mensagem_calendario.xhtml" />
+				</ui:insert>
 				<br /><br />
 				<p:schedule id="schedule" widgetVar="myschedule" locale="pt"
 							value="#{agendaController.calendario}"

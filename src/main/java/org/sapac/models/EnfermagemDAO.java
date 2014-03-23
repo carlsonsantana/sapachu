@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.sapac.models;
 
 import java.util.Collection;
@@ -11,10 +7,6 @@ import org.sapac.entities.DiagnosticoEnfermagem;
 import org.sapac.entities.IntervencaoEnfermagem;
 import org.sapac.entities.Paciente;
 
-/**
- *
- * @author carlson
- */
 public interface EnfermagemDAO extends GenericDAO {
 	public DiagnosticoEnfermagem alterarDiagnosticoEnfermagem(DiagnosticoEnfermagem diagnosticoEnfermagem);
 	public IntervencaoEnfermagem alterarIntervencaoEnfermagem(IntervencaoEnfermagem intervencaoEnfermagem);
