@@ -405,20 +405,4 @@ public class VariaveisClinicas implements Serializable {
 	public void setOutrasDrogas(String outrasDrogas) {
 		this.outrasDrogas = outrasDrogas;
 	}
-
-	public Date getPeriodoInicialFerida() {
-		return periodoInicialFerida;
-	}
-
-	public void setPeriodoInicialFerida(Date periodoInicialFerida) {
-		this.periodoInicialFerida = periodoInicialFerida;
-	}
-
-	public Date getPeriodoFinalFerida() {
-		return periodoFinalFerida;
-	}
-
-	public void setPeriodoFinalFerida(Date periodoFinalFerida) {
-		this.periodoFinalFerida = periodoFinalFerida;
-	}
 }
