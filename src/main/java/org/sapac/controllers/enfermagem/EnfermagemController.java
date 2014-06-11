@@ -99,7 +99,7 @@ public class EnfermagemController extends GenericController {
 	}
 
 	public String visualizarIntervencao(IntervencaoEnfermagem intervencaoEnfermagem) {
-		setIntervencaoEnfermagem(intervencaoEnfermagem);
+		setIntervencaoEnfermagem(enfermagemDAO.procurarIntervencaoEnfermagem(intervencaoEnfermagem.getConsulta()));
 
 		return PaginasNavegacao.ENFERMAGEM_VISUALIZAR_DIAGNOSTICO;
 	}
@@ -108,7 +108,7 @@ public class EnfermagemController extends GenericController {
 		paciente.getDiagnosticoEnfermagem().setEnfermeiro((Enfermeiro) perfilController.getUsuario().getMembroEquipe());
 		enfermagemDAO.alterarDiagnosticoEnfermagem(paciente.getDiagnosticoEnfermagem());
 		
-		adicionarMensagemAviso("", "Diagnóstico alterado com sucesso.");
+		adicionarMensagemAviso("Diagnóstico da Enfermagem alterado com sucesso.");
 
 		return PaginasNavegacao.PAGINA_INICIAL;
 	}
@@ -131,7 +131,7 @@ public class EnfermagemController extends GenericController {
 
 		init();
 		
-		adicionarMensagemAviso("", "Intervenção alterada com sucesso.");
+		adicionarMensagemAviso("Intervenção da Enfermagem alterada com sucesso.");
 
 		return telaPesquisarPacientes();
 	}

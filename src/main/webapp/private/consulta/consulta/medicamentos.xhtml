@@ -1,27 +1,27 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-				xmlns:h="http://java.sun.com/jsf/html"
-				xmlns:ui="http://java.sun.com/jsf/facelets"
-				xmlns:p="http://primefaces.org/ui"
-				xmlns:f="http://java.sun.com/jsf/core">
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:p="http://primefaces.org/ui"
+		xmlns:f="http://java.sun.com/jsf/core">
 	<p:tab id="medicamentos" title="Medicamentos">
 		<p:panel header="Medicamentos">
-			<div class="container">
-				<div class="row">
-					<h:panelGroup id="lista-medicamentos">
-						<ui:repeat value="#{consultaController.consulta.variaveisClinicas.medicamentosUso}"
-								   var="medicamento">
-							<div class="form-group">
-								<p:outputLabel for="medicamento-uso" value="Medicamento em Uso" />
-								<h:inputText id="medicamento-uso" styleClass="form-control"
-											 value="#{medicamento.nome}" />
-							</div>
-						</ui:repeat>
-					</h:panelGroup>
-					<p:commandButton styleClass="btn btn-primary" value="Adicionar"
-									 actionListener="#{consultaController.adicionarMedicamentoUso}"
-									 update="lista-medicamentos" />
-				</div>
+			<div class="alert alert-info">
+				Os medicamentos inseridos aqui são os medicamentos que o paciente está
+				utilizando atualmente e não os medicamentos receitados.
 			</div>
+			<h:panelGroup id="lista-medicamentos">
+				<ui:repeat value="#{consultaController.consulta.variaveisClinicas.medicamentosUso}"
+					   var="medicamento">
+					<div class="form-group">
+						<p:outputLabel for="medicamento-uso" value="Medicamento em Uso" />
+						<h:inputText id="medicamento-uso" styleClass="form-control"
+								value="#{medicamento.nome}" />
+					</div>
+				</ui:repeat>
+			</h:panelGroup>
+			<p:commandButton styleClass="btn btn-primary" value="Adicionar"
+					actionListener="#{consultaController.adicionarMedicamentoUso}"
+					update="lista-medicamentos" />
 		</p:panel>
 	</p:tab>
 </ui:composition>

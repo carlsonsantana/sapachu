@@ -22,6 +22,10 @@ public class RelatorioController extends GenericController {
 	private MembroEquipe membroEquipe;
 	private MembroEquipe membroEquipePesquisa;
 	private transient Collection<Map<String, String>> dados;
+	private transient Collection<Map<String, String>> dadosAnterioresVariaveisClinicas;
+	private transient Collection<Map<String, String>> dadosPosterioresVariaveisClinicas;
+	private transient Collection<Map<String, String>> dadosAnterioresSituacaoUlcera;
+	private transient Collection<Map<String, String>> dadosPosterioresSituacaoUlcera;
 	private Collection<MembroEquipe> listaMembros;
 	
 	@Inject
@@ -64,6 +68,38 @@ public class RelatorioController extends GenericController {
 		this.dados = dados;
 	}
 	
+	public Collection<Map<String, String>> getDadosAnterioresVariaveisClinicas() {
+		return dadosAnterioresVariaveisClinicas;
+	}
+
+	public void setDadosAnterioresVariaveisClinicas(Collection<Map<String, String>> dadosAnterioresVariaveisClinicas) {
+		this.dadosAnterioresVariaveisClinicas = dadosAnterioresVariaveisClinicas;
+	}
+
+	public Collection<Map<String, String>> getDadosPosterioresVariaveisClinicas() {
+		return dadosPosterioresVariaveisClinicas;
+	}
+
+	public void setDadosPosterioresVariaveisClinicas(Collection<Map<String, String>> dadosPosterioresVariaveisClinicas) {
+		this.dadosPosterioresVariaveisClinicas = dadosPosterioresVariaveisClinicas;
+	}
+
+	public Collection<Map<String, String>> getDadosAnterioresSituacaoUlcera() {
+		return dadosAnterioresSituacaoUlcera;
+	}
+
+	public void setDadosAnterioresSituacaoUlcera(Collection<Map<String, String>> dadosAnterioresSituacaoUlcera) {
+		this.dadosAnterioresSituacaoUlcera = dadosAnterioresSituacaoUlcera;
+	}
+
+	public Collection<Map<String, String>> getDadosPosterioresSituacaoUlcera() {
+		return dadosPosterioresSituacaoUlcera;
+	}
+
+	public void setDadosPosterioresSituacaoUlcera(Collection<Map<String, String>> dadosPosterioresSituacaoUlcera) {
+		this.dadosPosterioresSituacaoUlcera = dadosPosterioresSituacaoUlcera;
+	}
+	
 	@PostConstruct
 	public void init() {
 		listaMembros = new ArrayList<MembroEquipe>();
@@ -74,7 +110,11 @@ public class RelatorioController extends GenericController {
 	public String gerarRelatorio(MembroEquipe membroEquipe) {
 		this.membroEquipe = membroEquipe;
 
-		dados = relatorioDAO.gerarRelatorio(membroEquipe);
+		dados = relatorioDAO.gerarRelatorioDiferenca(membroEquipe);
+		dadosAnterioresVariaveisClinicas = relatorioDAO.gerarRelatorioAnteriorVariaveisClinicas(membroEquipe);
+		dadosPosterioresVariaveisClinicas = relatorioDAO.gerarRelatorioPosteriorSituacaoUlcera(membroEquipe);
+		dadosAnterioresSituacaoUlcera = relatorioDAO.gerarRelatorioAnteriorSituacaoUlcera(membroEquipe);
+		dadosPosterioresSituacaoUlcera = relatorioDAO.gerarRelatorioPosteriorSituacaoUlcera(membroEquipe);
 
 		return PaginasNavegacao.RELATORIO_VISUALIZAR;
 	}

@@ -132,7 +132,7 @@ public class UsuarioController extends GenericController {
 
 			usuarioDAO.cadastrarUsuario(membro.getUsuario());
 
-			adicionarMensagemAviso("Membro cadastrado", "Membro cadastrado com Sucesso.");
+			adicionarMensagemAviso("Membro cadastrado com sucesso.");
 
 			return PaginasNavegacao.PAGINA_INICIAL;
 		} else {
@@ -144,7 +144,7 @@ public class UsuarioController extends GenericController {
 		if (validarUsuario(membroEquipe.getUsuario())) {
 			usuarioDAO.editarUsuario(membroEquipe.getUsuario());
 
-			adicionarMensagemAviso("Membro editado", "Membro editado com Sucesso.");
+			adicionarMensagemAviso("Membro editado com sucesso.");
 
 			return PaginasNavegacao.PAGINA_INICIAL;
 		} else {
@@ -161,23 +161,22 @@ public class UsuarioController extends GenericController {
 		Usuario usuarioExistente = usuarioDAO.getUsuarioExistente(usuario);
 		if (usuarioExistente != null) {
 			if (usuarioExistente.getNomeUsuario().equals(membroEquipe.getUsuario().getNomeUsuario().toLowerCase())) {
-				adicionarMensagemErro("Login já existe", "Já existe um usuário com este login.");
+				adicionarMensagemErro("Já existe um usuário com este login.");
 			}
 			if (usuarioExistente.getMembroEquipe().getEmail().equals(membroEquipe.getEmail().toLowerCase())) {
-				adicionarMensagemErro("E-mail já existe", "Já existe um usuário com este e-mail.");
+				adicionarMensagemErro("Já existe um usuário com este e-mail.");
 			}
 			if (usuarioExistente.getMembroEquipe().getCpf().equals(membroEquipe.getCpf())) {
-				adicionarMensagemErro("CPF já existe", "Já existe um usuário com este CPF.");
+				adicionarMensagemErro("Já existe um usuário com este CPF.");
 			}
 			resultado = false;
 		}
 		if (!isCPFValido(usuario.getMembroEquipe().getCpf())) {
-			adicionarMensagemErro("CPF inválido", "O CPF informado é inválido.");
+			adicionarMensagemErro("O CPF informado é inválido.");
 			resultado = false;
 		}
 		if (!usuario.getSenha().equals(confirmacaoSenha)) {
-			adicionarMensagemErro("Senhas diferentes", "A senha digitada "
-					+ "e sua confirmação estão diferentes.");
+			adicionarMensagemErro("A senha digitada e sua confirmação estão diferentes.");
 			resultado = false;
 		}
 		return resultado;

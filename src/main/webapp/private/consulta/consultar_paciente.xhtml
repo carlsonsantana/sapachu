@@ -1,51 +1,49 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-				xmlns:h="http://java.sun.com/jsf/html"
-				xmlns:f="http://java.sun.com/jsf/core"
-				xmlns:c="http://java.sun.com/jsp/jstl/core"
-				xmlns:ui="http://java.sun.com/jsf/facelets"
-				xmlns:p="http://primefaces.org/ui"
-				template="/templates/defaulttemplate.xhtml">
-	<ui:define name="title">Consultar Paciente</ui:define>
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:c="http://java.sun.com/jsp/jstl/core"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:p="http://primefaces.org/ui"
+		template="/templates/defaulttemplate.xhtml">
+	<ui:define name="title">Consultar Paciente <h:outputText value="#{consultaController.consulta.paciente.nome}" /></ui:define>
 	<ui:define name="content">
 		<h:form id="form" acceptcharset="UTF-8">
-			<fieldset>
-				<legend>Consultar Paciente</legend>
-				Nome: <h:outputText value="#{consultaController.consulta.paciente.nome}" /><br />
-				Prontuário: <h:outputText value="#{consultaController.consulta.paciente.prontuario}" /><br /><br />
-				<p:wizard flowListener="#{consultaController.onProximoPasso}" id="passoapasso"
-						  nextLabel="Próximo" backLabel="Voltar"
-						  onback="sumirAreas()" onnext="sumirAreas()">
-					<ui:insert name="variaveisclinicas">
-						<ui:include src="/private/consulta/consulta/editar_variaveis_clinicas.xhtml" />
+			<h2>Consultar Paciente</h2>
+			Nome: <h:outputText value="#{consultaController.consulta.paciente.nome}" /><br />
+			Prontuário: <h:outputText value="#{consultaController.consulta.paciente.prontuario}" /><br /><br />
+			<p:wizard flowListener="#{consultaController.onProximoPasso}" id="passoapasso"
+					nextLabel="Próximo" backLabel="Voltar"
+					onback="sumirAreas()" onnext="sumirAreas()">
+				<ui:insert name="variaveisclinicas">
+					<ui:include src="/private/consulta/consulta/editar_variaveis_clinicas.xhtml" />
+				</ui:insert>
+				<ui:insert name="medicamentosemuso">
+					<ui:include src="/private/consulta/consulta/medicamentos.xhtml" />
+				</ui:insert>
+				<ui:insert name="ulceras">
+					<ui:include src="/private/consulta/consulta/ulceras.xhtml" />
+				</ui:insert>
+				<c:if test="#{perfilController.enfermeiro}">
+					<ui:insert name="intervencao">
+						<ui:include src="/private/consulta/consulta/intervencao_enfermagem.xhtml" />
 					</ui:insert>
-					<ui:insert name="medicamentosemuso">
-						<ui:include src="/private/consulta/consulta/medicamentos.xhtml" />
-					</ui:insert>
-					<ui:insert name="ulceras">
-						<ui:include src="/private/consulta/consulta/ulceras.xhtml" />
-					</ui:insert>
-					<c:if test="#{perfilController.enfermeiro}">
-						<ui:insert name="intervencao">
-							<ui:include src="/private/consulta/consulta/intervencao_enfermagem.xhtml" />
-						</ui:insert>
-					</c:if>
-					<ui:insert name="membros">
-						<ui:include src="/private/consulta/consulta/membros.xhtml" />
-					</ui:insert>
-					<ui:insert name="confirmacao">
-						<ui:include src="/private/consulta/consulta/confirmar.xhtml" />
-					</ui:insert>
-				</p:wizard>
-				<br /><br />
-				<div>
-					<h:commandButton value="Pesquisar Outro Paciente"
-									 action="#{consultaController.telaPesquisarPaciente()}"
-									 styleClass="btn btn-default" />
-					<h:outputText value=" " />
-					<h:commandButton value="Cancelar" action="#{consultaController.cancelar()}"
-									 styleClass="btn btn-danger" onclick="return cancelar();" />
-				</div>
-			</fieldset>
+				</c:if>
+				<ui:insert name="membros">
+					<ui:include src="/private/consulta/consulta/membros.xhtml" />
+				</ui:insert>
+				<ui:insert name="confirmacao">
+					<ui:include src="/private/consulta/consulta/confirmar.xhtml" />
+				</ui:insert>
+			</p:wizard>
+			<br /><br />
+			<div>
+				<h:commandButton value="Pesquisar Outro Paciente"
+						action="#{consultaController.telaPesquisarPaciente()}"
+						styleClass="btn btn-default" />
+				<h:outputText value=" " />
+				<h:commandButton value="Cancelar" action="#{consultaController.cancelar()}"
+						styleClass="btn btn-danger" onclick="return cancelar();" />
+			</div>
 		</h:form>
 	</ui:define>
 </ui:composition>

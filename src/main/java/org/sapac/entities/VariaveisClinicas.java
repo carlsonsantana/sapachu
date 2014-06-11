@@ -2,7 +2,6 @@ package org.sapac.entities;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,8 +12,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -404,5 +401,20 @@ public class VariaveisClinicas implements Serializable {
 
 	public void setOutrasDrogas(String outrasDrogas) {
 		this.outrasDrogas = outrasDrogas;
+	}
+	
+	@Override
+	public boolean equals(Object object) {
+		if (this != object) {
+			if (!(object instanceof VariaveisClinicas)) {
+				return false;
+			}
+			
+			VariaveisClinicas variaveisClinicas = (VariaveisClinicas) object;
+			if (this.getId() != variaveisClinicas.getId()) {
+				return false;
+			}
+		}
+		return true;
 	}
 }

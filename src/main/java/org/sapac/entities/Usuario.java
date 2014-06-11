@@ -91,4 +91,19 @@ public class Usuario implements Serializable {
 	public void setMembroEquipe(MembroEquipe membroEquipe) {
 		this.membroEquipe = membroEquipe;
 	}
+	
+	@Override
+	public boolean equals(Object object) {
+		if (this != object) {
+			if (!(object instanceof Usuario)) {
+				return false;
+			}
+			
+			Usuario usuario = (Usuario) object;
+			if (this.getId() != usuario.getId()) {
+				return false;
+			}
+		}
+		return true;
+	}
 }

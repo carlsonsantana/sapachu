@@ -1,60 +1,71 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-				xmlns:h="http://java.sun.com/jsf/html"
-				xmlns:f="http://java.sun.com/jsf/core"
-				xmlns:ui="http://java.sun.com/jsf/facelets"
-				xmlns:p="http://primefaces.org/ui"
-				template="/templates/defaulttemplate.xhtml">
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:p="http://primefaces.org/ui"
+		xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+		template="/templates/defaulttemplate.xhtml">
 	<ui:define name="title">Pesquisar Membro</ui:define>
 	<ui:define name="content">
-		<h:form id="form">
+		<h2>Pesquisar Membro</h2>
+		<h:form id="form" acceptcharset="UTF-8">
 			<fieldset>
-				<legend>Pesquisar Membro</legend>
+				<legend>Pesquisar Membro da Esquipe Médica</legend>
+				<div class="alert alert-info">
+					A pesquisa abaixo não precisa ter o campos preenchido para mostrar os resultados,
+					sendo que pesquisando pelo nome do membro da equipe médica será mostrados
+					todos os membros que em seu nome tiverem as letras digitadas, não sendo necessário digitar
+					o nome completo. Não digitando nada nos campos e apertando o botão de Pesquisar
+					serão listados todos os membros cadastrados.
+				</div>
 				<div class="container">
 					<div class="row">
 						<div class="form-group col-lg-6">
-							<p:outputLabel for="nome-membro" value="Membro" />
-							<p:inputText id="nome-membro" styleClass="form-control"
-										 value="#{usuarioController.membroEquipePesquisa.nome}" />
+							<p:outputLabel for="nome-membro" value="Nome" />
+							<h:inputText id="nome-membro" styleClass="form-control"
+									value="#{usuarioController.membroEquipePesquisa.nome}" />
 						</div>
 					</div>
 				</div>
-				<div class="form-group">
-					<input type="reset" value="Limpar Campos" class="btn btn-default" />
-					<h:outputText value=" " />
-					<p:commandButton value="Pequisar" styleClass="btn btn-primary"
-									 action="#{usuarioController.pesquisarUsuario}"
-									 update="datatable" />
-				</div>
-				<br /><br />
-				<p:dataTable id="datatable" value="#{usuarioController.listaMembros}"
-							 var="membroEquipe" paginator="true" rows="10" lazy="true"
-							 paginatorPosition="bottom" paginatorAlwaysVisible="false"
-							 emptyMessage="Nenhum resultado encontrado.">
-					<p:column>
-						<f:facet name="header"><h:outputText value="Nome" /></f:facet>
-						<h:outputText value="#{membroEquipe.nome}" />
-					</p:column>
-					<p:column>
-						<f:facet name="header"><h:outputText value="Tipo" /></f:facet>
-						<h:outputText value="Médico" rendered="#{membroEquipe.medico}" />
-						<h:outputText value="Enfermeiro" rendered="#{membroEquipe.enfermeiro}" />
-					</p:column>
-					<p:column>
-						<f:facet name="header"><h:outputText value="Ativo" /></f:facet>
-						<h:outputText value="Sim" rendered="#{membroEquipe.usuario.ativo}" />
-						<h:outputText value="Não" rendered="#{not membroEquipe.usuario.ativo}" />
-					</p:column>
-					<p:column>
-						<f:facet name="header"><h:outputText value="Ações" /></f:facet>
-						<h:commandLink value="Editar" action="#{usuarioController.telaEditarUsuario(membroEquipe)}" />
-						<h:outputText value=" " />
-						<h:commandLink value="Inativar" rendered="#{membroEquipe.usuario.ativo}"
-									   action="#{usuarioController.inativarUsuario(membroEquipe)}" />
-						<h:commandLink value="Ativar" rendered="#{not membroEquipe.usuario.ativo}" 
-									   action="#{usuarioController.ativarUsuario(membroEquipe)}" />
-					</p:column>
-				</p:dataTable>
 			</fieldset>
+			<div class="form-group">
+				<input type="reset" value="Limpar Campos" class="btn btn-default" />
+				<h:outputText value=" " />
+				<p:commandButton value="Pequisar" styleClass="btn btn-primary"
+						action="#{usuarioController.pesquisarUsuario}"
+						update="datatable" />
+			</div>
+			<hr />
+			<br /><br />
+			<p:dataTable id="datatable" value="#{usuarioController.listaMembros}"
+					var="membroEquipe" paginator="true" rows="10" lazy="true"
+					paginatorPosition="bottom" paginatorAlwaysVisible="false"
+					emptyMessage="Nenhum resultado encontrado.">
+				<f:facet name="header"><h:outputText value="Membros encontrados (#{fn:length(usuarioController.listaMembros)})" /></f:facet>
+				<p:column>
+					<f:facet name="header"><h:outputText value="Nome" /></f:facet>
+					<h:outputText value="#{membroEquipe.nome}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header"><h:outputText value="Profissão" /></f:facet>
+					<h:outputText value="Médico" rendered="#{membroEquipe.medico}" />
+					<h:outputText value="Enfermeiro" rendered="#{membroEquipe.enfermeiro}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header"><h:outputText value="Ativo" /></f:facet>
+					<h:outputText value="Sim" rendered="#{membroEquipe.usuario.ativo}" />
+					<h:outputText value="Não" rendered="#{not membroEquipe.usuario.ativo}" />
+				</p:column>
+				<p:column>
+					<f:facet name="header"><h:outputText value="Ações" /></f:facet>
+					<h:commandLink value="Editar" action="#{usuarioController.telaEditarUsuario(membroEquipe)}" />
+					<h:outputText value=" " />
+					<h:commandLink value="Inativar" rendered="#{membroEquipe.usuario.ativo}"
+							action="#{usuarioController.inativarUsuario(membroEquipe)}" />
+					<h:commandLink value="Ativar" rendered="#{not membroEquipe.usuario.ativo}" 
+							action="#{usuarioController.ativarUsuario(membroEquipe)}" />
+				</p:column>
+			</p:dataTable>
 		</h:form>
 	</ui:define>
 </ui:composition>

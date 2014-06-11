@@ -165,16 +165,16 @@ public class AgendaController extends GenericController {
 			if (validaConsulta(consulta)) {
 				consultaDAO.marcarConsulta(consulta);
 
-				adicionarMensagemAviso("Consulta Marcada", "A consulta do paciente \""
-						+ paciente.getNome() + "\", para o dia "
-						+ getDataFormatada(data) + ", foi marcada com sucesso.");
+				adicionarMensagemAviso("A consulta do paciente \""
+						+ paciente.getNome() + "\" foi marcada para o dia "
+						+ getDataFormatada(data) + ".");
 
 				return PaginasNavegacao.PAGINA_INICIAL;
 			} else {
 				return PaginasNavegacao.CONSULTA_MARCAR;
 			}
 		} else {
-			adicionarMensagemErro("Nenhuma data selecionada", "Selecione a data no calendário da consulta do paciente.");
+			adicionarMensagemErro("Selecione a data da consulta do paciente no calendário.");
 
 			return PaginasNavegacao.CONSULTA_MARCAR;
 		}
@@ -200,7 +200,7 @@ public class AgendaController extends GenericController {
 				setPodeMarcar(false);
 			}
 		} else {
-			adicionarMensagemAlerta("", "Uma consulta já foi marcada");
+			adicionarMensagemAlerta("Apenas uma consulta pode marcada.");
 		}
 	}
 
@@ -251,7 +251,7 @@ public class AgendaController extends GenericController {
 				consultaRemarcada.setData(new Date(dataAntiga.getTime()));
 			}
 		} else {
-			adicionarMensagemAlerta("A consulta já foi realizada", "A consulta selecionada já foi realizada.");
+			adicionarMensagemAlerta("A consulta selecionada para ser remarcada já foi realizada.");
 			scheduleEvent.setStartDate(new Date(dataAntiga.getTime()));
 			scheduleEvent.setEndDate(new Date(dataAntiga.getTime()));
 		}
@@ -270,18 +270,30 @@ public class AgendaController extends GenericController {
 			remarcados.remove(consulta);
 			cancelados.add(consulta);
 		} else {
-			adicionarMensagemAlerta("A consulta já foi realizada", "A consulta selecionada já foi realizada.");
+			adicionarMensagemAlerta("A consulta selecionada para ser cancelada já foi realizada.");
 		}
 	}
 
 	public String remarcarDatas() {
 		consultaDAO.remarcarConsultas(remarcados);
 		consultaDAO.cancelarConsultas(cancelados);
+		
+		String mensagem = "";
+		if (remarcados.isEmpty()) {
+			mensagem = Integer.toString(remarcados.size()) + " consulta(s) remarcadas";
+		}
+		if (cancelados.isEmpty()) {
+			if (!mensagem.isEmpty()) {
+				mensagem += " e ";
+			}
+			mensagem += Integer.toString(cancelados.size()) + " consulta(s) canceladas";
+		}
+		mensagem += ".";
 
 		remarcados.clear();
 		cancelados.clear();
 
-		adicionarMensagemAviso("Consultas Remarcadas", "Consultas remarcadas com sucesso.");
+		adicionarMensagemAviso("Consultas remarcadas com sucesso.");
 
 		return PaginasNavegacao.PAGINA_INICIAL;
 	}
@@ -315,19 +327,19 @@ public class AgendaController extends GenericController {
 		Date hoje = new Date();
 		if ((consulta.getData().before(hoje))
 				&& (!getDataFormatada(consulta.getData()).equals(getDataFormatada(hoje)))) {
-			adicionarMensagemAlerta("Consulta Não marcada", "A data escolhida para a consulta não pode ser inferior a data atual.");
+			adicionarMensagemAlerta("A data selecionada para a consulta não pode ser inferior a data atual.");
 			return false;
 		} else {
 			if (isMesmoMes(consulta.getData(), hoje)) {
 				if (hasConsultaMarcadaMesmoDiaMes(consulta)) {
-					adicionarMensagemAlerta("Consulta Não marcada", "O paciente \"" + consulta.getPaciente().getNome() + "\""
-							+ " já possuí uma consulta marcada para o dia " + getDataFormatada(consulta.getData()));
+					adicionarMensagemAlerta("O paciente \"" + consulta.getPaciente().getNome() + "\""
+							+ " já possuí uma consulta marcada para o dia " + getDataFormatada(consulta.getData()) + ".");
 					return false;
 				}
 			} else {
 				if (consultaDAO.temConsultaDia(consulta.getPaciente(), consulta.getData())) {
-					adicionarMensagemAlerta("Consulta Não marcada", "O paciente \"" + consulta.getPaciente().getNome() + "\""
-							+ " já possuí uma consulta marcada para o dia " + getDataFormatada(consulta.getData()));
+					adicionarMensagemAlerta("O paciente \"" + consulta.getPaciente().getNome() + "\""
+							+ " já possuí uma consulta marcada para o dia " + getDataFormatada(consulta.getData()) + ".");
 					return false;
 				}
 			}

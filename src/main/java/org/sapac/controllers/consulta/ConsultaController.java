@@ -30,6 +30,7 @@ import org.sapac.entities.SituacaoUlceraConsulta;
 import org.sapac.entities.Ulcera;
 import org.sapac.entities.VariaveisClinicas;
 import org.sapac.models.ConsultaDAO;
+import org.sapac.models.UsuarioDAO;
 import org.sapac.utils.ConfiguracaoHelper;
 
 @Named
@@ -54,9 +55,22 @@ public class ConsultaController extends GenericController {
 	private PerfilController perfilController;
 	@Inject
 	@DAOQualifier(DAOQualifier.DAOType.HIBERNATE)
+	private UsuarioDAO usuarioDAO;
+	@Inject
+	@DAOQualifier(DAOQualifier.DAOType.HIBERNATE)
 	private ConsultaDAO consultaDAO;
 	@Inject
 	private ConfiguracaoHelper configuracaoHelper;
+	private MembroEquipe membroEquipe;
+	private Collection<MembroEquipe> membrosEncontrados;
+
+	public MembroEquipe getMembroEquipe() {
+		return membroEquipe;
+	}
+
+	public void setMembroEquipe(MembroEquipe membroEquipe) {
+		this.membroEquipe = membroEquipe;
+	}
 
 	private enum Operacao {
 		EDITAR_ULCERA,
@@ -172,6 +186,8 @@ public class ConsultaController extends GenericController {
 		estadosUlceras = new ArrayList<Integer>();
 		ulceraDividida = null;
 		listaConsultas = new ArrayList<Consulta>();
+		membroEquipe = new MembroEquipe();
+		membrosEncontrados = new ArrayList<MembroEquipe>();
 	}
 
 	public String telaPesquisarPaciente() {
@@ -234,8 +250,7 @@ public class ConsultaController extends GenericController {
 		}
 		situacaoUlceraConsulta.getFotoUlcera().setEnderecoImagem(imagem);
 
-		adicionarMensagemAviso("Arquivo enviado com sucesso", "O arquivo \"" +
-				event.getFile().getFileName() + "\" foi enviado com sucesso.");
+		adicionarMensagemAviso("O arquivo \"" + event.getFile().getFileName() + "\" foi enviado com sucesso.");
 	}
 
 	public String confirmarConsulta() {
@@ -243,13 +258,14 @@ public class ConsultaController extends GenericController {
 
 		consultaDAO.editarConsulta(consulta);
 
-		adicionarMensagemAviso("Consulta realizada",
-				"Consulta salva com sucesso.");
+		adicionarMensagemAviso("Consulta salva com sucesso.");
 
 		return telaPesquisarPaciente();
 	}
 
 	public String visualizarConsulta(Consulta consulta) {
+		operacao = Operacao.EDITAR_ULCERA;
+		
 		setConsulta(consultaDAO.carregarConsulta(consulta));
 
 		setSituacaoUlceraConsulta(null);
@@ -279,9 +295,9 @@ public class ConsultaController extends GenericController {
 	public void adicionarMembroEquipe(MembroEquipe membroEquipe) {
 		if (!consulta.getMembrosEquipe().contains(membroEquipe)) {
 			consulta.getMembrosEquipe().add(membroEquipe);
+			membrosEncontrados.remove(membroEquipe);
 		} else {
-			adicionarMensagemAlerta("Membro já adicionado",
-					"O membro da equipe médica já foi adicionado como um dos participantes desta consulta.");
+			adicionarMensagemAlerta("O membro da equipe médica já foi adicionado como um dos participantes desta consulta.");
 		}
 
 	}
@@ -290,8 +306,7 @@ public class ConsultaController extends GenericController {
 		if (!membroEquipe.equals(perfilController.getUsuario().getMembroEquipe())) {
 			consulta.getMembrosEquipe().remove(membroEquipe);
 		} else {
-			adicionarMensagemAlerta("Membro não pode ser removido",
-					"Este membro não pode ser removido.");
+			adicionarMensagemAlerta("Você não pode se remover como participante da consulta.");
 		}
 	}
 
@@ -303,8 +318,7 @@ public class ConsultaController extends GenericController {
 				&& ((event.getNewStep().equals("participantes"))
 				|| (event.getNewStep().equals("intervencaoenfermagem")))) {
 			if (!validarSituacoesUlceras()) {
-				adicionarMensagemAviso("Situações de Úlceras Não Informadas",
-						"Algumas situações das úlceras não foram informadas.");
+				adicionarMensagemAviso("Todas as situações das úlceras precisam ser informadas.");
 
 				return event.getOldStep();
 			}
@@ -354,7 +368,7 @@ public class ConsultaController extends GenericController {
 				}
 			}
 		} else {
-			adicionarMensagemErro("", "Selecione uma área para adicionar.");
+			adicionarMensagemErro("É necessário selecionar uma área para adicionar.");
 		}
 		area = "";
 	}
@@ -403,7 +417,7 @@ public class ConsultaController extends GenericController {
 		limparDivisaoJuncao();
 
 		if (situacaoUlcera.getUlcera().getId() > 0) {
-			adicionarMensagemErro("Não é possível remover a úlcera", "A úlcera já foi salva no banco de dados não é possível excluí-la.");
+			adicionarMensagemErro("Uma úlcera que já foi salva, não pode excluí-la.");
 		} else {
 			Iterator<SituacaoUlceraConsulta> iteratorSituacao = consulta.getSituacoesUlcera().iterator();
 			int index = -1;
@@ -429,9 +443,9 @@ public class ConsultaController extends GenericController {
 			ulcerasJuntadas.add(situacaoUlcera);
 			situacaoUlcera.setEstadoUlcera(Ulcera.ULCERA_JUNTADA);
 		} else if (situacaoUlcera.getUlcera().getId() == 0) {
-			adicionarMensagemErro("", "Não é possível juntar uma úlcera que não foi salva anteriormente.");
+			adicionarMensagemErro("Não é possível juntar uma úlcera que não foi salva anteriormente.");
 		} else {
-			adicionarMensagemErro("", "Não é possível juntar uma úlcera que já teve sua situação informada.");
+			adicionarMensagemErro("Não é possível juntar uma úlcera que já teve sua situação informada.");
 		}
 	}
 
@@ -445,9 +459,9 @@ public class ConsultaController extends GenericController {
 				ulceraDividida = situacaoUlcera;
 				situacaoUlcera.setEstadoUlcera(Ulcera.ULCERA_SEPARADA);
 			} else if (situacaoUlcera.getUlcera().getId() == 0) {
-				adicionarMensagemErro("", "Não é possível dividir uma úlcera que não foi salva anteriormente.");
+				adicionarMensagemErro("Não é possível dividir uma úlcera que não foi salva anteriormente.");
 			} else {
-				adicionarMensagemErro("", "Não é possível dividir uma úlcera que já teve sua situação informada.");
+				adicionarMensagemErro("Não é possível dividir uma úlcera que já teve sua situação informada.");
 			}
 		}
 	}
@@ -464,10 +478,26 @@ public class ConsultaController extends GenericController {
 		}
 	}
 	
+	public void pesquisarMembrosNaoParticipantes() {
+		Collection<MembroEquipe> membros = usuarioDAO.pesquisarUsuario(membroEquipe);
+		membros.removeAll(consulta.getMembrosEquipe());
+		membrosEncontrados = membros;
+	}
+	
+	public Collection<MembroEquipe> getMembrosEncontrados() {
+		return membrosEncontrados;
+	}
+	
+	public void setMembrosEncontrados(Collection<MembroEquipe> membros) {
+		membrosEncontrados = membros;
+	}
+	
 	private boolean validarSituacaoUlcera(SituacaoUlceraConsulta situacaoUlcera) {
 		if (situacaoUlcera.getFotoUlcera() == null) {
-			adicionarMensagemAlerta("Faltou a imagem",
-					"Para cada úlcera é necessário uma foto.");
+			adicionarMensagemAlerta("É necessário fazer o upload da foto da úlcera.");
+			return false;
+		} else if ((!situacaoUlcera.isCicatrizada()) && (situacaoUlcera.getArea() == 0.0)) {
+			adicionarMensagemAlerta("É necessário selecionar a área da úlcera.");
 			return false;
 		}
 
@@ -658,7 +688,7 @@ public class ConsultaController extends GenericController {
 
 				return true;
 			} else {
-				adicionarMensagemErro("", "Para dividir uma úlcera é necessário que pelo menos duas úlceras sejam adicionadas.");
+				adicionarMensagemErro("Para dividir uma úlcera é necessário, pelo menos duas úlceras sejam adicionadas.");
 
 				return false;
 			}
@@ -668,7 +698,7 @@ public class ConsultaController extends GenericController {
 
 				return true;
 			} else {
-				adicionarMensagemErro("", "Para juntar uma úlcera é necessário que pelo menos duas úlceras sejam juntadas.");
+				adicionarMensagemErro("Para juntar uma úlcera é necessário, pelo menos duas úlceras sejam juntadas.");
 
 				return false;
 			}
@@ -679,7 +709,7 @@ public class ConsultaController extends GenericController {
 
 	private boolean validarDivisaoAdicionar() {
 		if (ulceraDividida == null) {
-			adicionarMensagemErro("", "Para adicionar uma úlcera no modo de divisão é necessário primeiro selecionar uma úlcera.");
+			adicionarMensagemErro("Para adicionar uma úlcera no modo de divisão é necessário, primeiro selecionar uma úlcera.");
 
 			return false;
 		}
@@ -689,7 +719,7 @@ public class ConsultaController extends GenericController {
 
 	private boolean validarJuncaoAdicionar() {
 		if (ulcerasJuntadas.size() < 2) {
-			adicionarMensagemErro("", "Para juntar uma úlcera é necessário que pelo menos duas úlceras sejam juntadas.");
+			adicionarMensagemErro("Para juntar uma úlcera é necessário, pelo menos duas úlceras sejam juntadas.");
 
 			return false;
 		}

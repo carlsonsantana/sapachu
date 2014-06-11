@@ -65,4 +65,19 @@ public class IntervencaoEnfermagem implements Serializable {
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
+	
+	@Override
+	public boolean equals(Object object) {
+		if (this != object) {
+			if (!(object instanceof IntervencaoEnfermagem)) {
+				return false;
+			}
+			
+			IntervencaoEnfermagem intervencaoEnfermagem = (IntervencaoEnfermagem) object;
+			if (this.getId() != intervencaoEnfermagem.getId()) {
+				return false;
+			}
+		}
+		return true;
+	}
 }

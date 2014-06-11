@@ -1,111 +1,107 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-				xmlns:h="http://java.sun.com/jsf/html"
-				xmlns:f="http://java.sun.com/jsf/core"
-				xmlns:ui="http://java.sun.com/jsf/facelets"
-				xmlns:p="http://primefaces.org/ui"
-				template="/templates/defaulttemplate.xhtml">
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:p="http://primefaces.org/ui"
+		template="/templates/defaulttemplate.xhtml">
 	<ui:define name="title">Diagnosticar Paciente</ui:define>
 	<ui:define name="content">
-		<h:form id="form">
-			<fieldset>
-				<legend>Diagnóstico da Enfermagem</legend>
-				Nome: <h:outputText value="#{enfermagemController.paciente.nome}" /><br />
-				Prontuário: <h:outputText value="#{enfermagemController.paciente.prontuario}" /><br /><br />
-				<div class="form-group">
-					<p:outputLabel for="riscoGlicemia" value="Risco de glicemia instável relacionada" />
-					<h:inputTextarea id="riscoGlicemia" styleClass="form-control"
-									 value="#{enfermagemController.paciente.diagnosticoEnfermagem.riscoGlicemiaInstavel}" />
-				</div>
-				<div class="form-group">
-					<p:outputLabel for="nutricaoDesequilibradaSelect"
-								   value="Risco de nutrição desequilibrada" />
-					<h:selectOneMenu styleClass="form-control" id="nutricaoDesequilibradaSelect" 
-									 value="#{enfermagemController.paciente.diagnosticoEnfermagem.riscoNutricaoAcimaNecessidadesCorporais}"
-									 onchange="if (mudarBotao !== undefined) document.getElementById(mudarBotao.id).click();">
-						<f:selectItem itemLabel="Sem risco" itemValue="#{null}" />
-						<f:selectItem itemLabel="Acima das necessidades corporais" itemValue="#{true}" />
-						<f:selectItem itemLabel="Abaixo das necessidades corporais" itemValue="#{false}" />
-					</h:selectOneMenu>
-					<h:panelGroup id="camponutricaoDesequilibrada">
-						<h:panelGroup
-								rendered="#{not (enfermagemController.paciente.diagnosticoEnfermagem.riscoNutricaoAcimaNecessidadesCorporais eq null)}">
-							<p:outputLabel for="nutricaoDesequilibrada" value="Risco de nutrição desequilibrada"
-									styleClass="hidden" />
-							<h:inputTextarea id="nutricaoDesequilibrada" styleClass="form-control"
-									value="#{enfermagemController.paciente.diagnosticoEnfermagem.riscoNutricaoDesequilibrada}" />
-						</h:panelGroup>
+		<h:form id="form" acceptcharset="UTF-8">
+			<h2>Diagnóstico da Enfermagem</h2>
+			Nome: <h:outputText value="#{enfermagemController.paciente.nome}" /><br />
+			Prontuário: <h:outputText value="#{enfermagemController.paciente.prontuario}" /><br /><br />
+			<div class="form-group">
+				<p:outputLabel for="riscoGlicemia" value="Risco de glicemia instável relacionada" />
+				<h:inputTextarea id="riscoGlicemia" styleClass="form-control"
+						value="#{enfermagemController.paciente.diagnosticoEnfermagem.riscoGlicemiaInstavel}" />
+			</div>
+			<div class="form-group">
+				<p:outputLabel for="nutricaoDesequilibradaSelect" value="Risco de nutrição desequilibrada" />
+				<h:selectOneMenu styleClass="form-control" id="nutricaoDesequilibradaSelect" 
+						value="#{enfermagemController.paciente.diagnosticoEnfermagem.riscoNutricaoAcimaNecessidadesCorporais}"
+						onchange="if (mudarBotao !== undefined) document.getElementById(mudarBotao.id).click();">
+					<f:selectItem itemLabel="Sem risco" itemValue="#{null}" />
+					<f:selectItem itemLabel="Acima das necessidades corporais" itemValue="#{true}" />
+					<f:selectItem itemLabel="Abaixo das necessidades corporais" itemValue="#{false}" />
+				</h:selectOneMenu>
+				<h:panelGroup id="camponutricaoDesequilibrada">
+					<h:panelGroup rendered="#{not (enfermagemController.paciente.diagnosticoEnfermagem.riscoNutricaoAcimaNecessidadesCorporais eq null)}">
+						<p:outputLabel for="nutricaoDesequilibrada" value="Risco de nutrição desequilibrada"
+								styleClass="hidden" />
+						<h:inputTextarea id="nutricaoDesequilibrada" styleClass="form-control"
+								value="#{enfermagemController.paciente.diagnosticoEnfermagem.riscoNutricaoDesequilibrada}" />
 					</h:panelGroup>
-				</div>
-				<div class="form-group">
-					<p:outputLabel for="sonoPrejudicado" value="Padrão de sono prejudicado" />
-					<h:inputTextarea id="sonoPrejudicado" styleClass="form-control"
-									 value="#{enfermagemController.paciente.diagnosticoEnfermagem.sonoPrejudicado}" />
-				</div>
-				<div class="form-group">
-					<p:outputLabel for="mobilidadePrejudicada" value="Mobilidade física prejudicada" />
-					<h:inputTextarea id="mobilidadePrejudicada" styleClass="form-control"
-									 value="#{enfermagemController.paciente.diagnosticoEnfermagem.mobilidadeFisicaPrejudicada}" />
-				</div>
-				<div class="form-group">
-					<p:outputLabel for="perfusaoTissularPerifericaIneficaz" value="Perfusão tissular periférica ineficaz" />
-					<h:inputTextarea id="perfusaoTissularPerifericaIneficaz" styleClass="form-control"
-									 value="#{enfermagemController.paciente.diagnosticoEnfermagem.perfusaoTissularPerifericaIneficaz}" />
-				</div>
-				<div class="form-group">
-					<p:outputLabel for="interacaoSocialPrejudicada" value="Interação Social prejudicada" />
-					<h:inputTextarea id="interacaoSocialPrejudicada" styleClass="form-control"
-									 value="#{enfermagemController.paciente.diagnosticoEnfermagem.interacaoSocialPrejudicada}" />
-				</div>
-				<div class="form-group">
-					<p:outputLabel for="faltaAdesao" value="Falta de Adesão" />
-					<h:inputTextarea id="faltaAdesao" styleClass="form-control"
-									 value="#{enfermagemController.paciente.diagnosticoEnfermagem.faltaAdesao}" />
-				</div>
-				<div class="form-group">
-					<p:outputLabel for="riscoInfeccao" value="Risco de Infecção" />
-					<h:inputTextarea id="riscoInfeccao" styleClass="form-control"
-									 value="#{enfermagemController.paciente.diagnosticoEnfermagem.riscoInfeccao}" />
-				</div>
-				<div class="form-group">
-					<p:outputLabel for="integridadePelePrejudicada" value="Integridade da pele prejudicada" />
-					<h:inputTextarea id="integridadePelePrejudicada" styleClass="form-control"
-									 value="#{enfermagemController.paciente.diagnosticoEnfermagem.integridadePelePrejudicada}" />
-				</div>
-				<div class="form-group">
-					<p:outputLabel for="tipoDor" value="Dor" />
-					<h:selectOneMenu id="tipoDor" styleClass="form-control"
-							value="#{enfermagemController.paciente.diagnosticoEnfermagem.tipoDor}"
-							onchange="if (mudarBotao !== undefined) document.getElementById(mudarBotao.id).click();">
-						<f:selectItem itemLabel="Sem Dor" itemValue="#{null}" />
-						<f:selectItem itemLabel="Dor Aguda" itemValue="#{1}" />
-						<f:selectItem itemLabel="Dor Crônica" itemValue="#{2}" />
-						<f:selectItem itemLabel="Ambas" itemValue="#{3}" />
-					</h:selectOneMenu>
-					<h:panelGroup id="campoDor">
-						<h:panelGroup
-								rendered="#{not (enfermagemController.paciente.diagnosticoEnfermagem.tipoDor eq null)}">
-							<p:outputLabel for="dor" value="Dor" styleClass="hidden" />
-							<h:inputTextarea id="dor" styleClass="form-control"
-									value="#{enfermagemController.paciente.diagnosticoEnfermagem.dor}" />
-						</h:panelGroup>
+				</h:panelGroup>
+			</div>
+			<div class="form-group">
+				<p:outputLabel for="sonoPrejudicado" value="Padrão de sono prejudicado" />
+				<h:inputTextarea id="sonoPrejudicado" styleClass="form-control"
+						value="#{enfermagemController.paciente.diagnosticoEnfermagem.sonoPrejudicado}" />
+			</div>
+			<div class="form-group">
+				<p:outputLabel for="mobilidadePrejudicada" value="Mobilidade física prejudicada" />
+				<h:inputTextarea id="mobilidadePrejudicada" styleClass="form-control"
+						value="#{enfermagemController.paciente.diagnosticoEnfermagem.mobilidadeFisicaPrejudicada}" />
+			</div>
+			<div class="form-group">
+				<p:outputLabel for="perfusaoTissularPerifericaIneficaz" value="Perfusão tissular periférica ineficaz" />
+				<h:inputTextarea id="perfusaoTissularPerifericaIneficaz" styleClass="form-control"
+						value="#{enfermagemController.paciente.diagnosticoEnfermagem.perfusaoTissularPerifericaIneficaz}" />
+			</div>
+			<div class="form-group">
+				<p:outputLabel for="interacaoSocialPrejudicada" value="Interação Social prejudicada" />
+				<h:inputTextarea id="interacaoSocialPrejudicada" styleClass="form-control"
+						value="#{enfermagemController.paciente.diagnosticoEnfermagem.interacaoSocialPrejudicada}" />
+			</div>
+			<div class="form-group">
+				<p:outputLabel for="faltaAdesao" value="Falta de Adesão" />
+				<h:inputTextarea id="faltaAdesao" styleClass="form-control"
+						value="#{enfermagemController.paciente.diagnosticoEnfermagem.faltaAdesao}" />
+			</div>
+			<div class="form-group">
+				<p:outputLabel for="riscoInfeccao" value="Risco de Infecção" />
+				<h:inputTextarea id="riscoInfeccao" styleClass="form-control"
+						value="#{enfermagemController.paciente.diagnosticoEnfermagem.riscoInfeccao}" />
+			</div>
+			<div class="form-group">
+				<p:outputLabel for="integridadePelePrejudicada" value="Integridade da pele prejudicada" />
+				<h:inputTextarea id="integridadePelePrejudicada" styleClass="form-control"
+						value="#{enfermagemController.paciente.diagnosticoEnfermagem.integridadePelePrejudicada}" />
+			</div>
+			<div class="form-group">
+				<p:outputLabel for="tipoDor" value="Dor" />
+				<h:selectOneMenu id="tipoDor" styleClass="form-control"
+						value="#{enfermagemController.paciente.diagnosticoEnfermagem.tipoDor}"
+						onchange="if (mudarBotao !== undefined) document.getElementById(mudarBotao.id).click();">
+					<f:selectItem itemLabel="Sem Dor" itemValue="#{null}" />
+					<f:selectItem itemLabel="Dor Aguda" itemValue="#{1}" />
+					<f:selectItem itemLabel="Dor Crônica" itemValue="#{2}" />
+					<f:selectItem itemLabel="Ambas" itemValue="#{3}" />
+				</h:selectOneMenu>
+				<h:panelGroup id="campoDor">
+					<h:panelGroup
+						rendered="#{not (enfermagemController.paciente.diagnosticoEnfermagem.tipoDor eq null)}">
+						<p:outputLabel for="dor" value="Dor" styleClass="hidden" />
+						<h:inputTextarea id="dor" styleClass="form-control"
+								value="#{enfermagemController.paciente.diagnosticoEnfermagem.dor}" />
 					</h:panelGroup>
-				</div>
-				<div class="form-group">
-					<p:outputLabel for="outrosDiagnosticos" value="Outros Diagnósticos" />
-					<h:inputTextarea id="outrosDiagnosticos" styleClass="form-control"
-									 value="#{enfermagemController.paciente.diagnosticoEnfermagem.outrosDiagnosticos}" />
-				</div>
-				<h:commandButton value="Cancelar" styleClass="btn btn-danger"
-								 action="#{pacienteController.pesquisarPacienteEnfermagem()}"
-								 onclick="return cancelar();" />
-				<h:outputText value=" " />
-				<h:commandButton value="Editar" styleClass="btn btn-primary"
-								 action="#{enfermagemController.salvarDiagnosticoEnfermagem()}" />
-				<h:outputText value=" " />
-				<p:commandButton value="Mudar" id="mudar" widgetVar="mudarBotao"
-						styleClass="hidden" update="campoDor camponutricaoDesequilibrada"
-						actionListener="#{enfermagemController.mudarTipoRiscoNutricao}" />
-			</fieldset>
+				</h:panelGroup>
+			</div>
+			<div class="form-group">
+				<p:outputLabel for="outrosDiagnosticos" value="Outros Diagnósticos" />
+				<h:inputTextarea id="outrosDiagnosticos" styleClass="form-control"
+						value="#{enfermagemController.paciente.diagnosticoEnfermagem.outrosDiagnosticos}" />
+			</div>
+			<h:commandButton value="Cancelar" styleClass="btn btn-danger"
+					action="#{pacienteController.pesquisarPacienteEnfermagem()}"
+					onclick="return cancelar();" />
+			<h:outputText value=" " />
+			<h:commandButton value="Editar" styleClass="btn btn-primary"
+					action="#{enfermagemController.salvarDiagnosticoEnfermagem()}" />
+			<h:outputText value=" " />
+			<p:commandButton value="Mudar" id="mudar" widgetVar="mudarBotao"
+					styleClass="hidden" update="campoDor camponutricaoDesequilibrada"
+					actionListener="#{enfermagemController.mudarTipoRiscoNutricao}" />
 		</h:form>
 	</ui:define>
 </ui:composition>

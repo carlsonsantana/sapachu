@@ -1,5 +1,11 @@
 package org.sapac.utils;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
@@ -12,7 +18,14 @@ public class ConfiguracaoHelper {
 	
 	@PostConstruct
 	public void init() {
-		diretorioFotosUpload = "//home//carlson//uploads//";
+		try {
+			InputStream file = this.getClass().getClassLoader().getResourceAsStream("/sapac.properties");
+			Properties properties = new Properties();
+			properties.load(file);
+			diretorioFotosUpload = properties.getProperty("uploads_path");
+		} catch (IOException ex) {
+			Logger.getLogger(ConfiguracaoHelper.class.getName()).log(Level.SEVERE, null, ex);
+		}
 	}
 	
 	public String getDiretorioFotosUpload() {

@@ -1,64 +1,71 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-				xmlns:h="http://java.sun.com/jsf/html"
-				xmlns:ui="http://java.sun.com/jsf/facelets"
-				xmlns:p="http://primefaces.org/ui"
-				xmlns:f="http://java.sun.com/jsf/core">
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:p="http://primefaces.org/ui"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:fn="http://java.sun.com/jsp/jstl/functions">
 	<p:tab id="participantes" title="Participantes">
 		<p:panel header="Participantes">
 			<p:dataTable id="participantesatuais" value="#{consultaController.consulta.membrosEquipe}"
-						 var="membroEquipe" paginator="true" rows="10" lazy="true"
-						 paginatorPosition="bottom" paginatorAlwaysVisible="false"
-						 emptyMessage="Nenhum participante cadastrado nesta consulta.">
+					var="membroEquipe" paginator="true" rows="10" lazy="true"
+					paginatorPosition="bottom" paginatorAlwaysVisible="false"
+					emptyMessage="Nenhum participante cadastrado nesta consulta.">
+				<f:facet name="header"><h:outputText value="Participantes da consulta (#{fn:length(consultaController.consulta.membrosEquipe)})" /></f:facet>
 				<p:column>
 					<f:facet name="header"><h:outputText value="Nome" /></f:facet>
 					<h:outputText value="#{membroEquipe.nome}" />
 				</p:column>
 				<p:column>
-					<f:facet name="header"><h:outputText value="Tipo" /></f:facet>
+					<f:facet name="header"><h:outputText value="Profissão" /></f:facet>
 					<h:outputText value="Médico" rendered="#{membroEquipe.medico}" />
 					<h:outputText value="Enfermeiro" rendered="#{membroEquipe.enfermeiro}" />
 				</p:column>
 				<p:column>
 					<f:facet name="header"><h:outputText value="Ações" /></f:facet>
-					<h:commandLink value="Remover" action="#{consultaController.removerMembroEquipe(membroEquipe)}" />
+					<h:commandLink value="Remover" action="#{consultaController.removerMembroEquipe(membroEquipe)}"
+							rendered="#{not (perfilController.usuario.membroEquipe eq membroEquipe)}" />
 				</p:column>
 			</p:dataTable>
 			<br /><br /><br />
-			<div class="container">
-				<div class="row">
-					<div class="form-group col-lg-6">
-						<p:outputLabel for="nome-membro" value="Membro" />
-						<p:inputText id="nome-membro" value="#{usuarioController.membroEquipePesquisa.nome}" styleClass="form-control" />
+			<fieldset>
+				<legend>Adicionar Membros da Equipe Médica</legend>
+				<div class="container">
+					<div class="row">
+						<div class="form-group col-lg-6">
+							<p:outputLabel for="nome-membro" value="Nome" />
+							<h:inputText id="nome-membro" value="#{consultaController.membroEquipe.nome}" styleClass="form-control" />
+						</div>
 					</div>
 				</div>
-			</div>
-			<div class="form-group">
-				<input type="reset" value="Limpar Campos" class="btn btn-default" />
-				<h:outputText value=" " />
-				<p:commandButton value="Pequisar" styleClass="btn btn-primary"
-								 action="#{usuarioController.pesquisarUsuario}"
-								 update="datatable" />
-			</div>
-			<br /><br />
-			<p:dataTable id="datatable" value="#{usuarioController.listaMembros}"
-						 var="membroEquipe" paginator="true" rows="10" lazy="true"
-						 paginatorPosition="bottom" paginatorAlwaysVisible="false"
-						 emptyMessage="Nenhum resultado encontrado.">
-				<p:column>
-					<f:facet name="header"><h:outputText value="Nome" /></f:facet>
-					<h:outputText value="#{membroEquipe.nome}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header"><h:outputText value="Tipo" /></f:facet>
-					<h:outputText value="Médico" rendered="#{membroEquipe.medico}" />
-					<h:outputText value="Enfermeiro" rendered="#{membroEquipe.enfermeiro}" />
-				</p:column>
-				<p:column>
-					<f:facet name="header"><h:outputText value="Ações" /></f:facet>
-					<h:commandLink value="Adicionar"
-								   action="#{consultaController.adicionarMembroEquipe(membroEquipe)}" />
-				</p:column>
-			</p:dataTable>
+				<div class="form-group">
+					<input type="reset" value="Limpar Campos" class="btn btn-default" />
+					<h:outputText value=" " />
+					<p:commandButton value="Pequisar" styleClass="btn btn-primary"
+							action="#{consultaController.pesquisarMembrosNaoParticipantes}"
+							update="datatable" />
+				</div>
+				<br /><br />
+				<p:dataTable id="datatable" value="#{consultaController.membrosEncontrados}"
+						var="membroEquipe" paginator="true" rows="10" lazy="true"
+						paginatorPosition="bottom" paginatorAlwaysVisible="false"
+						emptyMessage="Nenhum resultado encontrado.">
+					<f:facet name="header"><h:outputText value="Membros encontrados (#{fn:length(consultaController.membrosEncontrados)})" /></f:facet>
+					<p:column>
+						<f:facet name="header"><h:outputText value="Nome" /></f:facet>
+						<h:outputText value="#{membroEquipe.nome}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header"><h:outputText value="Profissão" /></f:facet>
+						<h:outputText value="Médico" rendered="#{membroEquipe.medico}" />
+						<h:outputText value="Enfermeiro" rendered="#{membroEquipe.enfermeiro}" />
+					</p:column>
+					<p:column>
+						<f:facet name="header"><h:outputText value="Ações" /></f:facet>
+						<h:commandLink value="Adicionar"
+								action="#{consultaController.adicionarMembroEquipe(membroEquipe)}" />
+					</p:column>
+				</p:dataTable>
+			</fieldset>
 		</p:panel>
 	</p:tab>
 </ui:composition>

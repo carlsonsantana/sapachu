@@ -1,46 +1,51 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-				xmlns:h="http://java.sun.com/jsf/html"
-				xmlns:f="http://java.sun.com/jsf/core"
-				xmlns:ui="http://java.sun.com/jsf/facelets"
-				xmlns:p="http://primefaces.org/ui"
-				template="/templates/defaulttemplate.xhtml">
-	<ui:define name="title">Pesquisar Paciente</ui:define>
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:p="http://primefaces.org/ui"
+		template="/templates/defaulttemplate.xhtml">
+	<ui:define name="title">Remarcar ou Cancelar Consultas</ui:define>
 	<ui:define name="content">
-		<h:form id="form">
-			<fieldset>
-				<legend>Remarcar Consulta</legend>
-				<p:growl id="mensagensWarn" showDetail="true" sticky="true" severity="warn" />
-				<ui:insert name="mensagem">
-					<ui:include src="/private/consulta/mensagem_calendario.xhtml" />
-				</ui:insert>
-				<br /><br />
-				<p:schedule id="schedule" widgetVar="myschedule" locale="pt"
-							value="#{agendaController.calendario}"
-							draggable="true" resizable="false">
-					<p:ajax event="eventSelect" listener="#{agendaController.onConsultaSelecionada}"
-							update="eventDetails"
-							oncomplete="PF('eventDialog').show();" />
-					<p:ajax event="eventMove" listener="#{agendaController.onDataConsultaRemarcada}"
-							oncomplete="PF('myschedule').update();" update="mensagensWarn" />
-				</p:schedule>
-				<p:dialog widgetVar="eventDialog" header="Cancelar Consulta?"
-						  showEffect="clip" hideEffect="clip" id="dialogo">
-					<h:panelGroup id="eventDetails">
-						<p:commandButton id="nao" value="Não" oncomplete="PF('eventDialog').hide();" />
-						<p:commandButton id="removeButton" value="Sim"
-										 action="#{agendaController.cancelarConsulta}"
-										 oncomplete="PF('myschedule').update();PF('eventDialog').hide();"
-										  update="mensagensWarn" />
-					</h:panelGroup>
-				</p:dialog>
-				<br /><br />
-				<h:commandButton value="Cancelar" styleClass="btn btn-danger"
-								 action="/private/apresentacao?faces-redirect=true"
-								 onclick="return cancelar();" />
-				<h:outputText value=" " />
-				<h:commandButton value="Confirmar" styleClass="btn btn-primary"
-								 action="#{agendaController.remarcarDatas()}" />
-			</fieldset>
+		<h:form id="form" acceptcharset="UTF-8">
+			<p:growl id="mensagensWarn" showDetail="true" sticky="true" severity="warn" />
+
+			<h2>Remarcar ou Cancelar Consultas</h2>
+			<div class="alert alert-info">
+				<p>Para remarcar a consulta de um paciente, arraste o bloco com o nome do paciente
+					para a data desejada, para cancelar uma consulta selecione a consulta do paciente
+					e confirme que deseja cancelar. Várias consultas podem ser remarcadas e canceladas,
+					inclusive de pacientes diferentes.</p>
+			</div>
+			<ui:insert name="mensagem">
+				<ui:include src="/private/consulta/mensagem_calendario.xhtml" />
+			</ui:insert>
+			<br /><br />
+			<p:schedule id="schedule" widgetVar="myschedule" locale="pt"
+					value="#{agendaController.calendario}"
+					draggable="true" resizable="false">
+				<p:ajax event="eventSelect" listener="#{agendaController.onConsultaSelecionada}"
+						update="eventDetails"
+						oncomplete="PF('eventDialog').show();" />
+				<p:ajax event="eventMove" listener="#{agendaController.onDataConsultaRemarcada}"
+						oncomplete="PF('myschedule').update();" update="mensagensWarn" />
+			</p:schedule>
+			<p:dialog widgetVar="eventDialog" header="Cancelar Consulta?"
+					showEffect="clip" hideEffect="clip" id="dialogo">
+				<h:panelGroup id="eventDetails">
+					<p:commandButton id="nao" value="Não" oncomplete="PF('eventDialog').hide();" />
+					<p:commandButton id="removeButton" value="Sim"
+							action="#{agendaController.cancelarConsulta}"
+							oncomplete="PF('myschedule').update();PF('eventDialog').hide();"
+							update="mensagensWarn" />
+				</h:panelGroup>
+			</p:dialog>
+			<br /><br />
+			<h:commandButton value="Cancelar" styleClass="btn btn-danger"
+					action="/private/apresentacao?faces-redirect=true"
+					onclick="return cancelar();" />
+			<h:outputText value=" " />
+			<h:commandButton value="Confirmar" styleClass="btn btn-primary"
+					action="#{agendaController.remarcarDatas()}" />
 		</h:form>
 	</ui:define>
 </ui:composition>

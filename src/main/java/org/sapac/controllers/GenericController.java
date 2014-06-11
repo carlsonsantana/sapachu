@@ -50,6 +50,22 @@ public abstract class GenericController implements Serializable {
 		adicionarMensagem(FacesMessage.SEVERITY_FATAL, titulo, mensagem);
 	}
 	
+	public void adicionarMensagemAviso(String mensagem) {
+		adicionarMensagemAviso("", mensagem);
+	}
+	
+	public void adicionarMensagemAlerta(String mensagem) {
+		adicionarMensagemAlerta("", mensagem);
+	}
+	
+	public void adicionarMensagemErro(String mensagem) {
+		adicionarMensagemErro("", mensagem);
+	}
+	
+	public void adicionarMensagemFatal(String mensagem) {
+		adicionarMensagemFatal("", mensagem);
+	}
+	
 	public String getDataFormatada(Date date) {
 		return dateFormatBrasil.format(date);
 	}

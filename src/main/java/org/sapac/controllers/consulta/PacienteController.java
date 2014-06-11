@@ -167,7 +167,7 @@ public class PacienteController extends GenericController {
 	public String cadastrar() {
 		paciente = consultaDAO.cadastrarPaciente(paciente);
 
-		adicionarMensagemAviso("", "Paciente cadastrado com sucesso.");
+		adicionarMensagemAviso("Paciente cadastrado com sucesso.");
 		
 		return visualizarPaciente(paciente);
 	}

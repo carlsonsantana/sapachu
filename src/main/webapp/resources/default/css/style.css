@@ -96,3 +96,7 @@ label {
 .ui-growl-item-container {
 	opacity: 1 !important;
 }
+.navbar-brand h1 {
+	font-size: 18px;
+	margin: 0;
+}

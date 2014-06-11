@@ -258,4 +258,19 @@ public class DiagnosticoEnfermagem implements Serializable {
 		
 		return diagnosticoEnfermagem;
 	}
+	
+	@Override
+	public boolean equals(Object object) {
+		if (this != object) {
+			if (!(object instanceof DiagnosticoEnfermagem)) {
+				return false;
+			}
+			
+			DiagnosticoEnfermagem diagnosticoEnfermagem = (DiagnosticoEnfermagem) object;
+			if (this.getId() != diagnosticoEnfermagem.getId()) {
+				return false;
+			}
+		}
+		return true;
+	}
 }

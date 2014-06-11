@@ -62,4 +62,19 @@ public class FotoUlcera implements Serializable {
 	public void setPontos(String pontos) {
 		this.pontos = pontos;
 	}
+	
+	@Override
+	public boolean equals(Object object) {
+		if (this != object) {
+			if (!(object instanceof FotoUlcera)) {
+				return false;
+			}
+			
+			FotoUlcera fotoUlcera = (FotoUlcera) object;
+			if (this.getId() != fotoUlcera.getId()) {
+				return false;
+			}
+		}
+		return true;
+	}
 }

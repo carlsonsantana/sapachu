@@ -1,39 +1,37 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-				xmlns:h="http://java.sun.com/jsf/html"
-				xmlns:f="http://java.sun.com/jsf/core"
-				xmlns:ui="http://java.sun.com/jsf/facelets"
-				xmlns:p="http://primefaces.org/ui"
-				template="/templates/defaulttemplate.xhtml">
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:p="http://primefaces.org/ui"
+		template="/templates/defaulttemplate.xhtml">
 	<ui:define name="title">
-		Visualizar Consulta de <h:outputText value="#{consultaController.consulta.data}">
+		Visualizar Informações da Consulta de <h:outputText value="#{consultaController.consulta.data}">
 			<f:convertDateTime pattern="dd/MM/yyyy" />
 		</h:outputText>
 	</ui:define>
 	<ui:define name="content">
-		<h:form id="form">
-			<fieldset>
-				<legend>
-					Visualizar Consulta de <h:outputText value="#{consultaController.consulta.data}">
-						<f:convertDateTime pattern="dd/MM/yyyy" />
-					</h:outputText>
-				</legend>
-				<ui:insert name="dadospaciente">
-					<ui:include src="/private/paciente/dados_paciente.xhtml" />
-				</ui:insert>
-				<ui:insert name="resumo">
-					<ui:include src="/private/consulta/consulta/resumo_consulta.xhtml" />
-				</ui:insert>
-			</fieldset>
+		<h2>
+			Visualizar Consulta de <h:outputText value="#{consultaController.consulta.data}">
+				<f:convertDateTime pattern="dd/MM/yyyy" />
+			</h:outputText>
+		</h2>
+		<h:form id="form" acceptcharset="UTF-8">
+			<ui:insert name="dadospaciente">
+				<ui:include src="/private/paciente/dados_paciente.xhtml" />
+			</ui:insert>
+			<ui:insert name="resumo">
+				<ui:include src="/private/consulta/consulta/resumo_consulta.xhtml" />
+			</ui:insert>
 		</h:form>
 		<div>
-			<h:form>
+			<h:form acceptcharset="UTF-8">
 				<h:commandButton value="Voltar"
-								 action="#{pacienteController.visualizarPaciente(pacienteController.paciente)}"
-								 styleClass="btn btn-default" />
+						action="#{pacienteController.visualizarPaciente(pacienteController.paciente)}"
+						styleClass="btn btn-default" />
 				<h:outputText value=" " />
 				<h:commandButton value="Pesquisar outro Paciente"
-								 action="#{pacienteController.telaPesquisarPaciente()}"
-								 styleClass="btn btn-default" />
+						action="#{pacienteController.telaPesquisarPaciente()}"
+						styleClass="btn btn-default" />
 			</h:form>
 		</div>
 	</ui:define>

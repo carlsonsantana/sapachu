@@ -4,7 +4,6 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import org.jasypt.digest.StringDigester;
 import org.sapac.annotations.DAOQualifier;
 import org.sapac.controllers.GenericController;
 import org.sapac.controllers.PaginasNavegacao;
@@ -108,23 +107,20 @@ public class PerfilController extends GenericController {
 			
 			return PaginasNavegacao.PAGINA_INICIAL;
 		} else {
-			adicionarMensagemAlerta("Usuário não existe", "Não existe um usuário com o nome e a senha informados.");
+			adicionarMensagemAlerta("Não existe um usuário com o nome e a senha informados.");
 			
 			return PaginasNavegacao.LOGIN;
 		}
 	}
 	
 	public String mudarSenha() {
-		StringDigester hasher = SpringAdapter.getHashGenerator();
 		boolean erro = false;
-		if (!hasher.matches(senhaAtual, usuario.getSenha())) {
-			adicionarMensagemErro("Senha incorreta", "A senha digitada não "
-					+ "corresponde a senha atual.");
+		if (!usuario.getSenha().equals(HashGenerator.gerar(senhaAtual))) {
+			adicionarMensagemErro("A senha digitada não corresponde a senha atual.");
 			erro = true;
 		}
 		if (!novaSenha.equals(confirmacaoNovaSenha)) {
-			adicionarMensagemErro("Senhas diferentes", "A nova senha digitada "
-					+ "e sua confirmação estão diferentes.");
+			adicionarMensagemErro("A nova senha digitada e sua confirmação estão diferentes.");
 			erro = true;
 		}
 		
@@ -133,7 +129,7 @@ public class PerfilController extends GenericController {
 		} else {
 			usuarioDAO.mudarSenha(usuario, novaSenha);
 			
-			adicionarMensagemAviso("Mudança de Senha", "Senha alterada com sucesso.");
+			adicionarMensagemAviso("Senha alterada com sucesso.");
 			
 			return PaginasNavegacao.PAGINA_INICIAL;
 		}

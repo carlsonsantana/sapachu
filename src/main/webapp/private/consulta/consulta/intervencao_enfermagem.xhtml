@@ -1,18 +1,17 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-				xmlns:h="http://java.sun.com/jsf/html"
-				xmlns:ui="http://java.sun.com/jsf/facelets"
-				xmlns:p="http://primefaces.org/ui">
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:p="http://primefaces.org/ui">
 	<p:tab id="intervencaoenfermagem" title="Intervenção da Enfermagem">
 		<p:panel header="Intervenção da Enfermagem">
 			<div class="container">
 				<div class="row">
 					<p:growl showDetail="true" sticky="true" />
 					<div class="form-group">
-						<p:outputLabel for="intervencao-enfermagem"
-									   value="Intervenção da Enfermagem" />
+						<p:outputLabel for="intervencao-enfermagem" value="Intervenção da Enfermagem" />
 						<h:inputTextarea styleClass="form-control" id="intervencao-enfermagem"
-										 value="#{consultaController.consulta.intervencaoEnfermagem.descricao}"
-										 required="true" />
+								value="#{consultaController.consulta.intervencaoEnfermagem.descricao}"
+								required="true" />
 					</div>
 				</div>
 			</div>

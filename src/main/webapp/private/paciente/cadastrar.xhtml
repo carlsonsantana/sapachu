@@ -1,23 +1,21 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-				xmlns:h="http://java.sun.com/jsf/html"
-				xmlns:f="http://java.sun.com/jsf/core"
-				xmlns:ui="http://java.sun.com/jsf/facelets"
-				xmlns:p="http://primefaces.org/ui"
-				template="/templates/defaulttemplate.xhtml">
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:p="http://primefaces.org/ui"
+		template="/templates/defaulttemplate.xhtml">
 	<ui:define name="title">Cadastrar Paciente</ui:define>
 	<ui:define name="content">
-		<h:form>
-			<fieldset>
-				<legend>Cadastrar Paciente</legend>
-				<ui:insert name="dadospaciente">
-					<ui:include src="/private/paciente/dados_paciente.xhtml" />
-				</ui:insert>
-				<h:commandButton value="Cancelar" styleClass="btn btn-danger"
-								 action="/private/apresentacao?faces-redirect=true"
-								 onclick="return cancelar();" />
-				<h:outputText value=" " />
-				<h:commandButton value="Confirmar" action="#{pacienteController.cadastrar()}" styleClass="btn btn-primary" />
-			</fieldset>
+		<h2>Cadastrar Paciente</h2>
+		<h:form acceptcharset="UTF-8">
+			<ui:insert name="dadospaciente">
+				<ui:include src="/private/paciente/dados_paciente.xhtml" />
+			</ui:insert>
+			<h:commandButton value="Cancelar" styleClass="btn btn-danger"
+					action="/private/apresentacao?faces-redirect=true"
+					onclick="return cancelar();" />
+			<h:outputText value=" " />
+			<h:commandButton value="Confirmar" action="#{pacienteController.cadastrar()}" styleClass="btn btn-primary" />
 		</h:form>
 	</ui:define>
 </ui:composition>

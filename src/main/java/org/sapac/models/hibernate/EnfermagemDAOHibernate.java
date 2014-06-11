@@ -90,7 +90,8 @@ public class EnfermagemDAOHibernate extends GenericDAOHibernate implements Enfer
 				.append(" INNER JOIN FETCH intervencaoEnfermagem.consulta AS consulta ")
 				.append(" INNER JOIN FETCH consulta.paciente AS paciente ")
 				.append(" WHERE 1 = 1 ")
-				.append(" AND paciente.id = :idPaciente ");
+				.append(" AND paciente.id = :idPaciente ")
+				.append(" ORDER BY consulta.data DESC ");
 		
 		Query query = session.createQuery(hql.toString());
 		query.setInteger("idPaciente", paciente.getId());
@@ -104,7 +105,23 @@ public class EnfermagemDAOHibernate extends GenericDAOHibernate implements Enfer
 
 	@Override
 	public IntervencaoEnfermagem procurarIntervencaoEnfermagem(Consulta consulta) {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		Session session = getSession();
+		
+		StringBuilder hql = new StringBuilder();
+		hql.append("SELECT intervencaoEnfermagem FROM IntervencaoEnfermagem AS intervencaoEnfermagem ")
+				.append(" INNER JOIN FETCH intervencaoEnfermagem.consulta AS consulta ")
+				.append(" INNER JOIN FETCH intervencaoEnfermagem.enfermeiro ")
+				.append(" WHERE 1 = 1 ")
+				.append(" AND consulta.id = :idConsulta ");
+		
+		Query query = session.createQuery(hql.toString());
+		query.setInteger("idConsulta", consulta.getId());
+		
+		IntervencaoEnfermagem intervencaoEnfermagem = (IntervencaoEnfermagem) query.uniqueResult();
+		
+		closeSession();
+		
+		return intervencaoEnfermagem;
 	}
 
 	@Override

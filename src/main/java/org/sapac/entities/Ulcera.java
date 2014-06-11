@@ -100,4 +100,19 @@ public class Ulcera implements Serializable {
 	public void setPaciente(Paciente paciente) {
 		this.paciente = paciente;
 	}
+	
+	@Override
+	public boolean equals(Object object) {
+		if (this != object) {
+			if (!(object instanceof Ulcera)) {
+				return false;
+			}
+			
+			Ulcera ulcera = (Ulcera) object;
+			if (this.getId() != ulcera.getId()) {
+				return false;
+			}
+		}
+		return true;
+	}
 }

@@ -220,4 +220,43 @@ public class SituacaoUlceraConsulta implements Serializable {
 	public void setCircular(boolean circular) {
 		this.circular = circular;
 	}
+	
+	public boolean isLimpa() {
+		return estadoUlcera == 1;
+	}
+	
+	public boolean isLimpaContaminada() {
+		return estadoUlcera == 2;
+	}
+	
+	public boolean isContaminada() {
+		return estadoUlcera == 3;
+	}
+	
+	public boolean isInfectada() {
+		return estadoUlcera == 4;
+	}
+	
+	public boolean isNecrozada() {
+		return estadoUlcera == 5;
+	}
+	
+	public boolean isCicatrizada() {
+		return estadoUlcera == 6;
+	}
+	
+	@Override
+	public boolean equals(Object object) {
+		if (this != object) {
+			if (!(object instanceof SituacaoUlceraConsulta)) {
+				return false;
+			}
+			
+			SituacaoUlceraConsulta situacaoUlceraConsulta = (SituacaoUlceraConsulta) object;
+			if (this.getId() != situacaoUlceraConsulta.getId()) {
+				return false;
+			}
+		}
+		return true;
+	}
 }

@@ -1,56 +1,54 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-				xmlns:h="http://java.sun.com/jsf/html"
-				xmlns:f="http://java.sun.com/jsf/core"
-				xmlns:ui="http://java.sun.com/jsf/facelets"
-				xmlns:p="http://primefaces.org/ui"
-				template="/templates/defaulttemplate.xhtml">
-	<ui:define name="title">Visualizar Paciente</ui:define>
+		xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:p="http://primefaces.org/ui"
+		template="/templates/defaulttemplate.xhtml">
+	<ui:define name="title">Visualizar Informações do Paciente</ui:define>
 	<ui:define name="content">
-		<fieldset>
-			<legend>Visualizar Paciente</legend>
-			<ui:insert name="dadospaciente">
-				<ui:include src="/private/paciente/dados_paciente.xhtml" />
-			</ui:insert>
-			<br /><br />
-			<h:panelGroup rendered="#{not empty pacienteController.paciente.consultas}">
-				<div>
-					Consultas:
-					<h:form id="form">
-						<ui:repeat value="#{pacienteController.paciente.consultas}" var="consulta">
-							<h:outputText value=" " />
-							<h:commandLink action="#{consultaController.visualizarConsulta(consulta)}">
-								<h:outputText value="#{consulta.data}">
-									<f:convertDateTime pattern="dd/MM/yyyy" />
-								</h:outputText>
-							</h:commandLink>
-						</ui:repeat>
-					</h:form>
-				</div>
-				<div style="margin: 20px 0;">
-					<h:outputScript library="default" name="third_part/jqplot/plugins/jqplot.pointLabels.min.js" />
-					<p:tabView value="#{pacienteController.graficos}" var="grafico">
-						<p:tab title="#{grafico.series[0].label}">
-							<p:lineChart value="#{grafico}" 
-										 showDatatip="true" extender="showLabelAlways" />
-						</p:tab>
-					</p:tabView>
-					<script type="text/javascript">
-						function showLabelAlways() {
-							this.cfg.seriesDefaults = {
-								pointLabels: {show: true}
-							};
-							this.cfg.stackSeries = true;
-						}
-					</script>
-				</div>
-			</h:panelGroup>
+		<h2>Visualizar Informações do Paciente Paciente</h2>
+		<ui:insert name="dadospaciente">
+			<ui:include src="/private/paciente/dados_paciente.xhtml" />
+		</ui:insert>
+		<br /><br />
+		<h:panelGroup rendered="#{not empty pacienteController.paciente.consultas}">
 			<div>
-				<h:form>
-					<h:commandButton value="Pesquisar outro Paciente"
-									 action="#{pacienteController.telaPesquisarPaciente()}"
-									 styleClass="btn btn-default" />
+				Consultas:
+				<h:form id="form" acceptcharset="UTF-8">
+					<ui:repeat value="#{pacienteController.paciente.consultas}" var="consulta">
+						<h:outputText value=" " />
+						<h:commandLink action="#{consultaController.visualizarConsulta(consulta)}">
+							<h:outputText value="#{consulta.data}">
+								<f:convertDateTime pattern="dd/MM/yyyy" />
+							</h:outputText>
+						</h:commandLink>
+					</ui:repeat>
 				</h:form>
 			</div>
-		</fieldset>
+			<div style="margin: 20px 0;">
+				<h:outputScript library="default" name="third_part/jqplot/plugins/jqplot.pointLabels.min.js" />
+				<p:tabView value="#{pacienteController.graficos}" var="grafico">
+					<p:tab title="#{grafico.series[0].label}">
+						<p:lineChart value="#{grafico}" 
+								showDatatip="true" extender="showLabelAlways" />
+					</p:tab>
+				</p:tabView>
+				<script type="text/javascript">
+					function showLabelAlways() {
+						this.cfg.seriesDefaults = {
+							pointLabels: {show: true}
+						};
+						this.cfg.stackSeries = true;
+					}
+				</script>
+			</div>
+		</h:panelGroup>
+		<div>
+			<h:form>
+				<h:commandButton value="Pesquisar outro Paciente"
+						action="#{pacienteController.telaPesquisarPaciente()}"
+						styleClass="btn btn-default" />
+			</h:form>
+		</div>
 	</ui:define>
 </ui:composition>
