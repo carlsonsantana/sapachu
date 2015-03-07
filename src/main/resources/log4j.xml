@@ -4,7 +4,7 @@
 	<!-- ============================== -->
 	<!-- Append messages to the console -->
 	<!-- ============================== -->
-
+	<!--
 	<appender name="console" class="org.apache.log4j.ConsoleAppender">
 		<errorHandler class="org.apache.log4j.helpers.OnlyOnceErrorHandler" />
 		<param name="Target" value="System.out" />
@@ -12,10 +12,11 @@
 
 		<layout class="org.apache.log4j.PatternLayout">
 			<!-- The default pattern: Date Priority [Category] Message\n -->
+			<!--
 			<param name="ConversionPattern" value="%d{dd/MM/yy hh:mm:ss,sss z} %-5p [%c{1}] %m%n"/>
 		</layout>
 	</appender>
-	
+	-->
 	<appender name="file" class="org.apache.log4j.DailyRollingFileAppender">
 		<param name="file" value="/home/carlson/logging/log.log" />
 		<param name="DatePattern" value="'.'yyyy-MM-dd" />
@@ -32,7 +33,7 @@
 		<!-- 
 		  Set the root logger priority via a system property. Note this is parsed by log4j         
 		-->
-		<appender-ref ref="console" />
+		<!-- <appender-ref ref="console" /> -->
 		<appender-ref ref="file" />
 	</root>
 

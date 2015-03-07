@@ -1,3 +1,4 @@
+--Senha administrador
 INSERT INTO sapac.usuario (id_usuario, ativo, coordenador, nome_usuario, senha) VALUES
 	(1, TRUE, TRUE, 'admin', '91f5167c34c400758115c2a6826ec2e3');
 INSERT INTO sapac.membro_equipe (id_membro_equipe, cpf, email, matricula, nome, rg, vinculo, id_usuario) VALUES
