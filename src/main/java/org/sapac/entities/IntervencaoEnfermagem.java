@@ -74,8 +74,17 @@ public class IntervencaoEnfermagem implements Serializable {
 			}
 			
 			IntervencaoEnfermagem intervencaoEnfermagem = (IntervencaoEnfermagem) object;
-			if (this.getId() != intervencaoEnfermagem.getId()) {
-				return false;
+			if ((this.getId() != 0) && (intervencaoEnfermagem.getId() != 0)) {
+				if (this.getId() != intervencaoEnfermagem.getId()) {
+					return false;
+				}
+			} else {
+				if (!this.getConsulta().equals(intervencaoEnfermagem.getConsulta())) {
+					return false;
+				}
+				if (!this.getEnfermeiro().equals(intervencaoEnfermagem.getEnfermeiro())) {
+					return false;
+				}
 			}
 		}
 		return true;

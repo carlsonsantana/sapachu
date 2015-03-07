@@ -255,6 +255,16 @@ public class SituacaoUlceraConsulta implements Serializable {
 			SituacaoUlceraConsulta situacaoUlceraConsulta = (SituacaoUlceraConsulta) object;
 			if (this.getId() != situacaoUlceraConsulta.getId()) {
 				return false;
+			} else if ((this.getId() == 0) || (situacaoUlceraConsulta.getId() == 0)) {
+				if (!this.getUlcera().equals(situacaoUlceraConsulta.getUlcera())) {
+					return false;
+				}
+				if (!this.getConsulta().equals(situacaoUlceraConsulta.getConsulta())) {
+					return false;
+				}
+				if (this.getArea() != situacaoUlceraConsulta.getArea()) {
+					return false;
+				}
 			}
 		}
 		return true;

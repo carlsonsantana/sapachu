@@ -17,19 +17,20 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "variaveis_clinicas")
 public class VariaveisClinicas implements Serializable {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_variaveis_clinicas")
 	private int id;
-	
+
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_consulta")
 	@NotNull
 	private Consulta consulta;
-	
+
 	@OneToMany(mappedBy = "variaveisClinicas", fetch = FetchType.LAZY)
 	private Collection<MedicamentoUso> medicamentosUso;
-	
+
 	@Column(name = "pressao_arterial")
 	@NotNull
 	private float pressaoArterial;
@@ -402,17 +403,23 @@ public class VariaveisClinicas implements Serializable {
 	public void setOutrasDrogas(String outrasDrogas) {
 		this.outrasDrogas = outrasDrogas;
 	}
-	
+
 	@Override
 	public boolean equals(Object object) {
 		if (this != object) {
 			if (!(object instanceof VariaveisClinicas)) {
 				return false;
 			}
-			
+
 			VariaveisClinicas variaveisClinicas = (VariaveisClinicas) object;
-			if (this.getId() != variaveisClinicas.getId()) {
-				return false;
+			if ((this.getId() != 0) && (variaveisClinicas.getId() != 0)) {
+				if (this.getId() != variaveisClinicas.getId()) {
+					return false;
+				}
+			} else {
+				if (!this.getConsulta().equals(variaveisClinicas.getConsulta())) {
+					return false;
+				}
 			}
 		}
 		return true;

@@ -37,10 +37,8 @@ public class SpringAdapter implements AuthenticationProvider {
                 if (usuario.isCoordenador()) {
                     papeis.add(new SimpleGrantedAuthority("ROLE_COORD"));
                 }
-            } else if (usuario.isEnfermeiro()) {
-                papeis.add(new SimpleGrantedAuthority("ROLE_ENFERMEIRO"));
             } else {
-                throw new AuthenticationServiceException("Informações incorretas no banco de dados. Favor informar administrador do sistema");
+                papeis.add(new SimpleGrantedAuthority("ROLE_ENFERMEIRO"));
             }
             Authentication response = new UsernamePasswordAuthenticationToken(usuario.getNomeUsuario(), usuario.getSenha(), papeis);
             return response;

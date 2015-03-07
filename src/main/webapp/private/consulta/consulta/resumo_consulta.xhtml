@@ -191,6 +191,9 @@
 				style="border:2px solid #000000;background: url('#{consultaController.situacaoUlceraConsulta.fotoUlcera.enderecoImagem}') no-repeat; background-size: 100% 100%;"></canvas>
 		<h:outputScript>
 			var poligonoUlcera = "<h:outputText value="#{consultaController.situacaoUlceraConsulta.fotoUlcera.pontos}" />";
+			var baseComparativoUlcera = "<h:outputText value="#{consultaController.situacaoUlceraConsulta.fotoUlcera.pontosComparativos}" />";
+			var alturaRealComparativoUlcera = parseFloat("<h:outputText value="#{consultaController.situacaoUlceraConsulta.fotoUlcera.alturaRealComparativo}" />");
+			var larguraRealComparativoUlcera = parseFloat("<h:outputText value="#{consultaController.situacaoUlceraConsulta.fotoUlcera.larguraRealComparativo}" />");
 		</h:outputScript>
 		<hr />
 		<div class="table-responsive">

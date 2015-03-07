@@ -1,3 +1,5 @@
+var alturaReal = undefined;
+var larguraReal = undefined;
 mapaImagem = undefined;
 coordenadas = undefined;
 
@@ -34,7 +36,18 @@ jQuery(document).ready(function() {
 	generateAreas();
 	
 	if (typeof poligonoUlcera != typeof undefined) {
-		drawLine(undefined, undefined, getContext(), polygonToArrayPositions(poligonoUlcera));
+		var poligono = [];
+		baseComparativoUlceraArray = polygonToArrayPositions(baseComparativoUlcera);
+		poligonoUlceraArray = polygonToArrayPositions(poligonoUlcera);
+		for (var i = 0; i < baseComparativoUlceraArray.length; i++) {
+			poligono.push(baseComparativoUlceraArray[i]);
+		}
+		for (var i = 0; i < poligonoUlceraArray.length; i++) {
+			poligono.push(poligonoUlceraArray[i]);
+		}
+		alturaReal = alturaRealComparativoUlcera;
+		larguraReal = larguraRealComparativoUlcera;
+		drawLine(undefined, undefined, getContext(), poligono);
 	}
 });
 

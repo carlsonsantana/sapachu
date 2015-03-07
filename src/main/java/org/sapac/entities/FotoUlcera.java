@@ -30,6 +30,15 @@ public class FotoUlcera implements Serializable {
 	private String enderecoImagem;
 
 	private String pontos;
+	
+	@Column(name = "pontos_comparativos")
+	private String pontosComparativos;
+	
+	@Column(name = "altura_real_comparativo")
+	private Float alturaRealComparativo;
+	
+	@Column(name = "largura_real_comparativo")
+	private Float larguraRealComparativo;
 
 	public int getId() {
 		return id;
@@ -63,6 +72,30 @@ public class FotoUlcera implements Serializable {
 		this.pontos = pontos;
 	}
 	
+	public String getPontosComparativos() {
+		return pontosComparativos;
+	}
+
+	public void setPontosComparativos(String pontosComparativos) {
+		this.pontosComparativos = pontosComparativos;
+	}
+	
+	public Float getAlturaRealComparativo() {
+		return alturaRealComparativo;
+	}
+
+	public void setAlturaRealComparativo(Float alturaRealComparativo) {
+		this.alturaRealComparativo = alturaRealComparativo;
+	}
+	
+	public Float getLarguraRealComparativo() {
+		return larguraRealComparativo;
+	}
+
+	public void setLarguraRealComparativo(Float larguraRealComparativo) {
+		this.larguraRealComparativo = larguraRealComparativo;
+	}
+	
 	@Override
 	public boolean equals(Object object) {
 		if (this != object) {
@@ -71,8 +104,17 @@ public class FotoUlcera implements Serializable {
 			}
 			
 			FotoUlcera fotoUlcera = (FotoUlcera) object;
-			if (this.getId() != fotoUlcera.getId()) {
-				return false;
+			if ((this.getId() != 0) && (fotoUlcera.getId() != 0)) {
+				if (this.getId() != fotoUlcera.getId()) {
+					return false;
+				}
+			} else {
+				if (!this.getEnderecoImagem().equals(fotoUlcera.getEnderecoImagem())) {
+					return false;
+				}
+				if (!this.getPontos().equals(fotoUlcera.getPontos())) {
+					return false;
+				}
 			}
 		}
 		return true;

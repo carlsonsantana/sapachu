@@ -100,6 +100,11 @@
 							Para fechar o polígono, não tente selecionar o primeiro ponto, aperte no botão Completar
 							que fechará o polígono e calculará a sua área. Caso tenha errado algum ponto aperte o botão
 							Limpar para que todos os pontos sejam removidos.
+							Para calcular a altura e a largura real da imagem utilize algum objeto de medição de tamanho
+							fixo como uma pequena régua ângular e selecione primeiro o seu eixo, depois selecione o final
+							do eixo Y do objeto, depois selecione o final do eixo X do objeto que será pergutando a altura
+							e a largura real do objeto para servir de comparação com a úlcera. O objeto pode ter uma largura
+							maior que sua altura, pois serão perguntados tanto a altura como a largura.
 						</div>
 						<div class="row">
 							<div id="canvasDiv" class="col-lg-7 col-lg-offset-1">
@@ -122,6 +127,9 @@
 									</div>
 								</div>
 								<h:inputHidden id="pontosulcera" value="#{consultaController.poligonoUlcera}" />
+								<h:inputHidden id="basecomparativosulcera" value="#{consultaController.baseComparativoUlcera}" />
+								<h:inputHidden id="alturarealcomparativoulcera" value="#{consultaController.alturaRealComparativoUlcera}" />
+								<h:inputHidden id="largurarealcomparativoulcera" value="#{consultaController.larguraRealComparativoUlcera}" />
 								<p id="numero"></p>
 							</div>
 						</div>
@@ -133,6 +141,9 @@
 						<h:panelGroup rendered="#{not empty consultaController.situacaoUlceraConsulta.fotoUlcera}">
 							<h:outputScript rendered="#{not empty consultaController.situacaoUlceraConsulta.fotoUlcera.pontos}">
 								var poligonoUlcera = "<h:outputText value="#{consultaController.situacaoUlceraConsulta.fotoUlcera.pontos}" />";
+								var baseComparativoUlcera = "<h:outputText value="#{consultaController.situacaoUlceraConsulta.fotoUlcera.pontosComparativos}" />";
+								var alturaRealComparativoUlcera = parseFloat("<h:outputText value="#{consultaController.situacaoUlceraConsulta.fotoUlcera.alturaRealComparativo}" />");
+								var larguraRealComparativoUlcera = parseFloat("<h:outputText value="#{consultaController.situacaoUlceraConsulta.fotoUlcera.larguraRealComparativo}" />");
 							</h:outputScript>
 						</h:panelGroup>
 					</h:panelGroup>
@@ -172,7 +183,7 @@
 										value="#{consultaController.situacaoUlceraConsulta.profundidade}"
 										required="true">
 									<f:selectItem itemLabel="Rasa" itemValue="#{0}" />
-									<f:selectItem itemLabel="Profundidade" itemValue="#{1}" />
+									<f:selectItem itemLabel="Profunda" itemValue="#{1}" />
 								</h:selectOneMenu>
 							</div>
 							<div class="form-group col-lg-3">

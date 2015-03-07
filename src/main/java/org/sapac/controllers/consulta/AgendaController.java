@@ -360,7 +360,7 @@ public class AgendaController extends GenericController {
 			if (c.isRemarcada()) {
 				c = c.getConsultaMarcada();
 			}
-			if (!consulta.equals(c)) {
+			if (consulta != c) {
 				if ((isMesmaData(dataConsulta, c.getData()))
 						&& (consulta.getPaciente().equals(c.getPaciente()))) {
 					return true;

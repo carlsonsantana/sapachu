@@ -182,7 +182,15 @@ public class Consulta implements Serializable {
 					return false;
 				}
 			} else {
-				return super.equals(object);
+				if (!this.getPaciente().equals(consulta.getPaciente())) {
+					return false;
+				}
+				if (!this.getData().equals(consulta.getData())) {
+					return false;
+				}
+				if (this.getSituacao() != consulta.getSituacao()) {
+					return false;
+				}
 			}
 		}
 		return true;

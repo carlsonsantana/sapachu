@@ -46,6 +46,9 @@ public class ConsultaController extends GenericController {
 	private String imagem;
 	private SituacaoUlceraConsulta situacaoUlceraConsulta;
 	private String poligonoUlcera;
+	private String baseComparativoUlcera;
+	private Float alturaRealComparativoUlcera;
+	private Float larguraRealComparativoUlcera;
 	private List<Boolean> ulcerasConferidas;
 	private List<SituacaoUlceraConsulta> ulcerasJuntadas;
 	private SituacaoUlceraConsulta ulceraDividida;
@@ -141,6 +144,30 @@ public class ConsultaController extends GenericController {
 
 	public void setPoligonoUlcera(String poligonoUlcera) {
 		this.poligonoUlcera = poligonoUlcera;
+	}
+	
+	public String getBaseComparativoUlcera() {
+		return baseComparativoUlcera;
+	}
+	
+	public void setBaseComparativoUlcera(String baseComparativoUlcera) {
+		this.baseComparativoUlcera = baseComparativoUlcera;
+	}
+	
+	public Float getAlturaRealComparativoUlcera() {
+		return alturaRealComparativoUlcera;
+	}
+	
+	public void setAlturaRealComparativoUlcera(Float alturaRealComparativoUlcera) {
+		this.alturaRealComparativoUlcera = alturaRealComparativoUlcera;
+	}
+	
+	public Float getLarguraRealComparativoUlcera() {
+		return larguraRealComparativoUlcera;
+	}
+	
+	public void setLarguraRealComparativoUlcera(Float larguraRealComparativoUlcera) {
+		this.larguraRealComparativoUlcera = larguraRealComparativoUlcera;
 	}
 
 	public Collection<SituacaoUlceraConsulta> getSituacoesUlcera() {
@@ -281,7 +308,11 @@ public class ConsultaController extends GenericController {
 
 	public void confirmarSituacaoUlcera() {
 		if (validarSituacaoUlcera(situacaoUlceraConsulta)) {
-			situacaoUlceraConsulta.getFotoUlcera().setPontos(poligonoUlcera);
+			FotoUlcera fotoUlcera = situacaoUlceraConsulta.getFotoUlcera();
+			fotoUlcera.setPontos(poligonoUlcera);
+			fotoUlcera.setPontosComparativos(baseComparativoUlcera);
+			fotoUlcera.setAlturaRealComparativo(alturaRealComparativoUlcera);
+			fotoUlcera.setLarguraRealComparativo(larguraRealComparativoUlcera);
 
 			List<SituacaoUlceraConsulta> situacoes = new ArrayList<SituacaoUlceraConsulta>();
 			situacoes.addAll(consulta.getSituacoesUlcera());
@@ -289,6 +320,8 @@ public class ConsultaController extends GenericController {
 			ulcerasConferidas.set(index, true);
 
 			situacaoUlceraConsulta = null;
+			
+			area = "";
 		}
 	}
 
@@ -341,6 +374,7 @@ public class ConsultaController extends GenericController {
 			if (adicionar) {
 				Ulcera ulcera = new Ulcera();
 				ulcera.setPontos(area);
+				ulcera.setPaciente(getConsulta().getPaciente());
 
 				SituacaoUlceraConsulta situacaoUlcera = new SituacaoUlceraConsulta();
 				situacaoUlcera.setUlcera(ulcera);
@@ -407,7 +441,11 @@ public class ConsultaController extends GenericController {
 		if (situacaoUlcera.getFotoUlcera() != null) {
 			setImagem(situacaoUlcera.getFotoUlcera().getEnderecoImagem());
 
-			setPoligonoUlcera(situacaoUlcera.getFotoUlcera().getPontos());
+			FotoUlcera fotoUlcera = situacaoUlcera.getFotoUlcera();
+			setPoligonoUlcera(fotoUlcera.getPontos());
+			setBaseComparativoUlcera(fotoUlcera.getPontosComparativos());
+			setAlturaRealComparativoUlcera(fotoUlcera.getAlturaRealComparativo());
+			setLarguraRealComparativoUlcera(fotoUlcera.getLarguraRealComparativo());
 		} else {
 			setImagem("");
 		}
@@ -467,6 +505,7 @@ public class ConsultaController extends GenericController {
 	}
 
 	public void selecionarSituacaoUlcera(SituacaoUlceraConsulta situacaoUlcera) {
+		area = "";
 		if (operacao.equals(Operacao.EDITAR_ULCERA)) {
 			editarUlcera(situacaoUlcera);
 		} else if (operacao.equals(Operacao.REMOVER_ULCERA)) {
@@ -680,7 +719,6 @@ public class ConsultaController extends GenericController {
 	}
 	
 	private boolean validarDivisaoJuncao() {
-		//TODO ALTERAR
 		if (operacao.equals(Operacao.DIVIDIR_ULCERA)) {
 			if ((ulceraDividida.getUlcera().getUlcerasResultado() != null)
 					&& (ulceraDividida.getUlcera().getUlcerasResultado().size() >= 2)) {

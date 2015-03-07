@@ -172,7 +172,7 @@ public class ConsultaDAOHibernate extends GenericDAOHibernate implements Consult
 				.append(" WHERE 1 = 1 ")
 				.append(" AND paciente.id = :idPaciente ")
 				.append(" AND consulta.situacao IN (:situacoes) ")
-				.append(" ORDER BY consulta.data DESC ");
+				.append(" ORDER BY consulta.data ASC ");
 		
 		Query query = session.createQuery(hql.toString());
 		query.setInteger("idPaciente", paciente.getId());

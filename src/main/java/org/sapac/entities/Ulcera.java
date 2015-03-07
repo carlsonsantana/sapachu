@@ -112,6 +112,14 @@ public class Ulcera implements Serializable {
 			if (this.getId() != ulcera.getId()) {
 				return false;
 			}
+			
+			if (!this.getPaciente().equals(ulcera.getPaciente())) {
+				return false;
+			}
+			
+			if (!this.getPontos().equals(ulcera.getPontos())) {
+				return false;
+			}
 		}
 		return true;
 	}

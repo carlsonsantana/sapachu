@@ -26,13 +26,13 @@ public class Usuario implements Serializable {
 
 	@NotNull
 	private String senha;
-	
+
 	@NotNull
 	private boolean coordenador;
-	
+
 	@NotNull
 	private boolean ativo;
-	
+
 	@OneToOne(mappedBy = "usuario", fetch = FetchType.LAZY)
 	private MembroEquipe membroEquipe;
 
@@ -59,11 +59,11 @@ public class Usuario implements Serializable {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
-	
+
 	public boolean isMedico() {
 		return membroEquipe.isMedico();
 	}
-	
+
 	public boolean isEnfermeiro() {
 		return membroEquipe.isEnfermeiro();
 	}
@@ -91,17 +91,26 @@ public class Usuario implements Serializable {
 	public void setMembroEquipe(MembroEquipe membroEquipe) {
 		this.membroEquipe = membroEquipe;
 	}
-	
+
 	@Override
 	public boolean equals(Object object) {
 		if (this != object) {
 			if (!(object instanceof Usuario)) {
 				return false;
 			}
-			
+
 			Usuario usuario = (Usuario) object;
-			if (this.getId() != usuario.getId()) {
-				return false;
+			if ((this.getId() != 0) && (usuario.getId() != 0)) {
+				if (this.getId() != usuario.getId()) {
+					return false;
+				}
+			} else {
+				if (!this.getNomeUsuario().equals(usuario.getNomeUsuario())) {
+					return false;
+				}
+				if (!this.getSenha().equals(usuario.getSenha())) {
+					return false;
+				}
 			}
 		}
 		return true;

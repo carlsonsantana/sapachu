@@ -17,7 +17,7 @@
 	</appender>
 	
 	<appender name="file" class="org.apache.log4j.DailyRollingFileAppender">
-		<param name="file" value="logging/log.log" />
+		<param name="file" value="/home/carlson/logging/log.log" />
 		<param name="DatePattern" value="'.'yyyy-MM-dd" />
 		<layout class="org.apache.log4j.PatternLayout">
 			<param name="ConversionPattern" value="%d{dd/MM/yy hh:mm:ss,sss z} %-5p [%c{1}] %m%n" />

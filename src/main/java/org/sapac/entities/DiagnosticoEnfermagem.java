@@ -267,8 +267,23 @@ public class DiagnosticoEnfermagem implements Serializable {
 			}
 			
 			DiagnosticoEnfermagem diagnosticoEnfermagem = (DiagnosticoEnfermagem) object;
-			if (this.getId() != diagnosticoEnfermagem.getId()) {
-				return false;
+			if ((this.getId() != 0) && (diagnosticoEnfermagem.getId() != 0)) {
+				if (this.getId() != diagnosticoEnfermagem.getId()) {
+					return false;
+				}
+			} else {
+				if (!this.getPaciente().equals(diagnosticoEnfermagem.getPaciente())) {
+					return false;
+				}
+				if (!this.getData().equals(diagnosticoEnfermagem.getData())) {
+					return false;
+				}
+				if (!this.getEnfermeiro().equals(diagnosticoEnfermagem.getEnfermeiro())) {
+					return false;
+				}
+				if (this.isAtivo() != diagnosticoEnfermagem.isAtivo()) {
+					return false;
+				}
 			}
 		}
 		return true;

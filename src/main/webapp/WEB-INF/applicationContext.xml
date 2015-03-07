@@ -1,50 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <b:beans xmlns="http://www.springframework.org/schema/security"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns:b="http://www.springframework.org/schema/beans"
-         
-         xsi:schemaLocation="http://www.springframework.org/schema/beans
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xmlns:b="http://www.springframework.org/schema/beans"
+		 xsi:schemaLocation="http://www.springframework.org/schema/beans
             http://www.springframework.org/schema/beans/spring-beans.xsd
- 
             http://www.springframework.org/schema/security
             http://www.springframework.org/schema/security/spring-security-3.1.xsd">
- 
-    <http auto-config="true">
-        <intercept-url pattern="/public/**" access="IS_AUTHENTICATED_ANONYMOUSLY"/>
-        <intercept-url pattern="/private/**" access="ROLE_MEDICO, ROLE_ENFERMEIRO"/>
-        <intercept-url pattern="/admin/**" access="ROLE_COORDENADOR"/>
-        <form-login login-page="/public/login.xhtml" 
-                    authentication-failure-url="/public/login.xhtml?erro=true"/>
-        <logout/>
-    </http>
-    <debug/>
-    
-    <b:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" >
-        <b:property name="url" value="jdbc:postgresql://localhost:5432/engenharia"/>
-        <b:property name="driverClassName" value="org.postgresql.Driver" />
-        <b:property name="username" value="postgres" />
-        <b:property name="password" value="postgres" />
-    </b:bean>
-    
-    <authentication-manager>
-        <!--<authentication-provider>-->
-            <!--            <user-service>
-                <user name="edson" password="123456" authorities="ROLE_USER"/>
-            </user-service>
-           <password-encoder hash="md5"/>
-            <password-encoder hash="plaintext"/>
-            <jdbc-user-service data-source-ref="dataSource"
-                               users-by-username-query="select nome_usuario as username, senha as password, ativo as enable from sapac.usuario where nome_usuario=?"
-                               authorities-by-username-query="
-                                    select nome_usuario as username, authority from sapac.authorities where nome_usuario = ? "
-            />-->
-            
-        <!--</authentication-provider>-->
-        <authentication-provider ref="UserPasswordAuthenticationProvider"/>
-        
-    </authentication-manager>
- 
-
-  <b:bean id="UserPasswordAuthenticationProvider" class="org.sapac.controllers.usuario.SpringAdapter"/>
-    
+	<http auto-config="true">
+		<intercept-url pattern="/public/**" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<intercept-url pattern="/private/**" access="ROLE_MEDICO, ROLE_ENFERMEIRO" />
+		<intercept-url pattern="/admin/**" access="ROLE_COORDENADOR" />
+		<form-login login-page="/public/login.xhtml" authentication-failure-url="/public/login.xhtml?erro=true" />
+		<logout />
+	</http>
+	<debug />
+	<b:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<b:property name="url" value="jdbc:postgresql://localhost:5432/engenharia" />
+		<b:property name="driverClassName" value="org.postgresql.Driver" />
+		<b:property name="username" value="postgres" />
+		<b:property name="password" value="postgres" />
+	</b:bean>
+	<authentication-manager>
+		<authentication-provider ref="UserPasswordAuthenticationProvider" />
+	</authentication-manager>
+	<b:bean id="UserPasswordAuthenticationProvider" class="org.sapac.controllers.usuario.SpringAdapter" />
 </b:beans>

@@ -111,10 +111,6 @@ public class RelatorioController extends GenericController {
 		this.membroEquipe = membroEquipe;
 
 		dados = relatorioDAO.gerarRelatorioDiferenca(membroEquipe);
-		dadosAnterioresVariaveisClinicas = relatorioDAO.gerarRelatorioAnteriorVariaveisClinicas(membroEquipe);
-		dadosPosterioresVariaveisClinicas = relatorioDAO.gerarRelatorioPosteriorSituacaoUlcera(membroEquipe);
-		dadosAnterioresSituacaoUlcera = relatorioDAO.gerarRelatorioAnteriorSituacaoUlcera(membroEquipe);
-		dadosPosterioresSituacaoUlcera = relatorioDAO.gerarRelatorioPosteriorSituacaoUlcera(membroEquipe);
 
 		return PaginasNavegacao.RELATORIO_VISUALIZAR;
 	}
